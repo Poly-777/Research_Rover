@@ -1,0 +1,682 @@
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  MagnifyingGlassIcon,
+  DocumentArrowDownIcon,
+  EyeIcon,
+  CalendarIcon,
+  TagIcon,
+  LinkIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CpuChipIcon,
+  UserGroupIcon,
+  XCircleIcon,
+  CheckCircleIcon,
+  FunnelIcon,
+  ChartBarIcon,
+} from '@heroicons/react/24/outline'
+import type { Paper, SearchFilters } from '@/types'
+import { searchApi, filesApi, embeddingsApi, type SearchRequest, type SearchProgress } from '@/services/api'
+
+// ─── Date input with working calendar icon trigger ──────────────────────────
+function DateField({
+  label,
+  value,
+  onChange,
+}: {
+  label: string
+  value: string
+  onChange: (v: string | undefined) => void
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+        {label}
+      </label>
+      <input
+        type="date"
+        value={value}
+        onChange={(e) => onChange(e.target.value || undefined)}
+        className="h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700
+                   bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-200
+                   focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500
+                   cursor-pointer"
+      />
+    </div>
+  )
+}
+
+// ─── Spinner SVG ─────────────────────────────────────────────────────────────
+function Spinner({ className = 'w-4 h-4' }: { className?: string }) {
+  return (
+    <svg className={`animate-spin ${className}`} fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+    </svg>
+  )
+}
+
+// ─── Progress stepper ─────────────────────────────────────────────────────────
+const STEPS = [
+  { stage: 0, label: 'Init' },
+  { stage: 1, label: 'Query' },
+  { stage: 2, label: 'Process' },
+  { stage: 3, label: 'Save' },
+  { stage: 4, label: 'Done' },
+]
+
+function SearchProgressPanel({ progress }: { progress: SearchProgress }) {
+  const pct = Math.min(100, Math.max(0, progress.progress || 0))
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-3xl mx-auto"
+    >
+      <Card className="border-0 shadow-lg bg-white dark:bg-gray-900">
+        <CardContent className="p-6 space-y-5">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200">
+              <Spinner className="w-4 h-4 text-blue-500" />
+              Searching PubMed…
+            </div>
+            <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{pct}%</span>
+          </div>
+
+          {/* Bar */}
+          <div className="h-2 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"
+              animate={{ width: `${pct}%` }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            />
+          </div>
+
+          {/* Steps */}
+          <div className="flex justify-between">
+            {STEPS.map((step) => {
+              const done = (progress.stage || 0) > step.stage
+              const active = (progress.stage || 0) === step.stage
+              return (
+                <div key={step.stage} className="flex flex-col items-center gap-1">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors
+                    ${done ? 'bg-green-500 text-white' : active ? 'bg-blue-500 text-white ring-4 ring-blue-100 dark:ring-blue-900' : 'bg-gray-200 dark:bg-gray-700 text-gray-400'}`}>
+                    {done ? '✓' : step.stage}
+                  </div>
+                  <span className={`text-xs ${active ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-400'}`}>
+                    {step.label}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Status message */}
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+            {progress.message}
+          </p>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
+}
+
+// ─── Paper card ───────────────────────────────────────────────────────────────
+function PaperCard({ paper, index }: { paper: Paper; index: number }) {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: Math.min(index * 0.04, 0.4) }}
+    >
+      <Card className="border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200 bg-white dark:bg-gray-900">
+        <CardContent className="p-5">
+          <div className="flex gap-4">
+            {/* Left: number */}
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+              <span className="text-xs font-bold text-blue-600 dark:text-blue-400">{index + 1}</span>
+            </div>
+
+            {/* Right: content */}
+            <div className="flex-1 min-w-0 space-y-2">
+              {/* Title row */}
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 leading-snug">
+                  {paper.title}
+                </h3>
+                <span className="flex-shrink-0 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                                 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
+                  {paper.source}
+                </span>
+              </div>
+
+              {/* Meta row */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+                {paper.authors && paper.authors.length > 0 && (
+                  <span className="flex items-center gap-1">
+                    <UserGroupIcon className="w-3.5 h-3.5" />
+                    {paper.authors.slice(0, 3).join(', ')}
+                    {paper.authors.length > 3 && ` +${paper.authors.length - 3}`}
+                  </span>
+                )}
+                {paper.year && (
+                  <span className="flex items-center gap-1">
+                    <CalendarIcon className="w-3.5 h-3.5" />
+                    {paper.year}
+                  </span>
+                )}
+                {paper.doi && (
+                  <span className="flex items-center gap-1">
+                    <LinkIcon className="w-3.5 h-3.5" />
+                    {paper.doi}
+                  </span>
+                )}
+              </div>
+
+              {/* Abstract */}
+              {paper.abstract && (
+                <div>
+                  <p className={`text-sm text-gray-600 dark:text-gray-300 leading-relaxed ${expanded ? '' : 'line-clamp-2'}`}>
+                    {paper.abstract}
+                  </p>
+                  <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="text-xs text-blue-500 hover:text-blue-700 mt-1 font-medium"
+                  >
+                    {expanded ? 'Show less' : 'Show more'}
+                  </button>
+                </div>
+              )}
+
+              {/* Keywords */}
+              {paper.keywords && paper.keywords.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  <TagIcon className="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" />
+                  {paper.keywords.slice(0, 6).map((kw, i) => (
+                    <span key={i} className="inline-flex items-center px-2 py-0.5 rounded-md text-xs
+                                             bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                      {kw}
+                    </span>
+                  ))}
+                  {paper.keywords.length > 6 && (
+                    <span className="text-xs text-gray-400">+{paper.keywords.length - 6}</span>
+                  )}
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex items-center gap-2 pt-1">
+                {paper.download_url && (
+                  <button
+                    onClick={() => window.open(paper.download_url!, '_blank')}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400
+                               hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
+                  >
+                    <EyeIcon className="w-3.5 h-3.5" />
+                    View paper
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
+}
+
+// ─── Main page ────────────────────────────────────────────────────────────────
+export function SearchPage() {
+  const navigate = useNavigate()
+  const [query, setQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [allResults, setAllResults] = useState<Paper[]>([])
+  const [displayedResults, setDisplayedResults] = useState<Paper[]>([])
+  const [showFilters, setShowFilters] = useState(false)
+  const [csvFilename, setCsvFilename] = useState('')
+  const [searchProgress, setSearchProgress] = useState<SearchProgress | null>(null)
+  const [error, setError] = useState('')
+  const [filters, setFilters] = useState<SearchFilters>({ source: 'pubmed', maxResults: 100 })
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalResults, setTotalResults] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
+  const [perPage, setPerPage] = useState(10)
+
+  // Sync displayed slice
+  useEffect(() => {
+    if (allResults.length > 0) {
+      const start = (currentPage - 1) * perPage
+      setDisplayedResults(allResults.slice(start, start + perPage))
+      const tp = Math.ceil(allResults.length / perPage)
+      setTotalPages(tp)
+      if (currentPage > tp && tp > 0) setCurrentPage(tp)
+    }
+  }, [allResults, currentPage, perPage])
+
+  // Progress polling
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+    if (isLoading) {
+      interval = setInterval(async () => {
+        try {
+          const progress = await searchApi.getProgress()
+          setSearchProgress(progress)
+          if (progress.status === 'completed') {
+            clearInterval(interval)
+            try {
+              const data = await searchApi.getResults(1, filters.maxResults || 100)
+              setAllResults(data.results)
+              setCsvFilename(data.csv_filename)
+              setTotalResults(data.total_results)
+              setTotalPages(Math.ceil(data.total_results / perPage))
+              setDisplayedResults(data.results.slice(0, perPage))
+              setCurrentPage(1)
+            } catch {
+              setError('Search completed but failed to load results.')
+            }
+            setIsLoading(false)
+          } else if (progress.status === 'error') {
+            setError(progress.message || 'Search failed')
+            setIsLoading(false)
+            clearInterval(interval)
+          }
+        } catch {}
+      }, 1000)
+    }
+    return () => { if (interval) clearInterval(interval) }
+  }, [isLoading, filters.maxResults, perPage])
+
+  const handleSearch = async () => {
+    if (!query.trim()) return
+    setIsLoading(true)
+    setError('')
+    setAllResults([])
+    setDisplayedResults([])
+    setCurrentPage(1)
+    setSearchProgress(null)
+    try {
+      const req: SearchRequest = {
+        query: query.trim(),
+        page: 1,
+        per_page: filters.maxResults || 100,
+        max_results: filters.maxResults || 100,
+        search_source: filters.source,
+        use_raw_query: true,
+        ...(filters.startDate && { start_date: filters.startDate }),
+        ...(filters.endDate && { end_date: filters.endDate }),
+      }
+      await searchApi.search(req)
+    } catch (err: any) {
+      setError(err.error || 'An error occurred during search')
+      setIsLoading(false)
+    }
+  }
+
+  const handleDownload = async () => {
+    if (!csvFilename) return
+    try {
+      const blob = await filesApi.download(csvFilename)
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = csvFilename
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+    } catch (err: any) {
+      setError(err.error || 'Failed to download file')
+    }
+  }
+
+  const handleCreateEmbeddings = async () => {
+    if (!csvFilename) return
+    try {
+      await embeddingsApi.create(csvFilename)
+      alert(`Embeddings started for ${csvFilename}. Use the chat feature once done!`)
+    } catch (err: any) {
+      setError(err.error || 'Failed to create embeddings')
+    }
+  }
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) setCurrentPage(page)
+  }
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-8 px-4 py-8">
+
+      {/* ── Header ── */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-2">
+        <h1 className="text-4xl font-extrabold gradient-text tracking-tight">Research Paper Search</h1>
+        <p className="text-base text-gray-500 dark:text-gray-400">
+          Search PubMed's full database and export results instantly.
+        </p>
+      </motion.div>
+
+      {/* ── Search box ── */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        <Card className="border border-gray-200 dark:border-gray-800 shadow-md bg-white dark:bg-gray-900">
+          <CardContent className="p-5 space-y-4">
+
+            {/* Input + button row */}
+            <div className="flex gap-3">
+              <div className="flex-1 relative">
+                <MagnifyingGlassIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                <input
+                  placeholder="e.g. smart healthcare machine learning 2023"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && !isLoading && handleSearch()}
+                  disabled={isLoading}
+                  className="w-full h-12 pl-11 pr-4 rounded-xl border border-gray-200 dark:border-gray-700
+                             bg-gray-50 dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100
+                             placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset
+                             focus:ring-blue-500 disabled:opacity-50 transition"
+                />
+              </div>
+              <button
+                onClick={handleSearch}
+                disabled={isLoading || !query.trim()}
+                className="flex-shrink-0 h-12 px-7 rounded-xl font-semibold text-sm text-white
+                           bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700
+                           disabled:opacity-50 disabled:cursor-not-allowed transition-all
+                           flex items-center gap-2 shadow-sm"
+              >
+                {isLoading ? (
+                  <>
+                    <Spinner className="w-4 h-4" />
+                    <span>Searching…</span>
+                  </>
+                ) : (
+                  <>
+                    <MagnifyingGlassIcon className="w-4 h-4" />
+                    <span>Search</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Filter toggle row */}
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-800
+                           dark:hover:text-gray-200 transition-colors"
+              >
+                <FunnelIcon className="w-4 h-4" />
+                {showFilters ? 'Hide filters' : 'Advanced filters'}
+              </button>
+              {totalResults > 0 && !isLoading && (
+                <span className="text-xs text-gray-400">
+                  {totalResults.toLocaleString()} papers found · page {currentPage}/{totalPages}
+                </span>
+              )}
+            </div>
+
+            {/* Filters panel */}
+            <AnimatePresence>
+              {showFilters && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-4 border-t border-gray-100 dark:border-gray-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+
+                    {/* Source */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Source
+                      </label>
+                      <select
+                        value={filters.source}
+                        onChange={(e) => setFilters({ ...filters, source: e.target.value as any })}
+                        className="h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700
+                                   bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-200
+                                   focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 cursor-pointer"
+                      >
+                        <option value="pubmed">PubMed</option>
+                      </select>
+                    </div>
+
+                    {/* Max results */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Max results
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        placeholder="100"
+                        value={filters.maxResults ?? ''}
+                        onChange={(e) => {
+                          const v = parseInt(e.target.value)
+                          setFilters({ ...filters, maxResults: isNaN(v) || v < 1 ? undefined : v })
+                        }}
+                        className="h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700
+                                   bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-200
+                                   focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <DateField
+                      label="Start date"
+                      value={filters.startDate || ''}
+                      onChange={(v) => setFilters({ ...filters, startDate: v })}
+                    />
+                    <DateField
+                      label="End date"
+                      value={filters.endDate || ''}
+                      onChange={(v) => setFilters({ ...filters, endDate: v })}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* ── Error ── */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="max-w-3xl mx-auto"
+          >
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+              <XCircleIcon className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-red-800 dark:text-red-200">{error}</p>
+              </div>
+              <button onClick={() => setError('')} className="text-red-400 hover:text-red-600">
+                <XCircleIcon className="w-4 h-4" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Progress ── */}
+      {isLoading && searchProgress && (
+        <SearchProgressPanel progress={searchProgress} />
+      )}
+
+      {/* ── Results ── */}
+      {displayedResults.length > 0 && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
+
+          {/* Results header */}
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-2">
+              <CheckCircleIcon className="w-5 h-5 text-green-500" />
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                {totalResults.toLocaleString()} Results
+              </h2>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleDownload}
+                disabled={!csvFilename}
+                className="flex items-center gap-1.5 h-9 px-4 rounded-lg text-xs font-semibold
+                           border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900
+                           text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800
+                           disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                <DocumentArrowDownIcon className="w-4 h-4" />
+                Export CSV
+              </button>
+              <button
+                onClick={handleCreateEmbeddings}
+                disabled={!csvFilename}
+                className="flex items-center gap-1.5 h-9 px-4 rounded-lg text-xs font-semibold
+                           bg-indigo-600 hover:bg-indigo-700 text-white
+                           disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                <CpuChipIcon className="w-4 h-4" />
+                Create Embeddings
+              </button>
+              <button
+                onClick={() => navigate('/analytics')}
+                disabled={!csvFilename}
+                className="flex items-center gap-1.5 h-9 px-4 rounded-lg text-xs font-semibold
+                           bg-emerald-600 hover:bg-emerald-700 text-white
+                           disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                <ChartBarIcon className="w-4 h-4" />
+                Open in Analytics
+              </button>
+            </div>
+          </div>
+
+          {/* Cards */}
+          <div className="space-y-3">
+            {displayedResults.map((paper, i) => (
+              <PaperCard
+                key={i}
+                paper={paper}
+                index={(currentPage - 1) * perPage + i}
+              />
+            ))}
+          </div>
+
+          {/* Pagination footer */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+            {/* Per page */}
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <span>Per page:</span>
+              <select
+                value={perPage}
+                onChange={(e) => { setPerPage(parseInt(e.target.value)); setCurrentPage(1) }}
+                disabled={isLoading}
+                className="h-8 px-2 rounded-md border border-gray-200 dark:border-gray-700
+                           bg-white dark:bg-gray-900 text-xs cursor-pointer
+                           focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              >
+                {[5, 10, 20, 50, 100, 200, 500, 1000].map(n => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Page controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage <= 1}
+                  className="h-8 w-8 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700
+                             text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800
+                             disabled:opacity-40 disabled:cursor-not-allowed transition"
+                >
+                  <ChevronLeftIcon className="w-4 h-4" />
+                </button>
+
+                {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                  let p: number
+                  if (totalPages <= 7) p = i + 1
+                  else if (currentPage <= 4) p = i + 1
+                  else if (currentPage >= totalPages - 3) p = totalPages - 6 + i
+                  else p = currentPage - 3 + i
+                  return (
+                    <button
+                      key={p}
+                      onClick={() => handlePageChange(p)}
+                      className={`h-8 w-8 rounded-lg text-xs font-semibold transition
+                        ${currentPage === p
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        }`}
+                    >
+                      {p}
+                    </button>
+                  )
+                })}
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage >= totalPages}
+                  className="h-8 w-8 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700
+                             text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800
+                             disabled:opacity-40 disabled:cursor-not-allowed transition"
+                >
+                  <ChevronRightIcon className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            <span className="text-xs text-gray-400">
+              Page {currentPage} of {totalPages}
+            </span>
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── Empty state ── */}
+      {!isLoading && displayedResults.length === 0 && allResults.length === 0 && query && !error && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+          <MagnifyingGlassIcon className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+          <h3 className="text-base font-semibold text-gray-600 dark:text-gray-300 mb-1">No results found</h3>
+          <p className="text-sm text-gray-400">Try different search terms or adjust the date range.</p>
+        </motion.div>
+      )}
+
+      {/* ── Landing state ── */}
+      {!isLoading && !query && displayedResults.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="text-center py-16"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto text-left">
+            {[
+              { icon: MagnifyingGlassIcon, title: 'Precise results', desc: 'Queries go directly to PubMed — same results as the website.' },
+              { icon: DocumentArrowDownIcon, title: 'Export instantly', desc: 'Download all metadata as a structured CSV in one click.' },
+              { icon: CpuChipIcon, title: 'AI-powered chat', desc: 'Create embeddings and ask questions about your results.' },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="flex flex-col gap-2 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                <Icon className="w-6 h-6 text-blue-500" />
+                <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{title}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  )
+}

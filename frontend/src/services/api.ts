@@ -1,0 +1,242 @@
+import axios, { AxiosResponse } from 'axios'
+import type { Paper } from '@/types'
+
+// API Request/Response types
+export interface SearchRequest {
+  query: string
+  page?: number
+  per_page?: number
+  max_results?: number
+  start_date?: string
+  end_date?: string
+  search_source?: 'core' | 'pubmed'
+  use_raw_query?: boolean
+}
+
+export interface SearchResponse {
+  results: Paper[]
+  csv_filename: string
+  total_results: number
+  current_page: number
+  total_pages: number
+  per_page: number
+  search_source: string
+}
+
+export interface SearchProgress {
+  stage: number
+  sub_stage: number
+  message: string
+  timestamp: number
+  status: 'idle' | 'searching' | 'completed' | 'error'
+  progress: number
+  current_source?: string
+  results_count?: number
+}
+
+export interface ChatRequest {
+  message: string
+  filename?: string
+}
+
+export interface ChatResponse {
+  response: string
+  sources?: Array<{
+    id: number
+    type: string
+    content_preview: string
+  }>
+}
+
+export interface FileInfo {
+  filename: string
+  size: number
+  created_at: string
+  type: string
+}
+
+export interface EmbeddingProgress {
+  stage: number
+  message: string
+  timestamp: number
+}
+
+export interface ApiError {
+  error: string
+  detail?: string
+  code?: string
+}
+
+// Get base URL from environment variables
+const getBaseURL = () => {
+  return import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1'
+}
+
+// Create axios instance
+const api = axios.create({
+  baseURL: getBaseURL(),
+  timeout: 120000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+// Request interceptor
+api.interceptors.request.use(
+  (config) => {
+    // Add any auth headers here if needed
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+// Response interceptor
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const apiError: ApiError = {
+      error: error.response?.data?.error || error.message || 'An error occurred',
+      detail: error.response?.data?.detail,
+      code: error.response?.status?.toString(),
+    }
+    return Promise.reject(apiError)
+  }
+)
+
+// Search API
+export const searchApi = {
+  search: async (request: SearchRequest): Promise<SearchResponse> => {
+    const response: AxiosResponse<SearchResponse> = await api.post('/search/', request)
+    return response.data
+  },
+
+  searchGet: async (params: SearchRequest): Promise<SearchResponse> => {
+    const response: AxiosResponse<SearchResponse> = await api.get('/search/', { params })
+    return response.data
+  },
+
+  getProgress: async (): Promise<SearchProgress> => {
+    const response: AxiosResponse<SearchProgress> = await api.get('/search/progress')
+    return response.data
+  },
+
+  getResults: async (page: number = 1, perPage: number = 10): Promise<SearchResponse> => {
+    const response: AxiosResponse<SearchResponse> = await api.get('/search/results', {
+      params: { page, per_page: perPage },
+    })
+    return response.data
+  },
+}
+
+// Files API
+export const filesApi = {
+  upload: async (file: File): Promise<{ message: string; filename: string }> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await api.post('/files/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    return response.data
+  },
+
+  download: async (filename: string): Promise<Blob> => {
+    const response = await api.get(`/files/download/${filename}`, {
+      responseType: 'blob',
+    })
+    return response.data
+  },
+
+  getCsvData: async (filename: string): Promise<Paper[]> => {
+    const response: AxiosResponse<Paper[]> = await api.get(`/files/csv/${filename}/data`)
+    return response.data
+  },
+
+  getPaginatedCsvData: async (
+    filename: string,
+    page: number = 1,
+    perPage: number = 10
+  ): Promise<{
+    results: Paper[]
+    total_results: number
+    current_page: number
+    total_pages: number
+    per_page: number
+  }> => {
+    const response = await api.get(`/files/csv/${filename}/paginated`, {
+      params: { page, per_page: perPage },
+    })
+    return response.data
+  },
+
+  list: async (): Promise<FileInfo[]> => {
+    const response: AxiosResponse<FileInfo[]> = await api.get('/files/list')
+    return response.data
+  },
+
+  delete: async (filename: string): Promise<{ message: string }> => {
+    const response = await api.delete(`/files/${filename}`)
+    return response.data
+  },
+}
+
+// Chat API
+export const chatApi = {
+  sendMessage: async (filename: string, request: ChatRequest): Promise<ChatResponse> => {
+    const response: AxiosResponse<ChatResponse> = await api.post(`/chat/${filename}`, request)
+    return response.data
+  },
+
+  sendMessageBody: async (request: ChatRequest): Promise<ChatResponse> => {
+    const response: AxiosResponse<ChatResponse> = await api.post('/chat/', request)
+    return response.data
+  },
+}
+
+// Embeddings API
+export const embeddingsApi = {
+  create: async (filename: string): Promise<{ message: string }> => {
+    const response = await api.post(`/embeddings/${filename}`)
+    return response.data
+  },
+
+  getProgress: async (): Promise<EmbeddingProgress> => {
+    const response: AxiosResponse<EmbeddingProgress> = await api.get('/embeddings/progress')
+    return response.data
+  },
+
+  delete: async (filename: string): Promise<{ message: string }> => {
+    const response = await api.delete(`/embeddings/${filename}`)
+    return response.data
+  },
+
+  getStatus: async (filename: string): Promise<{
+    filename: string
+    embeddings_exist: boolean
+    files: Array<{
+      filename: string
+      size: number
+      created_at: number
+    }>
+    total_files: number
+  }> => {
+    const response = await api.get(`/embeddings/${filename}/status`)
+    return response.data
+  },
+}
+
+// Health check
+export const healthApi = {
+  check: async (): Promise<{
+    status: string
+    version: string
+    services: Record<string, string>
+  }> => {
+    // Health endpoint is at root level, not under /api/v1
+    const healthResponse = await axios.get(`${getBaseURL().replace('/api/v1', '')}/health`)
+    return healthResponse.data
+  },
+}
+
+export default api
