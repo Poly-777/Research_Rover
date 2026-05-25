@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
@@ -18,33 +18,123 @@ import {
   FunnelIcon,
   ChartBarIcon,
 } from '@heroicons/react/24/outline'
-import type { Paper, SearchFilters } from '@/types'
-import { searchApi, filesApi, embeddingsApi, type SearchRequest, type SearchProgress } from '@/services/api'
+import type { Paper } from '@/types'
+import { filesApi, embeddingsApi, type SearchProgress } from '@/services/api'
+import { useSearch } from '@/context/SearchContext'
 
-// ─── Date input with working calendar icon trigger ──────────────────────────
-function DateField({
-  label,
-  value,
+// ─── Dual-handle publication-year range slider ──────────────────────────────
+const SLIDER_MIN_YEAR = 1950
+const SLIDER_MAX_YEAR = new Date().getFullYear()
+
+function YearRangeSlider({
+  startDate,
+  endDate,
   onChange,
 }: {
-  label: string
-  value: string
-  onChange: (v: string | undefined) => void
+  startDate?: string
+  endDate?: string
+  onChange: (range: { startDate?: string; endDate?: string }) => void
 }) {
+  // Filter dates are stored as YYYY-MM-DD; an undefined bound = open-ended,
+  // which the slider shows as sitting at the far min / max.
+  const startYear = startDate ? Number(startDate.slice(0, 4)) : SLIDER_MIN_YEAR
+  const endYear = endDate ? Number(endDate.slice(0, 4)) : SLIDER_MAX_YEAR
+  const span = SLIDER_MAX_YEAR - SLIDER_MIN_YEAR
+  const lowPct = ((startYear - SLIDER_MIN_YEAR) / span) * 100
+  const highPct = ((endYear - SLIDER_MIN_YEAR) / span) * 100
+  const isFullRange = startYear <= SLIDER_MIN_YEAR && endYear >= SLIDER_MAX_YEAR
+
+  // Hitting an extreme clears that bound so the search stays open-ended on that side.
+  const emit = (lo: number, hi: number) =>
+    onChange({
+      startDate: lo <= SLIDER_MIN_YEAR ? undefined : `${lo}-01-01`,
+      endDate: hi >= SLIDER_MAX_YEAR ? undefined : `${hi}-12-31`,
+    })
+
   return (
-    <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-        {label}
-      </label>
-      <input
-        type="date"
-        value={value}
-        onChange={(e) => onChange(e.target.value || undefined)}
-        className="h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700
-                   bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-200
-                   focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500
-                   cursor-pointer"
-      />
+    <div className="flex flex-col gap-2 sm:col-span-2">
+      <div className="flex items-center justify-between">
+        <label className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+          Publication years
+        </label>
+        <span className="flex items-center gap-2">
+          <span className="text-xs font-semibold tabular-nums text-blue-600 dark:text-blue-400">
+            {isFullRange ? 'Any year' : `${startYear} — ${endYear}`}
+          </span>
+          {!isFullRange && (
+            <button
+              type="button"
+              onClick={() => onChange({ startDate: undefined, endDate: undefined })}
+              className="text-xs font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            >
+              Reset
+            </button>
+          )}
+        </span>
+      </div>
+
+      {/* Waveform: synthetic publication-density curve so users can see at a
+          glance how the range maps onto recent vs. older years. Bars inside
+          the selected span are tinted; outside ones are muted. */}
+      <div className="flex h-12 items-end gap-[1px] px-0.5">
+        {Array.from({ length: span + 1 }, (_, i) => {
+          const year = SLIDER_MIN_YEAR + i
+          const t = i / span
+          const base = Math.pow(t, 1.5) * 0.85 + 0.12
+          const wave = Math.sin(t * Math.PI * 9) * 0.07
+          const h = Math.max(0.1, Math.min(1, base + wave))
+          const inRange = year >= startYear && year <= endYear
+          return (
+            <div
+              key={year}
+              className={`flex-1 rounded-t-sm transition-colors duration-200 ${
+                inRange
+                  ? 'bg-gradient-to-t from-blue-500 to-indigo-400'
+                  : 'bg-gray-200 dark:bg-gray-700/60'
+              }`}
+              style={{ height: `${h * 100}%` }}
+            />
+          )
+        })}
+      </div>
+
+      <div className="relative flex h-9 items-center">
+        {/* Base track */}
+        <div className="absolute h-1.5 w-full rounded-full bg-gray-200 dark:bg-gray-700" />
+        {/* Selected span */}
+        <div
+          className="absolute h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"
+          style={{ left: `${lowPct}%`, right: `${100 - highPct}%` }}
+        />
+        {/* Lower handle — raised above the upper one when it sits in the right half
+            so it stays grabbable even when the two thumbs are close together. */}
+        <input
+          type="range"
+          min={SLIDER_MIN_YEAR}
+          max={SLIDER_MAX_YEAR}
+          value={startYear}
+          aria-label="Earliest publication year"
+          onChange={(e) => emit(Math.min(Number(e.target.value), endYear), endYear)}
+          className="year-range"
+          style={{ zIndex: lowPct > 50 ? 5 : 3 }}
+        />
+        {/* Upper handle */}
+        <input
+          type="range"
+          min={SLIDER_MIN_YEAR}
+          max={SLIDER_MAX_YEAR}
+          value={endYear}
+          aria-label="Latest publication year"
+          onChange={(e) => emit(startYear, Math.max(Number(e.target.value), startYear))}
+          className="year-range"
+          style={{ zIndex: 4 }}
+        />
+      </div>
+
+      <div className="flex justify-between text-[10px] font-medium text-gray-400 dark:text-gray-500">
+        <span>{SLIDER_MIN_YEAR}</span>
+        <span>{SLIDER_MAX_YEAR}</span>
+      </div>
     </div>
   )
 }
@@ -69,7 +159,7 @@ const STEPS = [
   { stage: 4, label: 'Done' },
 ]
 
-function SearchProgressPanel({ progress }: { progress: SearchProgress }) {
+function SearchProgressPanel({ progress, onCancel }: { progress: SearchProgress; onCancel?: () => void }) {
   const pct = Math.min(100, Math.max(0, progress.progress || 0))
   return (
     <motion.div
@@ -85,7 +175,20 @@ function SearchProgressPanel({ progress }: { progress: SearchProgress }) {
               <Spinner className="w-4 h-4 text-blue-500" />
               Searching PubMed…
             </div>
-            <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{pct}%</span>
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{pct}%</span>
+              {onCancel && (
+                <button
+                  onClick={onCancel}
+                  className="inline-flex items-center gap-1 h-7 px-3 rounded-lg text-xs font-semibold
+                             text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800
+                             hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                >
+                  <XCircleIcon className="w-3.5 h-3.5" />
+                  Cancel
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Bar */}
@@ -235,90 +338,28 @@ function PaperCard({ paper, index }: { paper: Paper; index: number }) {
 // ─── Main page ────────────────────────────────────────────────────────────────
 export function SearchPage() {
   const navigate = useNavigate()
-  const [query, setQuery] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [allResults, setAllResults] = useState<Paper[]>([])
-  const [displayedResults, setDisplayedResults] = useState<Paper[]>([])
+  // Search state lives in SearchProvider (above the router) so it persists
+  // across navigation and a running search keeps polling in the background.
+  const {
+    query, setQuery,
+    filters, setFilters,
+    isLoading,
+    allResults,
+    displayedResults,
+    csvFilename,
+    searchProgress,
+    error, setError,
+    currentPage, setCurrentPage,
+    totalResults,
+    totalPages,
+    perPage, setPerPage,
+    handleSearch,
+    handleCancel,
+    handlePageChange,
+  } = useSearch()
+
+  // Filter panel open/closed is purely cosmetic — fine to keep page-local.
   const [showFilters, setShowFilters] = useState(false)
-  const [csvFilename, setCsvFilename] = useState('')
-  const [searchProgress, setSearchProgress] = useState<SearchProgress | null>(null)
-  const [error, setError] = useState('')
-  const [filters, setFilters] = useState<SearchFilters>({ source: 'pubmed', maxResults: 100 })
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalResults, setTotalResults] = useState(0)
-  const [totalPages, setTotalPages] = useState(0)
-  const [perPage, setPerPage] = useState(10)
-
-  // Sync displayed slice
-  useEffect(() => {
-    if (allResults.length > 0) {
-      const start = (currentPage - 1) * perPage
-      setDisplayedResults(allResults.slice(start, start + perPage))
-      const tp = Math.ceil(allResults.length / perPage)
-      setTotalPages(tp)
-      if (currentPage > tp && tp > 0) setCurrentPage(tp)
-    }
-  }, [allResults, currentPage, perPage])
-
-  // Progress polling
-  useEffect(() => {
-    let interval: NodeJS.Timeout
-    if (isLoading) {
-      interval = setInterval(async () => {
-        try {
-          const progress = await searchApi.getProgress()
-          setSearchProgress(progress)
-          if (progress.status === 'completed') {
-            clearInterval(interval)
-            try {
-              const data = await searchApi.getResults(1, filters.maxResults || 100)
-              setAllResults(data.results)
-              setCsvFilename(data.csv_filename)
-              setTotalResults(data.total_results)
-              setTotalPages(Math.ceil(data.total_results / perPage))
-              setDisplayedResults(data.results.slice(0, perPage))
-              setCurrentPage(1)
-            } catch {
-              setError('Search completed but failed to load results.')
-            }
-            setIsLoading(false)
-          } else if (progress.status === 'error') {
-            setError(progress.message || 'Search failed')
-            setIsLoading(false)
-            clearInterval(interval)
-          }
-        } catch {}
-      }, 1000)
-    }
-    return () => { if (interval) clearInterval(interval) }
-  }, [isLoading, filters.maxResults, perPage])
-
-  const handleSearch = async () => {
-    if (!query.trim()) return
-    setIsLoading(true)
-    setError('')
-    setAllResults([])
-    setDisplayedResults([])
-    setCurrentPage(1)
-    setSearchProgress(null)
-    try {
-      const req: SearchRequest = {
-        query: query.trim(),
-        page: 1,
-        per_page: filters.maxResults || 100,
-        max_results: filters.maxResults || 100,
-        search_source: filters.source,
-        use_raw_query: true,
-        ...(filters.startDate && { start_date: filters.startDate }),
-        ...(filters.endDate && { end_date: filters.endDate }),
-      }
-      await searchApi.search(req)
-    } catch (err: any) {
-      setError(err.error || 'An error occurred during search')
-      setIsLoading(false)
-    }
-  }
 
   const handleDownload = async () => {
     if (!csvFilename) return
@@ -345,10 +386,6 @@ export function SearchPage() {
     } catch (err: any) {
       setError(err.error || 'Failed to create embeddings')
     }
-  }
-
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages && page !== currentPage) setCurrentPage(page)
   }
 
   return (
@@ -403,6 +440,18 @@ export function SearchPage() {
                   </>
                 )}
               </button>
+              {isLoading && (
+                <button
+                  onClick={handleCancel}
+                  className="flex-shrink-0 h-12 px-5 rounded-xl font-semibold text-sm
+                             text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800
+                             bg-white dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-red-900/20
+                             transition-all flex items-center gap-2"
+                >
+                  <XCircleIcon className="w-4 h-4" />
+                  <span>Cancel</span>
+                </button>
+              )}
             </div>
 
             {/* Filter toggle row */}
@@ -470,15 +519,12 @@ export function SearchPage() {
                       />
                     </div>
 
-                    <DateField
-                      label="Start date"
-                      value={filters.startDate || ''}
-                      onChange={(v) => setFilters({ ...filters, startDate: v })}
-                    />
-                    <DateField
-                      label="End date"
-                      value={filters.endDate || ''}
-                      onChange={(v) => setFilters({ ...filters, endDate: v })}
+                    <YearRangeSlider
+                      startDate={filters.startDate}
+                      endDate={filters.endDate}
+                      onChange={({ startDate, endDate }) =>
+                        setFilters({ ...filters, startDate, endDate })
+                      }
                     />
                   </div>
                 </motion.div>
@@ -512,7 +558,7 @@ export function SearchPage() {
 
       {/* ── Progress ── */}
       {isLoading && searchProgress && (
-        <SearchProgressPanel progress={searchProgress} />
+        <SearchProgressPanel progress={searchProgress} onCancel={handleCancel} />
       )}
 
       {/* ── Results ── */}
@@ -550,7 +596,7 @@ export function SearchPage() {
                 Create Embeddings
               </button>
               <button
-                onClick={() => navigate('/analytics')}
+                onClick={() => navigate('/analytics', { state: { filename: csvFilename, query } })}
                 disabled={!csvFilename}
                 className="flex items-center gap-1.5 h-9 px-4 rounded-lg text-xs font-semibold
                            bg-emerald-600 hover:bg-emerald-700 text-white

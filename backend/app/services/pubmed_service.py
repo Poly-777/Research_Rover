@@ -90,6 +90,10 @@ class PubMedService:
         # make extra API calls during the same session
         self._mesh_cache: Dict[str, List[str]] = {}
 
+        # Set when a zero-result search succeeds after ESpell correction,
+        # so callers can tell the user "showing results for <corrected>".
+        self.last_corrected_query: Optional[str] = None
+
     # ------------------------------------------------------------------
     # HTTP helper — POST with retry/backoff
     # ------------------------------------------------------------------
@@ -207,6 +211,41 @@ class PubMedService:
             return []
 
     # ------------------------------------------------------------------
+    # Spelling correction — PubMed's ESpell service
+    # ------------------------------------------------------------------
+
+    def _spell_check(self, query: str) -> Optional[str]:
+        """
+        Ask PubMed's ESpell service for a corrected spelling of the query.
+
+        This is the same engine behind the "Did you mean ...?" suggestion on
+        the PubMed website, and it understands biomedical vocabulary (drug
+        names, procedures, etc.) that a generic spell-checker would mangle.
+
+        Returns the corrected query string only when PubMed suggests a
+        spelling that differs from the input; otherwise None.
+        """
+        term = (query or "").strip()
+        if not term:
+            return None
+        try:
+            response = self._post_with_retry(
+                'espell.fcgi', {'db': 'pubmed', 'term': term}
+            )
+            root = ET.fromstring(response.content)
+            corrected_elem = root.find('.//CorrectedQuery')
+            if corrected_elem is not None and corrected_elem.text:
+                corrected = corrected_elem.text.strip()
+                if corrected and corrected.lower() != term.lower():
+                    logger.info(f"ESpell suggests '{corrected}' for '{term}'")
+                    return corrected
+            logger.info(f"ESpell found no correction for '{term}'")
+            return None
+        except Exception as e:
+            logger.warning(f"ESpell lookup failed for '{term}': {e}")
+            return None
+
+    # ------------------------------------------------------------------
     # Synonym + MeSH expansion
     # ------------------------------------------------------------------
 
@@ -264,6 +303,7 @@ class PubMedService:
         end_date: Optional[date] = None,
         max_results: int = 1000,
         use_raw_query: bool = False,
+        cancel_event: Optional[Any] = None,
     ) -> pd.DataFrame:
         """
         Search PubMed and retrieve paper details.
@@ -279,73 +319,36 @@ class PubMedService:
           Pass the query directly to PubMed's esearch, matching the
           results you would get from PubMed's own web search.
         """
+        self.last_corrected_query = None
         try:
             logger.info(f"Starting PubMed search for: {query}")
             logger.info(f"Parameters: max_results={max_results}, "
                         f"start_date={start_date}, end_date={end_date}, "
                         f"use_raw_query={use_raw_query}")
 
-            if use_raw_query:
-                search_query = query.strip()
-                logger.info("Using raw query mode — no expansion applied")
-            else:
-                terms = [t.strip() for t in query.split(",") if t.strip()]
-
-                # Build AND query — each term must appear (in some form)
-                if len(terms) > 1:
-                    term_blocks = [self._build_expanded_query_for_term(t) for t in terms]
-                    # AND between term blocks: paper must match ALL terms
-                    search_query = " AND ".join(term_blocks)
-                else:
-                    search_query = self._build_expanded_query_for_term(query.strip())
-
-            if start_date or end_date:
-                date_filter = self._build_date_filter(start_date, end_date)
-                search_query = f"({search_query}) AND {date_filter}"
-
+            search_query = self._build_search_query(
+                query, start_date, end_date, use_raw_query
+            )
             logger.info(f"Final PubMed query: {search_query}")
 
-            fetch_limit = min(max_results * 2, 1000)
-            max_attempts = 3
+            df = self._fetch_papers(search_query, max_results, cancel_event)
 
-            df = pd.DataFrame()
-            current_offset = 0
-            attempts = 0
-
-            while attempts < max_attempts:
-                attempts += 1
-                logger.info(
-                    f"Attempt {attempts}: fetching up to {fetch_limit} "
-                    f"PMIDs at offset {current_offset}"
-                )
-
-                pmids = self._search_pmids_with_offset(
-                    search_query, fetch_limit, current_offset
-                )
-                if not pmids:
-                    logger.warning(f"No more PMIDs at offset {current_offset}")
-                    break
-
-                logger.info(f"Found {len(pmids)} PMIDs, retrieving details...")
-                papers = self._retrieve_paper_details(pmids)
-
-                if not papers:
-                    logger.warning("No papers retrieved from PMIDs")
-                    break
-
-                batch_df = pd.DataFrame(papers)
-                if not batch_df.empty:
-                    df = pd.concat([df, batch_df], ignore_index=True)
-                    logger.info(f"Total raw papers so far: {len(df)}")
-
-                current_offset += len(pmids)
-                if len(pmids) < fetch_limit:
-                    logger.info("Reached end of available PubMed results")
-                    break
-
-                # Stop if we already have enough
-                if len(df) >= max_results:
-                    break
+            # ── Zero-result spell-check fallback ────────────────────────
+            # PubMed's E-utilities (unlike the website) do not auto-correct
+            # spelling, so a typo silently returns nothing. When the first
+            # search comes back empty, ask ESpell for a corrected spelling
+            # and retry once with it. Skip if the search was cancelled.
+            if df.empty and not self._is_cancelled(cancel_event):
+                corrected = self._spell_check(query)
+                if corrected:
+                    logger.info(f"Retrying search with corrected query: '{corrected}'")
+                    retry_query = self._build_search_query(
+                        corrected, start_date, end_date, use_raw_query
+                    )
+                    logger.info(f"Final PubMed query (corrected): {retry_query}")
+                    df = self._fetch_papers(retry_query, max_results, cancel_event)
+                    if not df.empty:
+                        self.last_corrected_query = corrected
 
             if df.empty:
                 logger.warning("No papers found for query")
@@ -387,6 +390,96 @@ class PubMedService:
     # ------------------------------------------------------------------
     # PubMed API helpers
     # ------------------------------------------------------------------
+
+    def _build_search_query(
+        self,
+        query: str,
+        start_date: Optional[date],
+        end_date: Optional[date],
+        use_raw_query: bool,
+    ) -> str:
+        """Build the final PubMed `term` string for a given user query."""
+        if use_raw_query:
+            search_query = query.strip()
+            logger.info("Using raw query mode — no expansion applied")
+        else:
+            terms = [t.strip() for t in query.split(",") if t.strip()]
+            # Build AND query — each term must appear (in some form)
+            if len(terms) > 1:
+                term_blocks = [self._build_expanded_query_for_term(t) for t in terms]
+                # AND between term blocks: paper must match ALL terms
+                search_query = " AND ".join(term_blocks)
+            else:
+                search_query = self._build_expanded_query_for_term(query.strip())
+
+        if start_date or end_date:
+            date_filter = self._build_date_filter(start_date, end_date)
+            search_query = f"({search_query}) AND {date_filter}"
+
+        return search_query
+
+    @staticmethod
+    def _is_cancelled(cancel_event: Optional[Any]) -> bool:
+        """True if a cancellation flag has been set by the caller."""
+        return cancel_event is not None and cancel_event.is_set()
+
+    def _fetch_papers(
+        self,
+        search_query: str,
+        max_results: int,
+        cancel_event: Optional[Any] = None,
+    ) -> pd.DataFrame:
+        """Page through esearch/efetch for a built query and collect papers."""
+        fetch_limit = min(max_results * 2, 1000)
+        max_attempts = 3
+
+        df = pd.DataFrame()
+        current_offset = 0
+        attempts = 0
+
+        while attempts < max_attempts:
+            # Cooperative cancellation — bail out between PubMed pages so a
+            # cancelled search stops hitting the API instead of running to
+            # completion in the background thread.
+            if self._is_cancelled(cancel_event):
+                logger.info("Search cancelled — stopping fetch loop")
+                break
+
+            attempts += 1
+            logger.info(
+                f"Attempt {attempts}: fetching up to {fetch_limit} "
+                f"PMIDs at offset {current_offset}"
+            )
+
+            pmids = self._search_pmids_with_offset(
+                search_query, fetch_limit, current_offset
+            )
+            if not pmids:
+                logger.warning(f"No more PMIDs at offset {current_offset}")
+                break
+
+            logger.info(f"Found {len(pmids)} PMIDs, retrieving details...")
+            papers = self._retrieve_paper_details(pmids)
+
+            if not papers:
+                logger.warning("No papers retrieved from PMIDs")
+                break
+
+            batch_df = pd.DataFrame(papers)
+            if not batch_df.empty:
+                df = pd.concat([df, batch_df], ignore_index=True)
+                logger.info(f"Total raw papers so far: {len(df)}")
+
+            current_offset += len(pmids)
+            if len(pmids) < fetch_limit:
+                logger.info("Reached end of available PubMed results")
+                break
+
+            # Stop if we already have enough
+            if len(df) >= max_results:
+                break
+
+        return df
 
     def _build_date_filter(
         self, start_date: Optional[date], end_date: Optional[date]

@@ -8,7 +8,6 @@ import {
   CogIcon,
   MoonIcon,
   SunIcon,
-  ComputerDesktopIcon,
   BellIcon,
   ShieldCheckIcon,
   CircleStackIcon,
@@ -72,7 +71,7 @@ export function SettingsPage() {
           <CardContent className="space-y-6">
             <div>
               <label className="text-sm font-medium mb-3 block">Theme</label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <ThemeOption
                   theme="light"
                   currentTheme={theme}
@@ -86,13 +85,6 @@ export function SettingsPage() {
                   onSelect={setTheme}
                   icon={MoonIcon}
                   label="Dark"
-                />
-                <ThemeOption
-                  theme="system"
-                  currentTheme={theme}
-                  onSelect={setTheme}
-                  icon={ComputerDesktopIcon}
-                  label="System"
                 />
               </div>
             </div>
@@ -303,9 +295,9 @@ export function SettingsPage() {
 }
 
 interface ThemeOptionProps {
-  theme: 'light' | 'dark' | 'system'
+  theme: 'light' | 'dark'
   currentTheme: string
-  onSelect: (theme: 'light' | 'dark' | 'system') => void
+  onSelect: (theme: 'light' | 'dark') => void
   icon: React.ComponentType<{ className?: string }>
   label: string
 }

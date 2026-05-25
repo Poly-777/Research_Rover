@@ -31,6 +31,9 @@ class SearchService:
 
     def __init__(self, settings: Settings):
         self.settings = settings
+        # Set after a PubMed search if ESpell corrected the query and the
+        # corrected spelling produced the results. None otherwise.
+        self.last_corrected_query: Optional[str] = None
 
     def _improve_pubmed_query(self, query: str) -> str:
         """
@@ -68,11 +71,14 @@ class SearchService:
         end_date: Optional[date] = None,
         search_source: SearchSource = SearchSource.CORE,
         use_raw_query: bool = False,
+        cancel_event: Optional[Any] = None,
     ) -> List[Dict[str, Any]]:
         """Search for papers using the specified source"""
         try:
             if search_source == SearchSource.PUBMED:
-                return await self._search_pubmed(query, max_results, start_date, end_date, use_raw_query)
+                return await self._search_pubmed(
+                    query, max_results, start_date, end_date, use_raw_query, cancel_event
+                )
             else:
                 return await self._search_core(query, max_results, start_date, end_date)
         except Exception as e:
@@ -96,6 +102,7 @@ class SearchService:
         start_date: Optional[date],
         end_date: Optional[date],
         use_raw_query: bool = False,
+        cancel_event: Optional[Any] = None,
     ) -> List[Dict[str, Any]]:
         """Search using PubMed API"""
         try:
@@ -118,6 +125,7 @@ class SearchService:
                 return []
 
             loop = asyncio.get_event_loop()
+            self.last_corrected_query = None
 
             def run_pubmed_search():
                 searcher = PubMedService(email=email, api_key=api_key)
@@ -127,11 +135,15 @@ class SearchService:
                     end_date=end_date,
                     max_results=max_results,
                     use_raw_query=use_raw_query,
+                    cancel_event=cancel_event,
                 )
-                return df.to_dict('records')
+                return df.to_dict('records'), searcher.last_corrected_query
 
             # Use dedicated executor to avoid blocking the default pool
-            results = await loop.run_in_executor(_pubmed_executor, run_pubmed_search)
+            results, corrected = await loop.run_in_executor(
+                _pubmed_executor, run_pubmed_search
+            )
+            self.last_corrected_query = corrected
             return results or []
 
         except Exception as e:

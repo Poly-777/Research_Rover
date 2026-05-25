@@ -96,23 +96,35 @@ PUBMED_API_KEY="your_pubmed_api_key_here"
    ```
 
 2. **Backend Setup (FastAPI)**
+
    ```bash
-   cd backend
+   1. cd backend
+   
+   "if installing for the first time"
    uv venv
    
    # Windows
+   2. .venv\Scripts\activate  
+
     # macOS/Linux
    source .venv/bin/activate
    
+   'if installing for the first time'
    uv pip install -r requirements.txt
-   python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   
+   To Run
+   3. uvicorn main:app --host 0.0.0.0 --port 8000
    ```
 
 3. **Frontend Setup**
    ```bash
-   cd frontend
+   1. cd frontend
+
+   'if installing for the first time'
    npm install
-   npm run dev
+
+  To Run
+   2. npm run dev
    ```
 
 4. **Access the Application**

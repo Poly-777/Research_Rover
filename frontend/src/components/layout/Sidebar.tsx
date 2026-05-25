@@ -5,6 +5,7 @@ import {
   HomeIcon,
   MagnifyingGlassIcon,
   ChatBubbleLeftRightIcon,
+  ChartBarIcon,
   DocumentTextIcon,
   FolderIcon,
   CloudArrowDownIcon,
@@ -21,6 +22,11 @@ const sidebarItems = [
     name: 'Search Papers',
     href: '/search',
     icon: MagnifyingGlassIcon,
+  },
+  {
+    name: 'Analysis',
+    href: '/analytics',
+    icon: ChartBarIcon,
   },
   {
     name: 'AI Chat',

@@ -58,7 +58,7 @@ class SearchProgress(BaseModel):
     sub_stage: int = Field(0, description="Sub-stage within current stage")
     message: str = Field(..., description="Progress message")
     timestamp: float = Field(..., description="Timestamp")
-    status: str = Field("idle", description="Status: idle, searching, completed, error")
+    status: str = Field("idle", description="Status: idle, searching, completed, error, cancelled")
     progress: int = Field(0, description="Progress percentage (0-100)")
 
 class EmbeddingProgress(BaseModel):

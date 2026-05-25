@@ -1,3 +1,7 @@
 secrets.txt
 .env
 frontend/node_modules
+backend/.venv/
+**/__pycache__/
+*.pyc
+backend/logs/

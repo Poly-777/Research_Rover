@@ -28,7 +28,7 @@ export interface SearchProgress {
   sub_stage: number
   message: string
   timestamp: number
-  status: 'idle' | 'searching' | 'completed' | 'error'
+  status: 'idle' | 'searching' | 'completed' | 'error' | 'cancelled'
   progress: number
   current_source?: string
   results_count?: number
@@ -119,6 +119,11 @@ export const searchApi = {
 
   getProgress: async (): Promise<SearchProgress> => {
     const response: AxiosResponse<SearchProgress> = await api.get('/search/progress')
+    return response.data
+  },
+
+  cancel: async (): Promise<{ cancelled: boolean; message: string }> => {
+    const response = await api.post('/search/cancel')
     return response.data
   },
 

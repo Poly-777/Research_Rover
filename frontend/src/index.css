@@ -67,6 +67,14 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  /* Make native form widgets (select popups, date pickers, scrollbars,
+     autofill backgrounds) honor the current theme. Without this the OS draws
+     <select> dropdowns in light mode even when the app is dark. */
+  :root { color-scheme: light; }
+  .dark { color-scheme: dark; }
+  /* Belt-and-suspenders for <option>s: some browsers will still draw the
+     popup with the document's default colors if color-scheme is overridden. */
+  .dark select option { background-color: #0f172a; color: #e2e8f0; }
 }
 
 @layer components {
@@ -145,6 +153,80 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+}
+
+/* ── Dual year-range slider ──────────────────────────────────────────────── */
+/* Two <input type="range"> stacked on one track. The input body ignores
+   pointer events so the visual track shows through; only the thumbs are
+   grabbable. */
+.year-range {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  pointer-events: none;
+}
+.year-range:focus {
+  outline: none;
+}
+.year-range::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 100%;
+}
+.year-range::-moz-range-track {
+  background: transparent;
+}
+.year-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 2px solid #4f46e5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  cursor: grab;
+}
+.year-range::-moz-range-thumb {
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 2px solid #4f46e5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  cursor: grab;
+}
+.year-range::-webkit-slider-thumb:hover,
+.year-range::-moz-range-thumb:hover {
+  border-color: #4338ca;
+}
+.year-range:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.12);
+}
+.year-range:active::-moz-range-thumb {
+  cursor: grabbing;
+  transform: scale(1.12);
+}
+.year-range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3);
+}
+.year-range:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3);
+}
+.dark .year-range::-webkit-slider-thumb {
+  background: #1e293b;
+  border-color: #6366f1;
+}
+.dark .year-range::-moz-range-thumb {
+  background: #1e293b;
+  border-color: #6366f1;
 }
 
 /* Loading animations */

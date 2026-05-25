@@ -6,6 +6,7 @@ from datetime import date
 from fastapi import APIRouter, BackgroundTasks, Depends, Query
 from typing import Optional, List
 import asyncio
+import threading
 import time
 import os
 import re
@@ -37,11 +38,55 @@ _last_results: List[Paper] = []
 _last_csv_filename: str = ""
 _last_search_source: str = "pubmed"
 
+# Handle to the running search task and a cooperative cancel flag, so a
+# POST /search/cancel can both interrupt the asyncio task and stop the
+# blocking PubMed fetch loop running in the thread pool.
+_current_search_task: Optional["asyncio.Task"] = None
+_cancel_event: Optional[threading.Event] = None
+
 
 @router.get("/progress", response_model=SearchProgress)
 async def get_search_progress():
     """Get current search progress"""
     return SearchProgress(**search_progress_state)
+
+
+@router.post("/cancel")
+async def cancel_search():
+    """
+    Cancel the in-flight search, if any.
+
+    Sets a cooperative cancel flag (stops the PubMed fetch loop between
+    pages) and cancels the background asyncio task (frees it from the
+    blocking thread-pool call immediately). Safe to call when nothing is
+    running — it's a no-op.
+    """
+    global search_progress_state, _current_search_task, _cancel_event, _last_results, _last_csv_filename
+
+    running = (
+        search_progress_state.get("status") == "searching"
+        or (_current_search_task is not None and not _current_search_task.done())
+    )
+
+    if _cancel_event is not None:
+        _cancel_event.set()
+    if _current_search_task is not None and not _current_search_task.done():
+        _current_search_task.cancel()
+
+    if running:
+        _last_results = []
+        _last_csv_filename = ""
+        search_progress_state = {
+            "stage": 0,
+            "sub_stage": 0,
+            "message": "Search cancelled",
+            "timestamp": time.time(),
+            "status": "cancelled",
+            "progress": 0,
+        }
+        logger.info("Search cancelled by user request")
+
+    return {"cancelled": running, "message": "Search cancelled" if running else "No active search"}
 
 
 @router.get("/results", response_model=SearchResponse)
@@ -66,9 +111,27 @@ async def get_search_results(
     )
 
 
-async def _perform_search_with_progress(request: SearchRequest, settings):
+async def _perform_search_with_progress(
+    request: SearchRequest, settings, cancel_event: Optional[threading.Event] = None
+):
     """Perform search in the background with progress tracking."""
     global search_progress_state, _last_results, _last_csv_filename, _last_search_source
+
+    def _cancelled() -> bool:
+        return cancel_event is not None and cancel_event.is_set()
+
+    def _mark_cancelled():
+        global search_progress_state, _last_results, _last_csv_filename
+        search_progress_state = {
+            "stage": 0,
+            "sub_stage": 0,
+            "message": "Search cancelled",
+            "timestamp": time.time(),
+            "status": "cancelled",
+            "progress": 0,
+        }
+        _last_results = []
+        _last_csv_filename = ""
 
     try:
         logger.info(f"Starting background search: {request.query}")
@@ -106,7 +169,15 @@ async def _perform_search_with_progress(request: SearchRequest, settings):
             end_date=request.end_date,
             search_source=request.search_source,
             use_raw_query=request.use_raw_query,
+            cancel_event=cancel_event,
         )
+
+        # The fetch loop honours the cancel flag between PubMed pages, so it
+        # may return partial/empty results after a cancel — discard them.
+        if _cancelled():
+            logger.info("Search cancelled — discarding results")
+            _mark_cancelled()
+            return
 
         if not results:
             search_progress_state = {
@@ -121,10 +192,19 @@ async def _perform_search_with_progress(request: SearchRequest, settings):
             _last_csv_filename = ""
             return
 
+        corrected = getattr(search_service, "last_corrected_query", None)
+        found_message = f"Found {len(results)} papers, extracting metadata"
+        if corrected:
+            found_message = (
+                f"Showing results for \"{corrected}\" "
+                f"(corrected from \"{request.query}\") — "
+                f"found {len(results)} papers, extracting metadata"
+            )
+
         search_progress_state = {
             "stage": 2,
             "sub_stage": 0,
-            "message": f"Found {len(results)} papers, extracting metadata",
+            "message": found_message,
             "timestamp": time.time(),
             "status": "searching",
             "progress": 60
@@ -164,15 +244,27 @@ async def _perform_search_with_progress(request: SearchRequest, settings):
         _last_csv_filename = csv_filename
         _last_search_source = request.search_source.value
 
+        complete_message = f"Search complete — {len(processed_results)} papers saved"
+        if corrected:
+            complete_message = (
+                f"Showing results for \"{corrected}\" "
+                f"(corrected from \"{request.query}\") — "
+                f"{len(processed_results)} papers saved"
+            )
+
         search_progress_state = {
             "stage": 4,
             "sub_stage": 0,
-            "message": f"Search complete — {len(processed_results)} papers saved",
+            "message": complete_message,
             "timestamp": time.time(),
             "status": "completed",
             "progress": 100
         }
 
+    except asyncio.CancelledError:
+        logger.info("Background search task cancelled")
+        _mark_cancelled()
+        raise
     except Exception as e:
         logger.error(f"Background search error: {str(e)}")
         search_progress_state = {
@@ -196,8 +288,15 @@ async def search_papers(
     status and call GET /search/results when status == "completed".
     """
     global search_progress_state, _last_results, _last_csv_filename
+    global _current_search_task, _cancel_event
 
     logger.info(f"Starting search: {request.query}")
+
+    # Cancel any search still running before starting a new one.
+    if _cancel_event is not None:
+        _cancel_event.set()
+    if _current_search_task is not None and not _current_search_task.done():
+        _current_search_task.cancel()
 
     # Reset state immediately so the frontend sees "searching" from the first poll
     _last_results = []
@@ -211,8 +310,11 @@ async def search_papers(
         "progress": 0
     }
 
-    # Fire the search in the background — do NOT await it
-    asyncio.create_task(_perform_search_with_progress(request, settings))
+    # Fresh cancel flag for this search; fire it in the background — do NOT await it
+    _cancel_event = threading.Event()
+    _current_search_task = asyncio.create_task(
+        _perform_search_with_progress(request, settings, _cancel_event)
+    )
 
     # Return immediately so the HTTP connection is freed
     return SearchResponse(
