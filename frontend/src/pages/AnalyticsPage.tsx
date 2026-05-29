@@ -31,6 +31,7 @@ import { toast } from 'sonner'
 import { useTheme } from '@/components/theme-provider'
 import { filesApi, type FileInfo } from '@/services/api'
 import type { Paper } from '@/types'
+import { useAnalytics } from '@/context/AnalyticsContext'
 
 // ─── Local types derived from the real API ────────────────────────────────────
 // The analytics page derives its views from the Paper[] data returned by filesApi.
@@ -533,20 +534,23 @@ export function AnalyticsPage() {
   // we can pre-select that file instead of defaulting to the first one.
   const location = useLocation()
   const requestedFile = (location.state as { filename?: string } | null)?.filename
-  const [sources, setSources] = useState<AnalysisSourceInfo[]>([])
-  const [selectedFile, setSelectedFile] = useState('')
-  const [summary, setSummary] = useState<AnalysisSummary | null>(null)
-  const [matrix, setMatrix] = useState<KeywordMatrixResponse | null>(null)
+  // Data-bearing state lives in context so it survives navigating away and back.
+  const {
+    sources, setSources,
+    selectedFile, setSelectedFile,
+    summary, setSummary,
+    matrix, setMatrix,
+    previewRows, setPreviewRows,
+    generateOnSelect, setGenerateOnSelect,
+    topKeywordLimit, setTopKeywordLimit,
+    paperCache, setPaperCache,
+  } = useAnalytics()
+  // Transient UI state stays local — fine to reset on navigation.
   const [loadingSources, setLoadingSources] = useState(false)
   const [loadingAnalysis, setLoadingAnalysis] = useState(false)
   const [regenerating, setRegenerating] = useState(false)
   const [error, setError] = useState('')
-  const [previewRows, setPreviewRows] = useState(12)
-  const [generateOnSelect, setGenerateOnSelect] = useState(true)
-  const [topKeywordLimit, setTopKeywordLimit] = useState(100)
   const [fullscreenSection, setFullscreenSection] = useState<FullscreenSection | null>(null)
-  // Raw paper cache so rebuilding analysis doesn't re-fetch
-  const [paperCache, setPaperCache] = useState<Map<string, Paper[]>>(new Map())
   // SVG refs for in-card PNG export
   const wordCloudCardSvgRef = useRef<SVGSVGElement | null>(null)
   const networkCardSvgRef = useRef<SVGSVGElement | null>(null)
@@ -554,9 +558,18 @@ export function AnalyticsPage() {
   const uploadInputRef = useRef<HTMLInputElement | null>(null)
   const [uploading, setUploading] = useState(false)
 
-  useEffect(() => { void loadSources() }, [])
+  // Load the file list once; skip if already loaded (e.g. returning to the page).
+  useEffect(() => { if (sources.length === 0) void loadSources() }, [])
+  // Honor a file passed from the Search page's "Open in Analytics", even on return.
+  useEffect(() => {
+    if (requestedFile && sources.some((s) => s.filename === requestedFile)) {
+      setSelectedFile(requestedFile)
+    }
+  }, [requestedFile, sources])
   useEffect(() => {
     if (!selectedFile || !generateOnSelect) return
+    // Already computed for this file (persisted in context) — don't refetch.
+    if (summary?.filename === selectedFile && matrix) return
     void loadAnalysis(selectedFile)
   }, [selectedFile, generateOnSelect])
   useEffect(() => {

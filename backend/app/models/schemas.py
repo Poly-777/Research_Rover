@@ -66,6 +66,7 @@ class EmbeddingProgress(BaseModel):
     stage: int = Field(..., description="Current stage (0-3, -1 for error)")
     message: str = Field(..., description="Progress message")
     timestamp: float = Field(..., description="Timestamp")
+    percent: Optional[float] = Field(None, description="Overall completion percent (0-100)")
 
 class ChatRequest(BaseModel):
     """Chat request model"""

@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     
     # Model Configuration
     EMBEDDING_MODEL: str = 'all-mpnet-base-v2'
+    GEMINI_MODEL: str = 'gemini-2.5-flash'
     
     # API Keys (from environment variables)
     GOOGLE_GENAI_API_KEY: str = ""

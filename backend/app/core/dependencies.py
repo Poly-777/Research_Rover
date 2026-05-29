@@ -53,7 +53,7 @@ def get_llm_instance():
 **Clarity:** Define all pronouns clearly. Avoid ambiguity.
 """
         
-        model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=instruction)
+        model = genai.GenerativeModel(settings.GEMINI_MODEL, system_instruction=instruction)
         logger.info("LLM instance created successfully")
         return model
         

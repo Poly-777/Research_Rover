@@ -18,16 +18,12 @@ from app.core.config import Settings
 # Import original embedding functions
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'backend'))
 
-try:
-    from features.embedding_and_indexing import (
-        process_data_generate_vectors_and_metadata,
-        build_faiss_index,
-        save_metadata_list,
-        save_doi_mapped_json,
-        load_data
-    )
-except ImportError as e:
-    logging.warning(f"Could not import original embedding functions: {e}")
+from features.embedding_and_indexing import (
+    build_faiss_index,
+    save_metadata_list,
+    save_doi_mapped_json,
+    load_data,
+)
 
 logger = logging.getLogger("research_rover")
 
@@ -38,12 +34,13 @@ class EmbeddingService:
         self.settings = settings
         self.sentence_model = sentence_model
     
-    async def extract_full_text_to_json(self, csv_path: str) -> str:
+    async def extract_full_text_to_json(self, csv_path: str, progress_state: Optional[Dict[str, Any]] = None) -> str:
         """
         Extract full text from URLs in CSV and save to separate JSON file mapping unique_id -> full_text
         """
         logger.info("Loading CSV and extracting full text from URLs using crawl4ai...")
         df = load_data(csv_path)
+        total_papers = len(df)
         
         # Create full text mapping dictionary
         full_text_mapping = {}
@@ -105,6 +102,14 @@ class EmbeddingService:
                 return None, 0
         
         for index, row in df.iterrows():
+            if progress_state is not None:
+                progress_state.update({
+                    "stage": 1,
+                    "message": f"Extracting full text from paper {index + 1} of {total_papers}",
+                    "percent": round(5 + (index / max(total_papers, 1)) * 45, 1),
+                    "timestamp": time.time()
+                })
+
             url = str(row.get('Download_URL', ''))
             doi = str(row.get('Doi') or row.get('DOI') or '')
             title = str(row.get('Title', ''))
@@ -222,13 +227,20 @@ class EmbeddingService:
             logger.error(f"Error loading CSV data: {e}")
             raise
 
-    def process_data_with_json_mapping(self, csv_path: str, full_text_json_path: str, sentence_model):
+    def process_data_with_json_mapping(self, csv_path: str, full_text_json_path: str, sentence_model, progress_state: Optional[Dict[str, Any]] = None):
         """
         Process data using JSON mapping for full text instead of modifying CSV
         """
+        import nltk
         from nltk.tokenize import sent_tokenize
         import hdbscan
         import numpy as np
+
+        try:
+            nltk.data.find('tokenizers/punkt_tab')
+        except LookupError:
+            logger.info("NLTK 'punkt_tab' not found, downloading...")
+            nltk.download('punkt_tab', quiet=True)
         
         # Load CSV data without Full_Text column
         df = self.load_csv_data_clean(csv_path)
@@ -247,8 +259,17 @@ class EmbeddingService:
         all_vectors = []
         all_chunk_metadata = []
         doc_chunk_counter = {}
-        
+        total_papers = len(df)
+
         for index, row in df.iterrows():
+            if progress_state is not None:
+                progress_state.update({
+                    "stage": 2,
+                    "message": f"Generating embeddings for paper {index + 1} of {total_papers} ({len(all_vectors)} chunks so far)",
+                    "percent": round(50 + (index / max(total_papers, 1)) * 45, 1),
+                    "timestamp": time.time()
+                })
+
             doi = str(row.get('Doi') or row.get('DOI') or 'Unknown DOI')
             
             # Create unique ID (same logic as extraction)
@@ -398,6 +419,7 @@ class EmbeddingService:
             progress_state.update({
                 "stage": 1,
                 "message": "Loading embedding model",
+                "percent": 2.0,
                 "timestamp": time.time()
             })
             
@@ -416,35 +438,30 @@ class EmbeddingService:
                 f"{base_filename}_paper_chunks_hdbscan.index"
             )
             
-            # Update progress
-            progress_state.update({
-                "stage": 2,
-                "message": "Processing data and generating embeddings",
-                "timestamp": time.time()
-            })
-            
-            # Extract full text from URLs using crawl4ai (same as original backend)
+            # Extract full text from URLs (same as original backend)
             progress_state.update({
                 "stage": 1,
                 "message": "Extracting full text from paper URLs",
+                "percent": 5.0,
                 "timestamp": time.time()
             })
-            
+
             # Extract full text to JSON mapping (cleaner approach)
             try:
                 logger.info("🔍 EXTRACTING FULL TEXT FROM URLs TO JSON MAPPING (cleaner approach)")
-                full_text_json_path = await self.extract_full_text_to_json(csv_path)
+                full_text_json_path = await self.extract_full_text_to_json(csv_path, progress_state)
             except Exception as e:
                 logger.warning(f"Full text extraction failed: {e}, will use abstracts during processing")
                 full_text_json_path = None
-            
+
             # Update progress
             progress_state.update({
                 "stage": 2,
                 "message": "Processing data and generating embeddings",
+                "percent": 50.0,
                 "timestamp": time.time()
             })
-            
+
             # Process data and generate vectors using JSON mapping
             loop = asyncio.get_event_loop()
             all_vectors, all_chunk_metadata = await loop.run_in_executor(
@@ -452,7 +469,8 @@ class EmbeddingService:
                 self.process_data_with_json_mapping,
                 csv_path,
                 full_text_json_path,
-                self.sentence_model
+                self.sentence_model,
+                progress_state
             )
             
             if all_vectors is None or all_chunk_metadata is None:
@@ -464,6 +482,12 @@ class EmbeddingService:
                 return
             
             # Build FAISS index
+            progress_state.update({
+                "stage": 2,
+                "message": f"Building FAISS index from {len(all_vectors)} chunks",
+                "percent": 96.0,
+                "timestamp": time.time()
+            })
             faiss_index = await loop.run_in_executor(
                 None,
                 build_faiss_index,
@@ -479,6 +503,12 @@ class EmbeddingService:
                 return
             
             # Save files
+            progress_state.update({
+                "stage": 2,
+                "message": "Saving index and metadata to disk",
+                "percent": 98.0,
+                "timestamp": time.time()
+            })
             try:
                 # Save FAISS index
                 await loop.run_in_executor(
@@ -517,6 +547,7 @@ class EmbeddingService:
             progress_state.update({
                 "stage": 3,
                 "message": f"Embeddings created successfully in {end_time - start_time:.2f} seconds",
+                "percent": 100.0,
                 "timestamp": time.time()
             })
             

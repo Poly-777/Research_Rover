@@ -1587,3 +1587,738 @@ NotImplementedError
 2025-09-15 23:29:10,024 - research_rover - INFO - Successfully created fallback paper: None
 2025-09-15 23:29:10,026 - research_rover - INFO - Paper processing complete: 100 input results -> 100 final papers
 2025-09-15 23:29:30,659 - research_rover - INFO - Shutting down Research Rover API...
+2026-05-29 13:38:31,292 - research_rover - INFO - Starting Research Rover API...
+2026-05-29 13:38:31,296 - research_rover - INFO - Research Rover API started successfully
+2026-05-29 13:39:13,308 - research_rover - INFO - Loading sentence model: all-mpnet-base-v2
+2026-05-29 13:39:13,312 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-05-29 13:39:13,312 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2026-05-29 13:39:15,776 - research_rover - INFO - Loading sentence model: all-mpnet-base-v2
+2026-05-29 13:39:15,779 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-05-29 13:39:15,779 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2026-05-29 13:39:20,185 - research_rover - INFO - Sentence model loaded successfully
+2026-05-29 13:39:20,224 - research_rover - INFO - Loading CSV and extracting full text from URLs using crawl4ai...
+2026-05-29 13:39:20,229 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jtumed.2026.04.010 from URL: https://pubmed.ncbi.nlm.nih.gov/42206288/
+2026-05-29 13:39:20,290 - research_rover - ERROR - Failed to load sentence model: Cannot copy out of meta tensor; no data! Please use torch.nn.Module.to_empty() instead of torch.nn.Module.to() when moving module from meta to a different device.
+2026-05-29 13:39:21,436 - research_rover - INFO - Successfully extracted 712 words from https://pubmed.ncbi.nlm.nih.gov/42206288/
+2026-05-29 13:39:22,444 - research_rover - INFO - Extracting full text for DOI: 10.30953/bhty.v9.471 from URL: https://pubmed.ncbi.nlm.nih.gov/42205848/
+2026-05-29 13:39:23,747 - research_rover - INFO - Successfully extracted 714 words from https://pubmed.ncbi.nlm.nih.gov/42205848/
+2026-05-29 13:39:24,753 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-53494-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42204202/
+2026-05-29 13:39:26,359 - research_rover - INFO - Successfully extracted 295 words from https://pubmed.ncbi.nlm.nih.gov/42204202/
+2026-05-29 13:39:26,728 - research_rover - INFO - Starting search: smart healthcare
+2026-05-29 13:39:26,729 - research_rover - INFO - Starting background search: smart healthcare
+2026-05-29 13:39:27,366 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.pcl.2026.01.005 from URL: https://pubmed.ncbi.nlm.nih.gov/42203365/
+2026-05-29 13:39:27,553 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-05-29 13:39:27,553 - research_rover - INFO - PubMed search - API key present: True
+2026-05-29 13:39:27,553 - research_rover - INFO - PubMed search - Original query: smart healthcare
+2026-05-29 13:39:27,553 - research_rover - INFO - PubMed search - Improved query: smart healthcare
+2026-05-29 13:39:27,554 - research_rover - INFO - PubMed search - Max results: 100
+2026-05-29 13:39:27,554 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-05-29 13:39:27,554 - research_rover - INFO - PubMed search - Raw query mode: True
+2026-05-29 13:39:27,555 - research_rover - INFO - Starting PubMed search for: smart healthcare
+2026-05-29 13:39:27,556 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=True
+2026-05-29 13:39:27,556 - research_rover - INFO - Using raw query mode — no expansion applied
+2026-05-29 13:39:27,556 - research_rover - INFO - Final PubMed query: (smart healthcare) AND 2026/01/01:3000/12/31[pdat]
+2026-05-29 13:39:27,557 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-05-29 13:39:27,557 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-05-29 13:39:28,448 - research_rover - INFO - Successfully extracted 189 words from https://pubmed.ncbi.nlm.nih.gov/42203365/
+2026-05-29 13:39:29,157 - research_rover - INFO - esearch found 200 PMIDs
+2026-05-29 13:39:29,158 - research_rover - INFO - Found 200 PMIDs, retrieving details...
+2026-05-29 13:39:29,428 - research_rover - INFO - Extracting full text for DOI: 10.1136/bmjopen-2025-102059 from URL: https://pubmed.ncbi.nlm.nih.gov/42203300/
+2026-05-29 13:39:30,543 - research_rover - INFO - Successfully extracted 431 words from https://pubmed.ncbi.nlm.nih.gov/42203300/
+2026-05-29 13:39:31,554 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.bioadv.2026.214954 from URL: https://pubmed.ncbi.nlm.nih.gov/42202650/
+2026-05-29 13:39:32,499 - research_rover - INFO - Successfully extracted 245 words from https://pubmed.ncbi.nlm.nih.gov/42202650/
+2026-05-29 13:39:33,506 - research_rover - INFO - Extracting full text for DOI: 10.3390/medsci14020225 from URL: https://pubmed.ncbi.nlm.nih.gov/42201017/
+2026-05-29 13:39:34,309 - research_rover - INFO - Batch 1: 50 papers (total 50)
+2026-05-29 13:39:34,653 - research_rover - INFO - Successfully extracted 662 words from https://pubmed.ncbi.nlm.nih.gov/42201017/
+2026-05-29 13:39:35,666 - research_rover - INFO - Extracting full text for DOI: 10.1021/acs.langmuir.6c00717 from URL: https://pubmed.ncbi.nlm.nih.gov/42200437/
+2026-05-29 13:39:36,672 - research_rover - INFO - Successfully extracted 260 words from https://pubmed.ncbi.nlm.nih.gov/42200437/
+2026-05-29 13:39:37,684 - research_rover - INFO - Extracting full text for DOI: 10.3390/s26103213 from URL: https://pubmed.ncbi.nlm.nih.gov/42198022/
+2026-05-29 13:39:38,896 - research_rover - INFO - Successfully extracted 788 words from https://pubmed.ncbi.nlm.nih.gov/42198022/
+2026-05-29 13:39:39,009 - research_rover - INFO - Batch 2: 50 papers (total 100)
+2026-05-29 13:39:39,915 - research_rover - INFO - Extracting full text for DOI: 10.3390/mi17050586 from URL: https://pubmed.ncbi.nlm.nih.gov/42195503/
+2026-05-29 13:39:40,920 - research_rover - INFO - Successfully extracted 436 words from https://pubmed.ncbi.nlm.nih.gov/42195503/
+2026-05-29 13:39:41,931 - research_rover - INFO - Extracting full text for DOI: 10.3390/medicina62050827 from URL: https://pubmed.ncbi.nlm.nih.gov/42195080/
+2026-05-29 13:39:43,223 - research_rover - INFO - Successfully extracted 840 words from https://pubmed.ncbi.nlm.nih.gov/42195080/
+2026-05-29 13:39:43,246 - research_rover - INFO - Batch 3: 50 papers (total 150)
+2026-05-29 13:39:44,247 - research_rover - INFO - Extracting full text for DOI: 10.3390/jcm15103757 from URL: https://pubmed.ncbi.nlm.nih.gov/42194719/
+2026-05-29 13:39:45,261 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42194719/, keeping abstract
+2026-05-29 13:39:46,281 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101372 from URL: https://pubmed.ncbi.nlm.nih.gov/42194464/
+2026-05-29 13:39:46,910 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42194464/, keeping abstract
+2026-05-29 13:39:47,763 - research_rover - INFO - Batch 4: 50 papers (total 200)
+2026-05-29 13:39:47,765 - research_rover - INFO - Total raw papers so far: 200
+2026-05-29 13:39:47,767 - research_rover - INFO - Date filter: 200 -> 200 papers within 2026-?
+2026-05-29 13:39:47,767 - research_rover - INFO - Final result count: 100 (target: 100)
+2026-05-29 13:39:47,929 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101355 from URL: https://pubmed.ncbi.nlm.nih.gov/42194447/
+2026-05-29 13:39:48,804 - research_rover - INFO - Converting 100 results to DataFrame
+2026-05-29 13:39:48,805 - research_rover - INFO - DataFrame shape: (100, 18)
+2026-05-29 13:39:48,812 - research_rover - INFO - CSV saved to ../data\smart_healthcare.csv
+2026-05-29 13:39:48,813 - research_rover - INFO - Paper processing: 100 -> 100 papers
+2026-05-29 13:39:49,136 - research_rover - INFO - Successfully extracted 483 words from https://pubmed.ncbi.nlm.nih.gov/42194447/
+2026-05-29 13:39:50,138 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101336 from URL: https://pubmed.ncbi.nlm.nih.gov/42194428/
+2026-05-29 13:39:51,464 - research_rover - INFO - Successfully extracted 533 words from https://pubmed.ncbi.nlm.nih.gov/42194428/
+2026-05-29 13:39:52,472 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101311 from URL: https://pubmed.ncbi.nlm.nih.gov/42194403/
+2026-05-29 13:39:53,517 - research_rover - INFO - Successfully extracted 393 words from https://pubmed.ncbi.nlm.nih.gov/42194403/
+2026-05-29 13:39:54,517 - research_rover - INFO - Extracting full text for DOI: 10.3390/bioengineering13050526 from URL: https://pubmed.ncbi.nlm.nih.gov/42194283/
+2026-05-29 13:39:55,817 - research_rover - INFO - Successfully extracted 799 words from https://pubmed.ncbi.nlm.nih.gov/42194283/
+2026-05-29 13:39:56,822 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-52679-1 from URL: https://pubmed.ncbi.nlm.nih.gov/42191770/
+2026-05-29 13:39:57,147 - research_rover - INFO - Loading CSV and extracting full text from URLs using crawl4ai...
+2026-05-29 13:39:57,166 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jtumed.2026.04.010 from URL: https://pubmed.ncbi.nlm.nih.gov/42206288/
+2026-05-29 13:39:57,449 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42191770/, keeping abstract
+2026-05-29 13:39:57,843 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42206288/, keeping abstract
+2026-05-29 13:39:58,459 - research_rover - INFO - Extracting full text for DOI: 10.2196/89574 from URL: https://pubmed.ncbi.nlm.nih.gov/42190234/
+2026-05-29 13:39:58,847 - research_rover - INFO - Extracting full text for DOI: 10.30953/bhty.v9.471 from URL: https://pubmed.ncbi.nlm.nih.gov/42205848/
+2026-05-29 13:39:59,947 - research_rover - INFO - Successfully extracted 714 words from https://pubmed.ncbi.nlm.nih.gov/42205848/
+2026-05-29 13:40:00,346 - research_rover - INFO - Successfully extracted 461 words from https://pubmed.ncbi.nlm.nih.gov/42190234/
+2026-05-29 13:40:00,959 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-53494-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42204202/
+2026-05-29 13:40:01,345 - research_rover - INFO - Extracting full text for DOI: 10.3390/toxins18050236 from URL: https://pubmed.ncbi.nlm.nih.gov/42188638/
+2026-05-29 13:40:01,918 - research_rover - INFO - Successfully extracted 295 words from https://pubmed.ncbi.nlm.nih.gov/42204202/
+2026-05-29 13:40:02,016 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42188638/, keeping abstract
+2026-05-29 13:40:02,938 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.pcl.2026.01.005 from URL: https://pubmed.ncbi.nlm.nih.gov/42203365/
+2026-05-29 13:40:03,031 - research_rover - INFO - Extracting full text for DOI: 10.3390/jfb17050214 from URL: https://pubmed.ncbi.nlm.nih.gov/42188382/
+2026-05-29 13:40:03,524 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42203365/, keeping abstract
+2026-05-29 13:40:03,681 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42188382/, keeping abstract
+2026-05-29 13:40:04,543 - research_rover - INFO - Extracting full text for DOI: 10.1136/bmjopen-2025-102059 from URL: https://pubmed.ncbi.nlm.nih.gov/42203300/
+2026-05-29 13:40:04,699 - research_rover - INFO - Extracting full text for DOI: 10.3390/md24050174 from URL: https://pubmed.ncbi.nlm.nih.gov/42188309/
+2026-05-29 13:40:05,183 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42203300/, keeping abstract
+2026-05-29 13:40:05,305 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42188309/, keeping abstract
+2026-05-29 13:40:06,192 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.bioadv.2026.214954 from URL: https://pubmed.ncbi.nlm.nih.gov/42202650/
+2026-05-29 13:40:06,317 - research_rover - INFO - Extracting full text for DOI: 10.3390/bios16050250 from URL: https://pubmed.ncbi.nlm.nih.gov/42187446/
+2026-05-29 13:40:06,843 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42202650/, keeping abstract
+2026-05-29 13:40:06,961 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42187446/, keeping abstract
+2026-05-29 13:40:07,856 - research_rover - INFO - Extracting full text for DOI: 10.3390/medsci14020225 from URL: https://pubmed.ncbi.nlm.nih.gov/42201017/
+2026-05-29 13:40:07,965 - research_rover - INFO - Extracting full text for DOI: 10.7717/peerj.21180 from URL: https://pubmed.ncbi.nlm.nih.gov/42186476/
+2026-05-29 13:40:09,109 - research_rover - INFO - Successfully extracted 1018 words from https://pubmed.ncbi.nlm.nih.gov/42186476/
+2026-05-29 13:40:09,132 - research_rover - INFO - Successfully extracted 662 words from https://pubmed.ncbi.nlm.nih.gov/42201017/
+2026-05-29 13:40:10,137 - research_rover - INFO - Extracting full text for DOI: 10.1021/acs.langmuir.6c00717 from URL: https://pubmed.ncbi.nlm.nih.gov/42200437/
+2026-05-29 13:40:10,137 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12889-026-27688-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42185997/
+2026-05-29 13:40:11,189 - research_rover - INFO - Successfully extracted 260 words from https://pubmed.ncbi.nlm.nih.gov/42200437/
+2026-05-29 13:40:11,347 - research_rover - INFO - Successfully extracted 666 words from https://pubmed.ncbi.nlm.nih.gov/42185997/
+2026-05-29 13:40:12,194 - research_rover - INFO - Extracting full text for DOI: 10.3390/s26103213 from URL: https://pubmed.ncbi.nlm.nih.gov/42198022/
+2026-05-29 13:40:12,335 - research_rover - INFO - Extracting full text for DOI: 10.2196/89279 from URL: https://pubmed.ncbi.nlm.nih.gov/42184424/
+2026-05-29 13:40:13,064 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42184424/, keeping abstract
+2026-05-29 13:40:13,213 - research_rover - INFO - Successfully extracted 788 words from https://pubmed.ncbi.nlm.nih.gov/42198022/
+2026-05-29 13:40:14,076 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.idm.2026.03.001 from URL: https://pubmed.ncbi.nlm.nih.gov/42182949/
+2026-05-29 13:40:14,230 - research_rover - INFO - Extracting full text for DOI: 10.3390/mi17050586 from URL: https://pubmed.ncbi.nlm.nih.gov/42195503/
+2026-05-29 13:40:14,699 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42182949/, keeping abstract
+2026-05-29 13:40:14,898 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42195503/, keeping abstract
+2026-05-29 13:40:15,711 - research_rover - INFO - Extracting full text for DOI: 10.21037/jtd-2026-1-0241 from URL: https://pubmed.ncbi.nlm.nih.gov/42182632/
+2026-05-29 13:40:15,910 - research_rover - INFO - Extracting full text for DOI: 10.3390/medicina62050827 from URL: https://pubmed.ncbi.nlm.nih.gov/42195080/
+2026-05-29 13:40:16,309 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42182632/, keeping abstract
+2026-05-29 13:40:16,563 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42195080/, keeping abstract
+2026-05-29 13:40:17,326 - research_rover - INFO - Extracting full text for DOI: 10.12336/bmt.25.00043 from URL: https://pubmed.ncbi.nlm.nih.gov/42179771/
+2026-05-29 13:40:17,574 - research_rover - INFO - Extracting full text for DOI: 10.3390/jcm15103757 from URL: https://pubmed.ncbi.nlm.nih.gov/42194719/
+2026-05-29 13:40:17,963 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42179771/, keeping abstract
+2026-05-29 13:40:18,974 - research_rover - INFO - Extracting full text for DOI: 10.1111/jipb.70291 from URL: https://pubmed.ncbi.nlm.nih.gov/42178738/
+2026-05-29 13:40:19,161 - research_rover - INFO - Successfully extracted 1184 words from https://pubmed.ncbi.nlm.nih.gov/42194719/
+2026-05-29 13:40:19,903 - research_rover - INFO - Successfully extracted 451 words from https://pubmed.ncbi.nlm.nih.gov/42178738/
+2026-05-29 13:40:20,186 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101372 from URL: https://pubmed.ncbi.nlm.nih.gov/42194464/
+2026-05-29 13:40:20,918 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-54205-9 from URL: https://pubmed.ncbi.nlm.nih.gov/42177223/
+2026-05-29 13:40:21,405 - research_rover - INFO - Successfully extracted 751 words from https://pubmed.ncbi.nlm.nih.gov/42194464/
+2026-05-29 13:40:21,836 - research_rover - INFO - Successfully extracted 319 words from https://pubmed.ncbi.nlm.nih.gov/42177223/
+2026-05-29 13:40:22,398 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101355 from URL: https://pubmed.ncbi.nlm.nih.gov/42194447/
+2026-05-29 13:40:22,835 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.clinbiomech.2026.106877 from URL: https://pubmed.ncbi.nlm.nih.gov/42176495/
+2026-05-29 13:40:23,385 - research_rover - INFO - Successfully extracted 483 words from https://pubmed.ncbi.nlm.nih.gov/42194447/
+2026-05-29 13:40:24,199 - research_rover - INFO - Successfully extracted 477 words from https://pubmed.ncbi.nlm.nih.gov/42176495/
+2026-05-29 13:40:24,407 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101336 from URL: https://pubmed.ncbi.nlm.nih.gov/42194428/
+2026-05-29 13:40:25,213 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260584 from URL: https://pubmed.ncbi.nlm.nih.gov/42175254/
+2026-05-29 13:40:25,324 - research_rover - INFO - Successfully extracted 533 words from https://pubmed.ncbi.nlm.nih.gov/42194428/
+2026-05-29 13:40:26,238 - research_rover - INFO - Successfully extracted 243 words from https://pubmed.ncbi.nlm.nih.gov/42175254/
+2026-05-29 13:40:26,319 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101311 from URL: https://pubmed.ncbi.nlm.nih.gov/42194403/
+2026-05-29 13:40:26,987 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42194403/, keeping abstract
+2026-05-29 13:40:27,248 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260504 from URL: https://pubmed.ncbi.nlm.nih.gov/42175175/
+2026-05-29 13:40:27,856 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42175175/, keeping abstract
+2026-05-29 13:40:27,993 - research_rover - INFO - Extracting full text for DOI: 10.3390/bioengineering13050526 from URL: https://pubmed.ncbi.nlm.nih.gov/42194283/
+2026-05-29 13:40:28,891 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260483 from URL: https://pubmed.ncbi.nlm.nih.gov/42175155/
+2026-05-29 13:40:28,926 - research_rover - INFO - Successfully extracted 799 words from https://pubmed.ncbi.nlm.nih.gov/42194283/
+2026-05-29 13:40:29,795 - research_rover - INFO - Successfully extracted 151 words from https://pubmed.ncbi.nlm.nih.gov/42175155/
+2026-05-29 13:40:29,943 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-52679-1 from URL: https://pubmed.ncbi.nlm.nih.gov/42191770/
+2026-05-29 13:40:30,826 - research_rover - INFO - Extracting full text for DOI: 10.1126/sciadv.aee2233 from URL: https://pubmed.ncbi.nlm.nih.gov/42172340/
+2026-05-29 13:40:30,837 - research_rover - INFO - Successfully extracted 271 words from https://pubmed.ncbi.nlm.nih.gov/42191770/
+2026-05-29 13:40:31,853 - research_rover - INFO - Extracting full text for DOI: 10.2196/89574 from URL: https://pubmed.ncbi.nlm.nih.gov/42190234/
+2026-05-29 13:40:31,973 - research_rover - INFO - Successfully extracted 1584 words from https://pubmed.ncbi.nlm.nih.gov/42172340/
+2026-05-29 13:40:32,965 - research_rover - INFO - Successfully extracted 461 words from https://pubmed.ncbi.nlm.nih.gov/42190234/
+2026-05-29 13:40:32,990 - research_rover - INFO - Extracting full text for DOI: 10.1007/s11033-026-11988-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42171928/
+2026-05-29 13:40:33,967 - research_rover - INFO - Extracting full text for DOI: 10.3390/toxins18050236 from URL: https://pubmed.ncbi.nlm.nih.gov/42188638/
+2026-05-29 13:40:34,097 - research_rover - INFO - Successfully extracted 507 words from https://pubmed.ncbi.nlm.nih.gov/42171928/
+2026-05-29 13:40:34,542 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42188638/, keeping abstract
+2026-05-29 13:40:35,101 - research_rover - INFO - Extracting full text for DOI: 10.1007/s10916-026-02410-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42171867/
+2026-05-29 13:40:35,566 - research_rover - INFO - Extracting full text for DOI: 10.3390/jfb17050214 from URL: https://pubmed.ncbi.nlm.nih.gov/42188382/
+2026-05-29 13:40:35,755 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171867/, keeping abstract
+2026-05-29 13:40:36,174 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42188382/, keeping abstract
+2026-05-29 13:40:36,759 - research_rover - INFO - Extracting full text for DOI: 10.1039/d5em00868a from URL: https://pubmed.ncbi.nlm.nih.gov/42171124/
+2026-05-29 13:40:37,176 - research_rover - INFO - Extracting full text for DOI: 10.3390/md24050174 from URL: https://pubmed.ncbi.nlm.nih.gov/42188309/
+2026-05-29 13:40:37,363 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171124/, keeping abstract
+2026-05-29 13:40:37,902 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42188309/, keeping abstract
+2026-05-29 13:40:38,384 - research_rover - INFO - Extracting full text for DOI: 10.31478/202603b from URL: https://pubmed.ncbi.nlm.nih.gov/42169969/
+2026-05-29 13:40:38,911 - research_rover - INFO - Extracting full text for DOI: 10.3390/bios16050250 from URL: https://pubmed.ncbi.nlm.nih.gov/42187446/
+2026-05-29 13:40:38,922 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42169969/, keeping abstract
+2026-05-29 13:40:39,583 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42187446/, keeping abstract
+2026-05-29 13:40:39,936 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-53539-8 from URL: https://pubmed.ncbi.nlm.nih.gov/42168305/
+2026-05-29 13:40:40,513 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42168305/, keeping abstract
+2026-05-29 13:40:40,603 - research_rover - INFO - Extracting full text for DOI: 10.7717/peerj.21180 from URL: https://pubmed.ncbi.nlm.nih.gov/42186476/
+2026-05-29 13:40:41,230 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42186476/, keeping abstract
+2026-05-29 13:40:41,532 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.tjnut.2026.101604 from URL: https://pubmed.ncbi.nlm.nih.gov/42167530/
+2026-05-29 13:40:42,120 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42167530/, keeping abstract
+2026-05-29 13:40:42,227 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12889-026-27688-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42185997/
+2026-05-29 13:40:42,803 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42185997/, keeping abstract
+2026-05-29 13:40:43,141 - research_rover - INFO - Extracting full text for DOI: 10.1016/S0140-6736(26)00519-2 from URL: https://pubmed.ncbi.nlm.nih.gov/42167272/
+2026-05-29 13:40:43,827 - research_rover - INFO - Extracting full text for DOI: 10.2196/89279 from URL: https://pubmed.ncbi.nlm.nih.gov/42184424/
+2026-05-29 13:40:43,853 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42167272/, keeping abstract
+2026-05-29 13:40:44,421 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42184424/, keeping abstract
+2026-05-29 13:40:44,850 - research_rover - INFO - Extracting full text for DOI: 10.1097/BRS.0000000000005735 from URL: https://pubmed.ncbi.nlm.nih.gov/42166623/
+2026-05-29 13:40:45,425 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.idm.2026.03.001 from URL: https://pubmed.ncbi.nlm.nih.gov/42182949/
+2026-05-29 13:40:45,461 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42166623/, keeping abstract
+2026-05-29 13:40:46,283 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42182949/, keeping abstract
+2026-05-29 13:40:46,462 - research_rover - INFO - Extracting full text for DOI: 10.1093/biomtc/ujag078 from URL: https://pubmed.ncbi.nlm.nih.gov/42166189/
+2026-05-29 13:40:47,207 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42166189/, keeping abstract
+2026-05-29 13:40:47,274 - research_rover - INFO - Extracting full text for DOI: 10.21037/jtd-2026-1-0241 from URL: https://pubmed.ncbi.nlm.nih.gov/42182632/
+2026-05-29 13:40:47,869 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42182632/, keeping abstract
+2026-05-29 13:40:48,207 - research_rover - INFO - Extracting full text for DOI: 10.1136/bmjopen-2025-109404 from URL: https://pubmed.ncbi.nlm.nih.gov/42161540/
+2026-05-29 13:40:48,892 - research_rover - INFO - Extracting full text for DOI: 10.12336/bmt.25.00043 from URL: https://pubmed.ncbi.nlm.nih.gov/42179771/
+2026-05-29 13:40:49,193 - research_rover - INFO - Successfully extracted 719 words from https://pubmed.ncbi.nlm.nih.gov/42161540/
+2026-05-29 13:40:50,009 - research_rover - INFO - Successfully extracted 892 words from https://pubmed.ncbi.nlm.nih.gov/42179771/
+2026-05-29 13:40:50,214 - research_rover - INFO - Extracting full text for DOI: 10.1002/acm2.70596 from URL: https://pubmed.ncbi.nlm.nih.gov/42159089/
+2026-05-29 13:40:51,020 - research_rover - INFO - Extracting full text for DOI: 10.1111/jipb.70291 from URL: https://pubmed.ncbi.nlm.nih.gov/42178738/
+2026-05-29 13:40:51,065 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42159089/, keeping abstract
+2026-05-29 13:40:51,710 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42178738/, keeping abstract
+2026-05-29 13:40:52,077 - research_rover - INFO - Extracting full text for DOI: 10.3389/fpubh.2026.1763772 from URL: https://pubmed.ncbi.nlm.nih.gov/42158185/
+2026-05-29 13:40:52,715 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-54205-9 from URL: https://pubmed.ncbi.nlm.nih.gov/42177223/
+2026-05-29 13:40:52,736 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42158185/, keeping abstract
+2026-05-29 13:40:53,317 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42177223/, keeping abstract
+2026-05-29 13:40:53,741 - research_rover - INFO - Extracting full text for DOI: 10.3389/fdgth.2026.1807507 from URL: https://pubmed.ncbi.nlm.nih.gov/42158173/
+2026-05-29 13:40:54,346 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.clinbiomech.2026.106877 from URL: https://pubmed.ncbi.nlm.nih.gov/42176495/
+2026-05-29 13:40:54,374 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42158173/, keeping abstract
+2026-05-29 13:40:55,083 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42176495/, keeping abstract
+2026-05-29 13:40:55,388 - research_rover - INFO - Extracting full text for DOI: 10.3389/ijph.2026.1609627 from URL: https://pubmed.ncbi.nlm.nih.gov/42158041/
+2026-05-29 13:40:56,091 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260584 from URL: https://pubmed.ncbi.nlm.nih.gov/42175254/
+2026-05-29 13:40:56,175 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42158041/, keeping abstract
+2026-05-29 13:40:56,653 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42175254/, keeping abstract
+2026-05-29 13:40:57,179 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.gerinurse.2026.104101 from URL: https://pubmed.ncbi.nlm.nih.gov/42155325/
+2026-05-29 13:40:57,662 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260504 from URL: https://pubmed.ncbi.nlm.nih.gov/42175175/
+2026-05-29 13:40:57,793 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42155325/, keeping abstract
+2026-05-29 13:40:58,645 - research_rover - INFO - Successfully extracted 161 words from https://pubmed.ncbi.nlm.nih.gov/42175175/
+2026-05-29 13:40:58,810 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41746-026-02671-w from URL: https://pubmed.ncbi.nlm.nih.gov/42151446/
+2026-05-29 13:40:59,666 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260483 from URL: https://pubmed.ncbi.nlm.nih.gov/42175155/
+2026-05-29 13:40:59,722 - research_rover - INFO - Successfully extracted 232 words from https://pubmed.ncbi.nlm.nih.gov/42151446/
+2026-05-29 13:41:00,926 - research_rover - INFO - Extracting full text for DOI: 10.6224/JN.26309 from URL: https://pubmed.ncbi.nlm.nih.gov/42151047/
+2026-05-29 13:41:00,958 - research_rover - INFO - Successfully extracted 151 words from https://pubmed.ncbi.nlm.nih.gov/42175155/
+2026-05-29 13:41:01,879 - research_rover - INFO - Successfully extracted 438 words from https://pubmed.ncbi.nlm.nih.gov/42151047/
+2026-05-29 13:41:01,979 - research_rover - INFO - Extracting full text for DOI: 10.1126/sciadv.aee2233 from URL: https://pubmed.ncbi.nlm.nih.gov/42172340/
+2026-05-29 13:41:02,883 - research_rover - INFO - Extracting full text for DOI: 10.1136/archdischild-2026-330462 from URL: https://pubmed.ncbi.nlm.nih.gov/42150872/
+2026-05-29 13:41:03,062 - research_rover - INFO - Successfully extracted 1584 words from https://pubmed.ncbi.nlm.nih.gov/42172340/
+2026-05-29 13:41:03,824 - research_rover - INFO - Successfully extracted 304 words from https://pubmed.ncbi.nlm.nih.gov/42150872/
+2026-05-29 13:41:04,073 - research_rover - INFO - Extracting full text for DOI: 10.1007/s11033-026-11988-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42171928/
+2026-05-29 13:41:04,696 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171928/, keeping abstract
+2026-05-29 13:41:04,845 - research_rover - INFO - Extracting full text for DOI: 10.1371/journal.pone.0344449 from URL: https://pubmed.ncbi.nlm.nih.gov/42149871/
+2026-05-29 13:41:05,592 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42149871/, keeping abstract
+2026-05-29 13:41:05,710 - research_rover - INFO - Extracting full text for DOI: 10.1007/s10916-026-02410-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42171867/
+2026-05-29 13:41:06,348 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171867/, keeping abstract
+2026-05-29 13:41:06,611 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261427061 from URL: https://pubmed.ncbi.nlm.nih.gov/42145332/
+2026-05-29 13:41:07,177 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42145332/, keeping abstract
+2026-05-29 13:41:07,373 - research_rover - INFO - Extracting full text for DOI: 10.1039/d5em00868a from URL: https://pubmed.ncbi.nlm.nih.gov/42171124/
+2026-05-29 13:41:07,994 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171124/, keeping abstract
+2026-05-29 13:41:08,196 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.neuropharm.2026.111027 from URL: https://pubmed.ncbi.nlm.nih.gov/42144072/
+2026-05-29 13:41:09,004 - research_rover - INFO - Extracting full text for DOI: 10.31478/202603b from URL: https://pubmed.ncbi.nlm.nih.gov/42169969/
+2026-05-29 13:41:09,202 - research_rover - INFO - Successfully extracted 257 words from https://pubmed.ncbi.nlm.nih.gov/42144072/
+2026-05-29 13:41:10,189 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12903-026-08492-3 from URL: https://pubmed.ncbi.nlm.nih.gov/42143305/
+2026-05-29 13:41:10,345 - research_rover - INFO - Successfully extracted 634 words from https://pubmed.ncbi.nlm.nih.gov/42169969/
+2026-05-29 13:41:11,236 - research_rover - INFO - Successfully extracted 372 words from https://pubmed.ncbi.nlm.nih.gov/42143305/
+2026-05-29 13:41:11,352 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-53539-8 from URL: https://pubmed.ncbi.nlm.nih.gov/42168305/
+2026-05-29 13:41:12,241 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.biotechadv.2026.108921 from URL: https://pubmed.ncbi.nlm.nih.gov/42142549/
+2026-05-29 13:41:12,241 - research_rover - INFO - Successfully extracted 280 words from https://pubmed.ncbi.nlm.nih.gov/42168305/
+2026-05-29 13:41:12,816 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42142549/, keeping abstract
+2026-05-29 13:41:13,255 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.tjnut.2026.101604 from URL: https://pubmed.ncbi.nlm.nih.gov/42167530/
+2026-05-29 13:41:13,829 - research_rover - INFO - Extracting full text for DOI: 10.1002/jbm.b.70064 from URL: https://pubmed.ncbi.nlm.nih.gov/42141760/
+2026-05-29 13:41:13,919 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42167530/, keeping abstract
+2026-05-29 13:41:14,410 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42141760/, keeping abstract
+2026-05-29 13:41:14,927 - research_rover - INFO - Extracting full text for DOI: 10.1016/S0140-6736(26)00519-2 from URL: https://pubmed.ncbi.nlm.nih.gov/42167272/
+2026-05-29 13:41:15,421 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-47521-7 from URL: https://pubmed.ncbi.nlm.nih.gov/42141004/
+2026-05-29 13:41:15,511 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42167272/, keeping abstract
+2026-05-29 13:41:16,110 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42141004/, keeping abstract
+2026-05-29 13:41:16,508 - research_rover - INFO - Extracting full text for DOI: 10.1097/BRS.0000000000005735 from URL: https://pubmed.ncbi.nlm.nih.gov/42166623/
+2026-05-29 13:41:17,111 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42166623/, keeping abstract
+2026-05-29 13:41:17,112 - research_rover - INFO - Extracting full text for DOI: 10.1111/ijn.70151 from URL: https://pubmed.ncbi.nlm.nih.gov/42138722/
+2026-05-29 13:41:17,714 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42138722/, keeping abstract
+2026-05-29 13:41:18,121 - research_rover - INFO - Extracting full text for DOI: 10.1093/biomtc/ujag078 from URL: https://pubmed.ncbi.nlm.nih.gov/42166189/
+2026-05-29 13:41:18,729 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261443766 from URL: https://pubmed.ncbi.nlm.nih.gov/42136926/
+2026-05-29 13:41:19,252 - research_rover - INFO - Successfully extracted 543 words from https://pubmed.ncbi.nlm.nih.gov/42166189/
+2026-05-29 13:41:19,795 - research_rover - INFO - Successfully extracted 708 words from https://pubmed.ncbi.nlm.nih.gov/42136926/
+2026-05-29 13:41:20,224 - research_rover - INFO - Extracting full text for DOI: 10.1136/bmjopen-2025-109404 from URL: https://pubmed.ncbi.nlm.nih.gov/42161540/
+2026-05-29 13:41:20,770 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261450604 from URL: https://pubmed.ncbi.nlm.nih.gov/42136920/
+2026-05-29 13:41:21,557 - research_rover - INFO - Successfully extracted 719 words from https://pubmed.ncbi.nlm.nih.gov/42161540/
+2026-05-29 13:41:21,658 - research_rover - INFO - Successfully extracted 384 words from https://pubmed.ncbi.nlm.nih.gov/42136920/
+2026-05-29 13:41:22,560 - research_rover - INFO - Extracting full text for DOI: 10.1002/acm2.70596 from URL: https://pubmed.ncbi.nlm.nih.gov/42159089/
+2026-05-29 13:41:22,670 - research_rover - INFO - Extracting full text for DOI: 10.1192/bjp.2026.10657 from URL: https://pubmed.ncbi.nlm.nih.gov/42136560/
+2026-05-29 13:41:23,604 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42159089/, keeping abstract
+2026-05-29 13:41:23,694 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136560/, keeping abstract
+2026-05-29 13:41:24,625 - research_rover - INFO - Extracting full text for DOI: 10.3389/fpubh.2026.1763772 from URL: https://pubmed.ncbi.nlm.nih.gov/42158185/
+2026-05-29 13:41:24,719 - research_rover - INFO - Extracting full text for DOI: 10.2174/0115748871449923260330194138 from URL: https://pubmed.ncbi.nlm.nih.gov/42136480/
+2026-05-29 13:41:25,635 - research_rover - INFO - Successfully extracted 239 words from https://pubmed.ncbi.nlm.nih.gov/42136480/
+2026-05-29 13:41:25,876 - research_rover - INFO - Successfully extracted 709 words from https://pubmed.ncbi.nlm.nih.gov/42158185/
+2026-05-29 13:41:26,637 - research_rover - INFO - Extracting full text for DOI: 10.2174/0113894501450885260409050432 from URL: https://pubmed.ncbi.nlm.nih.gov/42136241/
+2026-05-29 13:41:26,856 - research_rover - INFO - Extracting full text for DOI: 10.3389/fdgth.2026.1807507 from URL: https://pubmed.ncbi.nlm.nih.gov/42158173/
+2026-05-29 13:41:27,359 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136241/, keeping abstract
+2026-05-29 13:41:27,559 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42158173/, keeping abstract
+2026-05-29 13:41:28,366 - research_rover - INFO - Extracting full text for DOI: 10.2174/0115665232473551260504092329 from URL: https://pubmed.ncbi.nlm.nih.gov/42136237/
+2026-05-29 13:41:28,568 - research_rover - INFO - Extracting full text for DOI: 10.3389/ijph.2026.1609627 from URL: https://pubmed.ncbi.nlm.nih.gov/42158041/
+2026-05-29 13:41:29,560 - research_rover - INFO - Successfully extracted 476 words from https://pubmed.ncbi.nlm.nih.gov/42158041/
+2026-05-29 13:41:29,631 - research_rover - INFO - Successfully extracted 266 words from https://pubmed.ncbi.nlm.nih.gov/42136237/
+2026-05-29 13:41:30,575 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.gerinurse.2026.104101 from URL: https://pubmed.ncbi.nlm.nih.gov/42155325/
+2026-05-29 13:41:30,638 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12877-026-07606-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42135640/
+2026-05-29 13:41:31,456 - research_rover - INFO - Successfully extracted 308 words from https://pubmed.ncbi.nlm.nih.gov/42155325/
+2026-05-29 13:41:31,526 - research_rover - INFO - Successfully extracted 368 words from https://pubmed.ncbi.nlm.nih.gov/42135640/
+2026-05-29 13:41:32,466 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41746-026-02671-w from URL: https://pubmed.ncbi.nlm.nih.gov/42151446/
+2026-05-29 13:41:32,545 - research_rover - INFO - Extracting full text for DOI: 10.1371/journal.pone.0348578 from URL: https://pubmed.ncbi.nlm.nih.gov/42133605/
+2026-05-29 13:41:33,404 - research_rover - INFO - Successfully extracted 232 words from https://pubmed.ncbi.nlm.nih.gov/42151446/
+2026-05-29 13:41:33,628 - research_rover - INFO - Successfully extracted 627 words from https://pubmed.ncbi.nlm.nih.gov/42133605/
+2026-05-29 13:41:34,417 - research_rover - INFO - Extracting full text for DOI: 10.6224/JN.26309 from URL: https://pubmed.ncbi.nlm.nih.gov/42151047/
+2026-05-29 13:41:34,602 - research_rover - INFO - Extracting full text for DOI: 10.1002/agm2.70074 from URL: https://pubmed.ncbi.nlm.nih.gov/42130758/
+2026-05-29 13:41:35,022 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42151047/, keeping abstract
+2026-05-29 13:41:35,177 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42130758/, keeping abstract
+2026-05-29 13:41:36,045 - research_rover - INFO - Extracting full text for DOI: 10.1136/archdischild-2026-330462 from URL: https://pubmed.ncbi.nlm.nih.gov/42150872/
+2026-05-29 13:41:36,187 - research_rover - INFO - Extracting full text for DOI: 10.4235/agmr.26.0019 from URL: https://pubmed.ncbi.nlm.nih.gov/42130178/
+2026-05-29 13:41:36,708 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42150872/, keeping abstract
+2026-05-29 13:41:36,826 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42130178/, keeping abstract
+2026-05-29 13:41:37,730 - research_rover - INFO - Extracting full text for DOI: 10.1371/journal.pone.0344449 from URL: https://pubmed.ncbi.nlm.nih.gov/42149871/
+2026-05-29 13:41:37,838 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jnma.2026.04.001 from URL: https://pubmed.ncbi.nlm.nih.gov/42128801/
+2026-05-29 13:41:38,908 - research_rover - INFO - Successfully extracted 471 words from https://pubmed.ncbi.nlm.nih.gov/42149871/
+2026-05-29 13:41:39,116 - research_rover - INFO - Successfully extracted 610 words from https://pubmed.ncbi.nlm.nih.gov/42128801/
+2026-05-29 13:41:39,909 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261427061 from URL: https://pubmed.ncbi.nlm.nih.gov/42145332/
+2026-05-29 13:41:40,126 - research_rover - INFO - Extracting full text for DOI: 10.2196/84161 from URL: https://pubmed.ncbi.nlm.nih.gov/42127410/
+2026-05-29 13:41:41,152 - research_rover - INFO - Successfully extracted 775 words from https://pubmed.ncbi.nlm.nih.gov/42145332/
+2026-05-29 13:41:41,214 - research_rover - INFO - Successfully extracted 728 words from https://pubmed.ncbi.nlm.nih.gov/42127410/
+2026-05-29 13:41:42,168 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.neuropharm.2026.111027 from URL: https://pubmed.ncbi.nlm.nih.gov/42144072/
+2026-05-29 13:41:42,230 - research_rover - INFO - Extracting full text for DOI: 10.1002/biot.70238 from URL: https://pubmed.ncbi.nlm.nih.gov/42125966/
+2026-05-29 13:41:43,156 - research_rover - INFO - Successfully extracted 257 words from https://pubmed.ncbi.nlm.nih.gov/42144072/
+2026-05-29 13:41:43,283 - research_rover - INFO - Successfully extracted 530 words from https://pubmed.ncbi.nlm.nih.gov/42125966/
+2026-05-29 13:41:44,170 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12903-026-08492-3 from URL: https://pubmed.ncbi.nlm.nih.gov/42143305/
+2026-05-29 13:41:44,279 - research_rover - INFO - Extracting full text for DOI: 10.2147/JMDH.S605216 from URL: https://pubmed.ncbi.nlm.nih.gov/42125049/
+2026-05-29 13:41:45,251 - research_rover - INFO - Successfully extracted 372 words from https://pubmed.ncbi.nlm.nih.gov/42143305/
+2026-05-29 13:41:45,251 - research_rover - INFO - Successfully extracted 609 words from https://pubmed.ncbi.nlm.nih.gov/42125049/
+2026-05-29 13:41:46,242 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.biotechadv.2026.108921 from URL: https://pubmed.ncbi.nlm.nih.gov/42142549/
+2026-05-29 13:41:46,242 - research_rover - INFO - Extracting full text for DOI: 10.3390/polym18091036 from URL: https://pubmed.ncbi.nlm.nih.gov/42122666/
+2026-05-29 13:41:46,826 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42122666/, keeping abstract
+2026-05-29 13:41:46,844 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42142549/, keeping abstract
+2026-05-29 13:41:47,830 - research_rover - INFO - Extracting full text for DOI: 10.3390/s26092703 from URL: https://pubmed.ncbi.nlm.nih.gov/42122424/
+2026-05-29 13:41:47,861 - research_rover - INFO - Extracting full text for DOI: 10.1002/jbm.b.70064 from URL: https://pubmed.ncbi.nlm.nih.gov/42141760/
+2026-05-29 13:41:48,771 - research_rover - INFO - Successfully extracted 462 words from https://pubmed.ncbi.nlm.nih.gov/42141760/
+2026-05-29 13:41:48,912 - research_rover - INFO - Successfully extracted 448 words from https://pubmed.ncbi.nlm.nih.gov/42122424/
+2026-05-29 13:41:49,775 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-47521-7 from URL: https://pubmed.ncbi.nlm.nih.gov/42141004/
+2026-05-29 13:41:49,931 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091348 from URL: https://pubmed.ncbi.nlm.nih.gov/42122050/
+2026-05-29 13:41:50,710 - research_rover - INFO - Successfully extracted 237 words from https://pubmed.ncbi.nlm.nih.gov/42141004/
+2026-05-29 13:41:51,001 - research_rover - INFO - Successfully extracted 853 words from https://pubmed.ncbi.nlm.nih.gov/42122050/
+2026-05-29 13:41:51,732 - research_rover - INFO - Extracting full text for DOI: 10.1111/ijn.70151 from URL: https://pubmed.ncbi.nlm.nih.gov/42138722/
+2026-05-29 13:41:52,013 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091346 from URL: https://pubmed.ncbi.nlm.nih.gov/42122048/
+2026-05-29 13:41:52,702 - research_rover - INFO - Successfully extracted 452 words from https://pubmed.ncbi.nlm.nih.gov/42138722/
+2026-05-29 13:41:53,097 - research_rover - INFO - Successfully extracted 760 words from https://pubmed.ncbi.nlm.nih.gov/42122048/
+2026-05-29 13:41:53,698 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261443766 from URL: https://pubmed.ncbi.nlm.nih.gov/42136926/
+2026-05-29 13:41:54,104 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091278 from URL: https://pubmed.ncbi.nlm.nih.gov/42121982/
+2026-05-29 13:41:54,282 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136926/, keeping abstract
+2026-05-29 13:41:54,741 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42121982/, keeping abstract
+2026-05-29 13:41:55,287 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261450604 from URL: https://pubmed.ncbi.nlm.nih.gov/42136920/
+2026-05-29 13:41:55,755 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14091251 from URL: https://pubmed.ncbi.nlm.nih.gov/42121692/
+2026-05-29 13:41:55,950 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136920/, keeping abstract
+2026-05-29 13:41:56,378 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42121692/, keeping abstract
+2026-05-29 13:41:56,953 - research_rover - INFO - Extracting full text for DOI: 10.1192/bjp.2026.10657 from URL: https://pubmed.ncbi.nlm.nih.gov/42136560/
+2026-05-29 13:41:57,374 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14091120 from URL: https://pubmed.ncbi.nlm.nih.gov/42121563/
+2026-05-29 13:41:57,541 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136560/, keeping abstract
+2026-05-29 13:41:58,159 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42121563/, keeping abstract
+2026-05-29 13:41:58,553 - research_rover - INFO - Extracting full text for DOI: 10.2174/0115748871449923260330194138 from URL: https://pubmed.ncbi.nlm.nih.gov/42136480/
+2026-05-29 13:41:59,174 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-52587-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42120489/
+2026-05-29 13:41:59,385 - research_rover - INFO - Successfully extracted 239 words from https://pubmed.ncbi.nlm.nih.gov/42136480/
+2026-05-29 13:42:00,125 - research_rover - INFO - Successfully extracted 366 words from https://pubmed.ncbi.nlm.nih.gov/42120489/
+2026-05-29 13:42:00,406 - research_rover - INFO - Extracting full text for DOI: 10.2174/0113894501450885260409050432 from URL: https://pubmed.ncbi.nlm.nih.gov/42136241/
+2026-05-29 13:42:01,111 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jtemb.2026.127879 from URL: https://pubmed.ncbi.nlm.nih.gov/42119479/
+2026-05-29 13:42:01,249 - research_rover - INFO - Successfully extracted 277 words from https://pubmed.ncbi.nlm.nih.gov/42136241/
+2026-05-29 13:42:02,026 - research_rover - INFO - Successfully extracted 434 words from https://pubmed.ncbi.nlm.nih.gov/42119479/
+2026-05-29 13:42:02,230 - research_rover - INFO - Extracting full text for DOI: 10.2174/0115665232473551260504092329 from URL: https://pubmed.ncbi.nlm.nih.gov/42136237/
+2026-05-29 13:42:03,038 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.bios.2026.118561 from URL: https://pubmed.ncbi.nlm.nih.gov/42119159/
+2026-05-29 13:42:03,138 - research_rover - INFO - Successfully extracted 266 words from https://pubmed.ncbi.nlm.nih.gov/42136237/
+2026-05-29 13:42:03,690 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42119159/, keeping abstract
+2026-05-29 13:42:04,155 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12877-026-07606-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42135640/
+2026-05-29 13:42:04,698 - research_rover - INFO - Extracting full text for DOI: 10.2196/55941 from URL: https://pubmed.ncbi.nlm.nih.gov/42119135/
+2026-05-29 13:42:04,758 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42135640/, keeping abstract
+2026-05-29 13:42:05,318 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42119135/, keeping abstract
+2026-05-29 13:42:05,758 - research_rover - INFO - Extracting full text for DOI: 10.1371/journal.pone.0348578 from URL: https://pubmed.ncbi.nlm.nih.gov/42133605/
+2026-05-29 13:42:06,340 - research_rover - INFO - Extracting full text for DOI: 10.1080/14756366.2026.2659995 from URL: https://pubmed.ncbi.nlm.nih.gov/42113227/
+2026-05-29 13:42:06,341 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42133605/, keeping abstract
+2026-05-29 13:42:06,895 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42113227/, keeping abstract
+2026-05-29 13:42:07,339 - research_rover - INFO - Extracting full text for DOI: 10.1002/agm2.70074 from URL: https://pubmed.ncbi.nlm.nih.gov/42130758/
+2026-05-29 13:42:07,898 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42130758/, keeping abstract
+2026-05-29 13:42:07,899 - research_rover - INFO - Extracting full text for DOI: 10.1002/hed.70262 from URL: https://pubmed.ncbi.nlm.nih.gov/42108400/
+2026-05-29 13:42:08,922 - research_rover - INFO - Extracting full text for DOI: 10.4235/agmr.26.0019 from URL: https://pubmed.ncbi.nlm.nih.gov/42130178/
+2026-05-29 13:42:09,509 - research_rover - INFO - Successfully extracted 367 words from https://pubmed.ncbi.nlm.nih.gov/42108400/
+2026-05-29 13:42:09,551 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42130178/, keeping abstract
+2026-05-29 13:42:10,521 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.toxicon.2026.109147 from URL: https://pubmed.ncbi.nlm.nih.gov/42107546/
+2026-05-29 13:42:10,567 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jnma.2026.04.001 from URL: https://pubmed.ncbi.nlm.nih.gov/42128801/
+2026-05-29 13:42:11,176 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42107546/, keeping abstract
+2026-05-29 13:42:11,228 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42128801/, keeping abstract
+2026-05-29 13:42:12,203 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12951-026-04497-w from URL: https://pubmed.ncbi.nlm.nih.gov/42106854/
+2026-05-29 13:42:12,250 - research_rover - INFO - Extracting full text for DOI: 10.2196/84161 from URL: https://pubmed.ncbi.nlm.nih.gov/42127410/
+2026-05-29 13:42:12,916 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42127410/, keeping abstract
+2026-05-29 13:42:12,916 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42106854/, keeping abstract
+2026-05-29 13:42:13,933 - research_rover - INFO - Extracting full text for DOI: 10.1002/biot.70238 from URL: https://pubmed.ncbi.nlm.nih.gov/42125966/
+2026-05-29 13:42:13,933 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12913-026-14670-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42106755/
+2026-05-29 13:42:14,557 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42106755/, keeping abstract
+2026-05-29 13:42:14,557 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42125966/, keeping abstract
+2026-05-29 13:42:15,568 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-48128-8 from URL: https://pubmed.ncbi.nlm.nih.gov/42106393/
+2026-05-29 13:42:15,568 - research_rover - INFO - Extracting full text for DOI: 10.2147/JMDH.S605216 from URL: https://pubmed.ncbi.nlm.nih.gov/42125049/
+2026-05-29 13:42:16,195 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42125049/, keeping abstract
+2026-05-29 13:42:16,195 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42106393/, keeping abstract
+2026-05-29 13:42:17,200 - research_rover - INFO - Extracting full text for DOI: 10.1177/10538127261449360 from URL: https://pubmed.ncbi.nlm.nih.gov/42105100/
+2026-05-29 13:42:17,200 - research_rover - INFO - Extracting full text for DOI: 10.3390/polym18091036 from URL: https://pubmed.ncbi.nlm.nih.gov/42122666/
+2026-05-29 13:42:17,842 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42105100/, keeping abstract
+2026-05-29 13:42:17,843 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42122666/, keeping abstract
+2026-05-29 13:42:18,856 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12913-026-14649-1 from URL: https://pubmed.ncbi.nlm.nih.gov/42104356/
+2026-05-29 13:42:18,856 - research_rover - INFO - Extracting full text for DOI: 10.3390/s26092703 from URL: https://pubmed.ncbi.nlm.nih.gov/42122424/
+2026-05-29 13:42:19,816 - research_rover - INFO - Successfully extracted 414 words from https://pubmed.ncbi.nlm.nih.gov/42104356/
+2026-05-29 13:42:19,864 - research_rover - INFO - Successfully extracted 448 words from https://pubmed.ncbi.nlm.nih.gov/42122424/
+2026-05-29 13:42:20,821 - research_rover - INFO - Extracting full text for DOI: 10.1055/a-2872-4388 from URL: https://pubmed.ncbi.nlm.nih.gov/42103301/
+2026-05-29 13:42:20,869 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091348 from URL: https://pubmed.ncbi.nlm.nih.gov/42122050/
+2026-05-29 13:42:21,872 - research_rover - INFO - Successfully extracted 853 words from https://pubmed.ncbi.nlm.nih.gov/42122050/
+2026-05-29 13:42:22,093 - research_rover - INFO - Successfully extracted 429 words from https://pubmed.ncbi.nlm.nih.gov/42103301/
+2026-05-29 13:42:22,857 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091346 from URL: https://pubmed.ncbi.nlm.nih.gov/42122048/
+2026-05-29 13:42:23,105 - research_rover - INFO - Extracting full text for DOI: 10.1177/15598276261438370 from URL: https://pubmed.ncbi.nlm.nih.gov/42100370/
+2026-05-29 13:42:24,036 - research_rover - INFO - Successfully extracted 416 words from https://pubmed.ncbi.nlm.nih.gov/42100370/
+2026-05-29 13:42:24,109 - research_rover - INFO - Successfully extracted 760 words from https://pubmed.ncbi.nlm.nih.gov/42122048/
+2026-05-29 13:42:25,064 - research_rover - INFO - Extracting full text for DOI: 10.2196/89164 from URL: https://pubmed.ncbi.nlm.nih.gov/42097610/
+2026-05-29 13:42:25,126 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091278 from URL: https://pubmed.ncbi.nlm.nih.gov/42121982/
+2026-05-29 13:42:26,429 - research_rover - INFO - Successfully extracted 808 words from https://pubmed.ncbi.nlm.nih.gov/42097610/
+2026-05-29 13:42:26,486 - research_rover - INFO - Successfully extracted 856 words from https://pubmed.ncbi.nlm.nih.gov/42121982/
+2026-05-29 13:42:27,449 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.cis.2026.103918 from URL: https://pubmed.ncbi.nlm.nih.gov/42096943/
+2026-05-29 13:42:27,495 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14091251 from URL: https://pubmed.ncbi.nlm.nih.gov/42121692/
+2026-05-29 13:42:28,525 - research_rover - INFO - Successfully extracted 494 words from https://pubmed.ncbi.nlm.nih.gov/42121692/
+2026-05-29 13:42:28,555 - research_rover - INFO - Successfully extracted 198 words from https://pubmed.ncbi.nlm.nih.gov/42096943/
+2026-05-29 13:42:29,524 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14091120 from URL: https://pubmed.ncbi.nlm.nih.gov/42121563/
+2026-05-29 13:42:29,570 - research_rover - INFO - Extracting full text for DOI: 10.1007/s10916-026-02398-x from URL: https://pubmed.ncbi.nlm.nih.gov/42095967/
+2026-05-29 13:42:30,618 - research_rover - INFO - Successfully extracted 403 words from https://pubmed.ncbi.nlm.nih.gov/42121563/
+2026-05-29 13:42:30,724 - research_rover - INFO - Successfully extracted 709 words from https://pubmed.ncbi.nlm.nih.gov/42095967/
+2026-05-29 13:42:31,641 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-52587-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42120489/
+2026-05-29 13:42:32,300 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42120489/, keeping abstract
+2026-05-29 13:42:32,333 - research_rover - INFO - Loading CSV data from ../data\smart_healthcare.csv...
+2026-05-29 13:42:32,382 - research_rover - INFO - Processing data with JSON mapping and generating embeddings...
+2026-05-29 13:42:33,308 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jtemb.2026.127879 from URL: https://pubmed.ncbi.nlm.nih.gov/42119479/
+2026-05-29 13:42:34,012 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42119479/, keeping abstract
+2026-05-29 13:42:35,012 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.bios.2026.118561 from URL: https://pubmed.ncbi.nlm.nih.gov/42119159/
+2026-05-29 13:42:35,857 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42119159/, keeping abstract
+2026-05-29 13:42:36,878 - research_rover - INFO - Extracting full text for DOI: 10.2196/55941 from URL: https://pubmed.ncbi.nlm.nih.gov/42119135/
+2026-05-29 13:42:37,678 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42119135/, keeping abstract
+2026-05-29 13:42:38,692 - research_rover - INFO - Extracting full text for DOI: 10.1080/14756366.2026.2659995 from URL: https://pubmed.ncbi.nlm.nih.gov/42113227/
+2026-05-29 13:42:39,898 - research_rover - INFO - Successfully extracted 1421 words from https://pubmed.ncbi.nlm.nih.gov/42113227/
+2026-05-29 13:42:40,924 - research_rover - INFO - Extracting full text for DOI: 10.1002/hed.70262 from URL: https://pubmed.ncbi.nlm.nih.gov/42108400/
+2026-05-29 13:42:42,351 - research_rover - INFO - Successfully extracted 367 words from https://pubmed.ncbi.nlm.nih.gov/42108400/
+2026-05-29 13:42:43,354 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.toxicon.2026.109147 from URL: https://pubmed.ncbi.nlm.nih.gov/42107546/
+2026-05-29 13:42:44,705 - research_rover - INFO - Successfully extracted 367 words from https://pubmed.ncbi.nlm.nih.gov/42107546/
+2026-05-29 13:42:45,685 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12951-026-04497-w from URL: https://pubmed.ncbi.nlm.nih.gov/42106854/
+2026-05-29 13:42:46,725 - research_rover - INFO - Successfully extracted 360 words from https://pubmed.ncbi.nlm.nih.gov/42106854/
+2026-05-29 13:42:47,748 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12913-026-14670-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42106755/
+2026-05-29 13:42:48,699 - research_rover - INFO - Successfully extracted 398 words from https://pubmed.ncbi.nlm.nih.gov/42106755/
+2026-05-29 13:42:49,703 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-48128-8 from URL: https://pubmed.ncbi.nlm.nih.gov/42106393/
+2026-05-29 13:42:50,602 - research_rover - INFO - Successfully extracted 237 words from https://pubmed.ncbi.nlm.nih.gov/42106393/
+2026-05-29 13:42:51,610 - research_rover - INFO - Extracting full text for DOI: 10.1177/10538127261449360 from URL: https://pubmed.ncbi.nlm.nih.gov/42105100/
+2026-05-29 13:42:52,561 - research_rover - INFO - Successfully extracted 244 words from https://pubmed.ncbi.nlm.nih.gov/42105100/
+2026-05-29 13:42:53,566 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12913-026-14649-1 from URL: https://pubmed.ncbi.nlm.nih.gov/42104356/
+2026-05-29 13:42:54,323 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42104356/, keeping abstract
+2026-05-29 13:42:55,302 - research_rover - INFO - Extracting full text for DOI: 10.1055/a-2872-4388 from URL: https://pubmed.ncbi.nlm.nih.gov/42103301/
+2026-05-29 13:42:55,926 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42103301/, keeping abstract
+2026-05-29 13:42:56,943 - research_rover - INFO - Extracting full text for DOI: 10.1177/15598276261438370 from URL: https://pubmed.ncbi.nlm.nih.gov/42100370/
+2026-05-29 13:42:57,736 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42100370/, keeping abstract
+2026-05-29 13:42:58,742 - research_rover - INFO - Extracting full text for DOI: 10.2196/89164 from URL: https://pubmed.ncbi.nlm.nih.gov/42097610/
+2026-05-29 13:43:00,030 - research_rover - INFO - Successfully extracted 808 words from https://pubmed.ncbi.nlm.nih.gov/42097610/
+2026-05-29 13:43:01,050 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.cis.2026.103918 from URL: https://pubmed.ncbi.nlm.nih.gov/42096943/
+2026-05-29 13:43:02,174 - research_rover - INFO - Successfully extracted 198 words from https://pubmed.ncbi.nlm.nih.gov/42096943/
+2026-05-29 13:43:03,163 - research_rover - INFO - Extracting full text for DOI: 10.1007/s10916-026-02398-x from URL: https://pubmed.ncbi.nlm.nih.gov/42095967/
+2026-05-29 13:43:04,210 - research_rover - INFO - Successfully extracted 709 words from https://pubmed.ncbi.nlm.nih.gov/42095967/
+2026-05-29 13:43:05,238 - research_rover - INFO - Loading CSV data from ../data\smart_healthcare.csv...
+2026-05-29 13:43:05,280 - research_rover - INFO - Processing data with JSON mapping and generating embeddings...
+2026-05-29 13:43:30,760 - research_rover - WARNING - No text content available for 10.3390/jcm15103757, skipping
+2026-05-29 13:43:42,848 - research_rover - WARNING - No text content available for 10.3390/medicina62050827, skipping
+2026-05-29 13:43:49,229 - research_rover - INFO -   Splitting oversized chunk (1047 tokens)
+2026-05-29 13:44:18,790 - research_rover - INFO -   Splitting oversized chunk (974 tokens)
+2026-05-29 13:44:51,833 - research_rover - INFO -   Splitting oversized chunk (1588 tokens)
+2026-05-29 13:45:00,139 - research_rover - WARNING - No text content available for 10.31478/202603b, skipping
+2026-05-29 13:45:04,789 - research_rover - INFO -   Splitting oversized chunk (1588 tokens)
+2026-05-29 13:45:05,172 - research_rover - INFO - Starting search: smart healthcare
+2026-05-29 13:45:05,178 - research_rover - INFO - Starting background search: smart healthcare
+2026-05-29 13:45:05,998 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-05-29 13:45:06,002 - research_rover - INFO - PubMed search - API key present: True
+2026-05-29 13:45:06,003 - research_rover - INFO - PubMed search - Original query: smart healthcare
+2026-05-29 13:45:06,006 - research_rover - INFO - PubMed search - Improved query: smart healthcare
+2026-05-29 13:45:06,009 - research_rover - INFO - PubMed search - Max results: 100
+2026-05-29 13:45:06,014 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-05-29 13:45:06,017 - research_rover - INFO - PubMed search - Raw query mode: True
+2026-05-29 13:45:06,021 - research_rover - INFO - Starting PubMed search for: smart healthcare
+2026-05-29 13:45:06,023 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=True
+2026-05-29 13:45:06,024 - research_rover - INFO - Using raw query mode — no expansion applied
+2026-05-29 13:45:06,025 - research_rover - INFO - Final PubMed query: (smart healthcare) AND 2026/01/01:3000/12/31[pdat]
+2026-05-29 13:45:06,030 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-05-29 13:45:06,031 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-05-29 13:45:07,463 - research_rover - INFO - esearch found 200 PMIDs
+2026-05-29 13:45:07,467 - research_rover - INFO - Found 200 PMIDs, retrieving details...
+2026-05-29 13:45:12,061 - research_rover - INFO - Batch 1: 50 papers (total 50)
+2026-05-29 13:45:12,640 - research_rover - WARNING - No text content available for 10.1002/acm2.70596, skipping
+2026-05-29 13:45:13,090 - research_rover - INFO -   Processed 50/100 papers...
+2026-05-29 13:45:16,137 - research_rover - INFO - Batch 2: 50 papers (total 100)
+2026-05-29 13:45:20,834 - research_rover - INFO - Batch 3: 50 papers (total 150)
+2026-05-29 13:45:25,320 - research_rover - INFO - Batch 4: 50 papers (total 200)
+2026-05-29 13:45:25,324 - research_rover - INFO - Total raw papers so far: 200
+2026-05-29 13:45:25,330 - research_rover - INFO - Date filter: 200 -> 200 papers within 2026-?
+2026-05-29 13:45:25,333 - research_rover - INFO - Final result count: 100 (target: 100)
+2026-05-29 13:45:26,361 - research_rover - INFO - Converting 100 results to DataFrame
+2026-05-29 13:45:26,369 - research_rover - INFO - DataFrame shape: (100, 18)
+2026-05-29 13:45:26,389 - research_rover - INFO - CSV saved to ../data\smart_healthcare.csv
+2026-05-29 13:45:26,394 - research_rover - INFO - Paper processing: 100 -> 100 papers
+2026-05-29 13:45:34,895 - research_rover - WARNING - No text content available for 10.1002/acm2.70596, skipping
+2026-05-29 13:45:47,563 - research_rover - INFO -   Processed 50/100 papers...
+2026-05-29 14:39:09,177 - research_rover - INFO - Starting Research Rover API...
+2026-05-29 14:39:09,180 - research_rover - INFO - Research Rover API started successfully
+2026-05-29 14:39:51,095 - research_rover - INFO - Starting search: smart healthcare
+2026-05-29 14:39:51,095 - research_rover - INFO - Starting background search: smart healthcare
+2026-05-29 14:39:51,917 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-05-29 14:39:51,917 - research_rover - INFO - PubMed search - API key present: True
+2026-05-29 14:39:51,917 - research_rover - INFO - PubMed search - Original query: smart healthcare
+2026-05-29 14:39:51,917 - research_rover - INFO - PubMed search - Improved query: smart healthcare
+2026-05-29 14:39:51,917 - research_rover - INFO - PubMed search - Max results: 100
+2026-05-29 14:39:51,917 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-05-29 14:39:51,919 - research_rover - INFO - PubMed search - Raw query mode: True
+2026-05-29 14:39:51,919 - research_rover - INFO - Starting PubMed search for: smart healthcare
+2026-05-29 14:39:51,920 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=True
+2026-05-29 14:39:51,920 - research_rover - INFO - Using raw query mode — no expansion applied
+2026-05-29 14:39:51,920 - research_rover - INFO - Final PubMed query: (smart healthcare) AND 2026/01/01:3000/12/31[pdat]
+2026-05-29 14:39:51,921 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-05-29 14:39:51,921 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-05-29 14:39:53,437 - research_rover - INFO - esearch found 200 PMIDs
+2026-05-29 14:39:53,438 - research_rover - INFO - Found 200 PMIDs, retrieving details...
+2026-05-29 14:39:58,203 - research_rover - INFO - Batch 1: 50 papers (total 50)
+2026-05-29 14:40:02,270 - research_rover - INFO - Batch 2: 50 papers (total 100)
+2026-05-29 14:40:07,085 - research_rover - INFO - Batch 3: 50 papers (total 150)
+2026-05-29 14:40:18,858 - research_rover - INFO - Batch 4: 50 papers (total 200)
+2026-05-29 14:40:18,861 - research_rover - INFO - Total raw papers so far: 200
+2026-05-29 14:40:18,862 - research_rover - INFO - Date filter: 200 -> 200 papers within 2026-?
+2026-05-29 14:40:18,863 - research_rover - INFO - Final result count: 100 (target: 100)
+2026-05-29 14:40:19,881 - research_rover - INFO - Converting 100 results to DataFrame
+2026-05-29 14:40:19,882 - research_rover - INFO - DataFrame shape: (100, 18)
+2026-05-29 14:40:19,891 - research_rover - INFO - CSV saved to ../data\smart_healthcare.csv
+2026-05-29 14:40:19,892 - research_rover - INFO - Paper processing: 100 -> 100 papers
+2026-05-29 14:40:22,676 - research_rover - INFO - Loading sentence model: all-mpnet-base-v2
+2026-05-29 14:40:22,679 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-05-29 14:40:22,679 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2026-05-29 14:40:28,922 - research_rover - INFO - Sentence model loaded successfully
+2026-05-29 14:40:28,932 - research_rover - INFO - Loading CSV and extracting full text from URLs using crawl4ai...
+2026-05-29 14:40:28,950 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jtumed.2026.04.010 from URL: https://pubmed.ncbi.nlm.nih.gov/42206288/
+2026-05-29 14:40:30,000 - research_rover - INFO - Successfully extracted 712 words from https://pubmed.ncbi.nlm.nih.gov/42206288/
+2026-05-29 14:40:31,014 - research_rover - INFO - Extracting full text for DOI: 10.30953/bhty.v9.471 from URL: https://pubmed.ncbi.nlm.nih.gov/42205848/
+2026-05-29 14:40:32,119 - research_rover - INFO - Successfully extracted 714 words from https://pubmed.ncbi.nlm.nih.gov/42205848/
+2026-05-29 14:40:33,100 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-53494-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42204202/
+2026-05-29 14:40:33,903 - research_rover - INFO - Successfully extracted 295 words from https://pubmed.ncbi.nlm.nih.gov/42204202/
+2026-05-29 14:40:34,915 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.pcl.2026.01.005 from URL: https://pubmed.ncbi.nlm.nih.gov/42203365/
+2026-05-29 14:40:35,896 - research_rover - INFO - Successfully extracted 189 words from https://pubmed.ncbi.nlm.nih.gov/42203365/
+2026-05-29 14:40:36,908 - research_rover - INFO - Extracting full text for DOI: 10.1136/bmjopen-2025-102059 from URL: https://pubmed.ncbi.nlm.nih.gov/42203300/
+2026-05-29 14:40:37,581 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42203300/, keeping abstract
+2026-05-29 14:40:38,571 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.bioadv.2026.214954 from URL: https://pubmed.ncbi.nlm.nih.gov/42202650/
+2026-05-29 14:40:39,667 - research_rover - INFO - Successfully extracted 245 words from https://pubmed.ncbi.nlm.nih.gov/42202650/
+2026-05-29 14:40:40,672 - research_rover - INFO - Extracting full text for DOI: 10.3390/medsci14020225 from URL: https://pubmed.ncbi.nlm.nih.gov/42201017/
+2026-05-29 14:40:41,669 - research_rover - INFO - Successfully extracted 662 words from https://pubmed.ncbi.nlm.nih.gov/42201017/
+2026-05-29 14:40:42,646 - research_rover - INFO - Extracting full text for DOI: 10.1021/acs.langmuir.6c00717 from URL: https://pubmed.ncbi.nlm.nih.gov/42200437/
+2026-05-29 14:40:43,415 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42200437/, keeping abstract
+2026-05-29 14:40:44,418 - research_rover - INFO - Extracting full text for DOI: 10.3390/s26103213 from URL: https://pubmed.ncbi.nlm.nih.gov/42198022/
+2026-05-29 14:40:45,037 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42198022/, keeping abstract
+2026-05-29 14:40:46,041 - research_rover - INFO - Extracting full text for DOI: 10.3390/mi17050586 from URL: https://pubmed.ncbi.nlm.nih.gov/42195503/
+2026-05-29 14:40:46,701 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42195503/, keeping abstract
+2026-05-29 14:40:47,720 - research_rover - INFO - Extracting full text for DOI: 10.3390/medicina62050827 from URL: https://pubmed.ncbi.nlm.nih.gov/42195080/
+2026-05-29 14:40:48,796 - research_rover - INFO - Successfully extracted 840 words from https://pubmed.ncbi.nlm.nih.gov/42195080/
+2026-05-29 14:40:49,777 - research_rover - INFO - Extracting full text for DOI: 10.3390/jcm15103757 from URL: https://pubmed.ncbi.nlm.nih.gov/42194719/
+2026-05-29 14:40:50,907 - research_rover - INFO - Successfully extracted 1184 words from https://pubmed.ncbi.nlm.nih.gov/42194719/
+2026-05-29 14:40:51,925 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101372 from URL: https://pubmed.ncbi.nlm.nih.gov/42194464/
+2026-05-29 14:40:53,003 - research_rover - INFO - Successfully extracted 751 words from https://pubmed.ncbi.nlm.nih.gov/42194464/
+2026-05-29 14:40:54,022 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101355 from URL: https://pubmed.ncbi.nlm.nih.gov/42194447/
+2026-05-29 14:40:55,024 - research_rover - INFO - Successfully extracted 483 words from https://pubmed.ncbi.nlm.nih.gov/42194447/
+2026-05-29 14:40:56,028 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101336 from URL: https://pubmed.ncbi.nlm.nih.gov/42194428/
+2026-05-29 14:40:57,150 - research_rover - INFO - Successfully extracted 533 words from https://pubmed.ncbi.nlm.nih.gov/42194428/
+2026-05-29 14:40:58,155 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101311 from URL: https://pubmed.ncbi.nlm.nih.gov/42194403/
+2026-05-29 14:40:59,260 - research_rover - INFO - Successfully extracted 393 words from https://pubmed.ncbi.nlm.nih.gov/42194403/
+2026-05-29 14:41:00,275 - research_rover - INFO - Extracting full text for DOI: 10.3390/bioengineering13050526 from URL: https://pubmed.ncbi.nlm.nih.gov/42194283/
+2026-05-29 14:41:01,294 - research_rover - INFO - Successfully extracted 799 words from https://pubmed.ncbi.nlm.nih.gov/42194283/
+2026-05-29 14:41:02,270 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-52679-1 from URL: https://pubmed.ncbi.nlm.nih.gov/42191770/
+2026-05-29 14:41:03,235 - research_rover - INFO - Successfully extracted 271 words from https://pubmed.ncbi.nlm.nih.gov/42191770/
+2026-05-29 14:41:04,248 - research_rover - INFO - Extracting full text for DOI: 10.2196/89574 from URL: https://pubmed.ncbi.nlm.nih.gov/42190234/
+2026-05-29 14:41:05,495 - research_rover - INFO - Successfully extracted 461 words from https://pubmed.ncbi.nlm.nih.gov/42190234/
+2026-05-29 14:41:06,480 - research_rover - INFO - Extracting full text for DOI: 10.3390/toxins18050236 from URL: https://pubmed.ncbi.nlm.nih.gov/42188638/
+2026-05-29 14:41:07,252 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42188638/, keeping abstract
+2026-05-29 14:41:08,233 - research_rover - INFO - Extracting full text for DOI: 10.3390/jfb17050214 from URL: https://pubmed.ncbi.nlm.nih.gov/42188382/
+2026-05-29 14:41:09,591 - research_rover - INFO - Successfully extracted 893 words from https://pubmed.ncbi.nlm.nih.gov/42188382/
+2026-05-29 14:41:10,606 - research_rover - INFO - Extracting full text for DOI: 10.3390/md24050174 from URL: https://pubmed.ncbi.nlm.nih.gov/42188309/
+2026-05-29 14:41:11,854 - research_rover - INFO - Successfully extracted 1429 words from https://pubmed.ncbi.nlm.nih.gov/42188309/
+2026-05-29 14:41:12,874 - research_rover - INFO - Extracting full text for DOI: 10.3390/bios16050250 from URL: https://pubmed.ncbi.nlm.nih.gov/42187446/
+2026-05-29 14:41:13,978 - research_rover - INFO - Successfully extracted 797 words from https://pubmed.ncbi.nlm.nih.gov/42187446/
+2026-05-29 14:41:14,985 - research_rover - INFO - Extracting full text for DOI: 10.7717/peerj.21180 from URL: https://pubmed.ncbi.nlm.nih.gov/42186476/
+2026-05-29 14:41:16,445 - research_rover - INFO - Successfully extracted 1018 words from https://pubmed.ncbi.nlm.nih.gov/42186476/
+2026-05-29 14:41:17,460 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12889-026-27688-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42185997/
+2026-05-29 14:41:18,480 - research_rover - INFO - Successfully extracted 666 words from https://pubmed.ncbi.nlm.nih.gov/42185997/
+2026-05-29 14:41:19,496 - research_rover - INFO - Extracting full text for DOI: 10.2196/89279 from URL: https://pubmed.ncbi.nlm.nih.gov/42184424/
+2026-05-29 14:41:20,426 - research_rover - INFO - Successfully extracted 285 words from https://pubmed.ncbi.nlm.nih.gov/42184424/
+2026-05-29 14:41:21,453 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.idm.2026.03.001 from URL: https://pubmed.ncbi.nlm.nih.gov/42182949/
+2026-05-29 14:41:22,763 - research_rover - INFO - Successfully extracted 519 words from https://pubmed.ncbi.nlm.nih.gov/42182949/
+2026-05-29 14:41:23,760 - research_rover - INFO - Extracting full text for DOI: 10.21037/jtd-2026-1-0241 from URL: https://pubmed.ncbi.nlm.nih.gov/42182632/
+2026-05-29 14:41:25,201 - research_rover - INFO - Successfully extracted 628 words from https://pubmed.ncbi.nlm.nih.gov/42182632/
+2026-05-29 14:41:26,215 - research_rover - INFO - Extracting full text for DOI: 10.12336/bmt.25.00043 from URL: https://pubmed.ncbi.nlm.nih.gov/42179771/
+2026-05-29 14:41:26,871 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42179771/, keeping abstract
+2026-05-29 14:41:27,850 - research_rover - INFO - Extracting full text for DOI: 10.1111/jipb.70291 from URL: https://pubmed.ncbi.nlm.nih.gov/42178738/
+2026-05-29 14:41:29,030 - research_rover - INFO - Successfully extracted 451 words from https://pubmed.ncbi.nlm.nih.gov/42178738/
+2026-05-29 14:41:30,044 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-54205-9 from URL: https://pubmed.ncbi.nlm.nih.gov/42177223/
+2026-05-29 14:41:30,903 - research_rover - INFO - Successfully extracted 319 words from https://pubmed.ncbi.nlm.nih.gov/42177223/
+2026-05-29 14:41:31,911 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.clinbiomech.2026.106877 from URL: https://pubmed.ncbi.nlm.nih.gov/42176495/
+2026-05-29 14:41:32,917 - research_rover - INFO - Successfully extracted 477 words from https://pubmed.ncbi.nlm.nih.gov/42176495/
+2026-05-29 14:41:33,932 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260584 from URL: https://pubmed.ncbi.nlm.nih.gov/42175254/
+2026-05-29 14:41:35,199 - research_rover - INFO - Successfully extracted 243 words from https://pubmed.ncbi.nlm.nih.gov/42175254/
+2026-05-29 14:41:36,203 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260504 from URL: https://pubmed.ncbi.nlm.nih.gov/42175175/
+2026-05-29 14:41:36,873 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42175175/, keeping abstract
+2026-05-29 14:41:37,887 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260483 from URL: https://pubmed.ncbi.nlm.nih.gov/42175155/
+2026-05-29 14:41:38,745 - research_rover - INFO - Successfully extracted 151 words from https://pubmed.ncbi.nlm.nih.gov/42175155/
+2026-05-29 14:41:39,762 - research_rover - INFO - Extracting full text for DOI: 10.1126/sciadv.aee2233 from URL: https://pubmed.ncbi.nlm.nih.gov/42172340/
+2026-05-29 14:41:40,689 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42172340/, keeping abstract
+2026-05-29 14:41:41,699 - research_rover - INFO - Extracting full text for DOI: 10.1007/s11033-026-11988-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42171928/
+2026-05-29 14:41:42,458 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171928/, keeping abstract
+2026-05-29 14:41:43,482 - research_rover - INFO - Extracting full text for DOI: 10.1007/s10916-026-02410-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42171867/
+2026-05-29 14:41:44,181 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171867/, keeping abstract
+2026-05-29 14:41:45,194 - research_rover - INFO - Extracting full text for DOI: 10.1039/d5em00868a from URL: https://pubmed.ncbi.nlm.nih.gov/42171124/
+2026-05-29 14:41:45,964 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171124/, keeping abstract
+2026-05-29 14:41:46,977 - research_rover - INFO - Extracting full text for DOI: 10.31478/202603b from URL: https://pubmed.ncbi.nlm.nih.gov/42169969/
+2026-05-29 14:41:47,588 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42169969/, keeping abstract
+2026-05-29 14:41:48,597 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-53539-8 from URL: https://pubmed.ncbi.nlm.nih.gov/42168305/
+2026-05-29 14:41:49,541 - research_rover - INFO - Successfully extracted 280 words from https://pubmed.ncbi.nlm.nih.gov/42168305/
+2026-05-29 14:41:50,562 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.tjnut.2026.101604 from URL: https://pubmed.ncbi.nlm.nih.gov/42167530/
+2026-05-29 14:41:51,878 - research_rover - INFO - Successfully extracted 190 words from https://pubmed.ncbi.nlm.nih.gov/42167530/
+2026-05-29 14:41:52,889 - research_rover - INFO - Extracting full text for DOI: 10.1016/S0140-6736(26)00519-2 from URL: https://pubmed.ncbi.nlm.nih.gov/42167272/
+2026-05-29 14:41:54,510 - research_rover - INFO - Successfully extracted 3414 words from https://pubmed.ncbi.nlm.nih.gov/42167272/
+2026-05-29 14:41:55,512 - research_rover - INFO - Extracting full text for DOI: 10.1097/BRS.0000000000005735 from URL: https://pubmed.ncbi.nlm.nih.gov/42166623/
+2026-05-29 14:41:56,478 - research_rover - INFO - Successfully extracted 604 words from https://pubmed.ncbi.nlm.nih.gov/42166623/
+2026-05-29 14:41:57,500 - research_rover - INFO - Extracting full text for DOI: 10.1093/biomtc/ujag078 from URL: https://pubmed.ncbi.nlm.nih.gov/42166189/
+2026-05-29 14:41:58,376 - research_rover - INFO - Successfully extracted 543 words from https://pubmed.ncbi.nlm.nih.gov/42166189/
+2026-05-29 14:41:59,377 - research_rover - INFO - Extracting full text for DOI: 10.1136/bmjopen-2025-109404 from URL: https://pubmed.ncbi.nlm.nih.gov/42161540/
+2026-05-29 14:42:00,668 - research_rover - INFO - Successfully extracted 719 words from https://pubmed.ncbi.nlm.nih.gov/42161540/
+2026-05-29 14:42:01,679 - research_rover - INFO - Extracting full text for DOI: 10.1002/acm2.70596 from URL: https://pubmed.ncbi.nlm.nih.gov/42159089/
+2026-05-29 14:42:03,226 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42159089/, keeping abstract
+2026-05-29 14:42:04,247 - research_rover - INFO - Extracting full text for DOI: 10.3389/fpubh.2026.1763772 from URL: https://pubmed.ncbi.nlm.nih.gov/42158185/
+2026-05-29 14:42:05,485 - research_rover - INFO - Successfully extracted 709 words from https://pubmed.ncbi.nlm.nih.gov/42158185/
+2026-05-29 14:42:06,494 - research_rover - INFO - Extracting full text for DOI: 10.3389/fdgth.2026.1807507 from URL: https://pubmed.ncbi.nlm.nih.gov/42158173/
+2026-05-29 14:42:07,644 - research_rover - INFO - Successfully extracted 757 words from https://pubmed.ncbi.nlm.nih.gov/42158173/
+2026-05-29 14:42:08,649 - research_rover - INFO - Extracting full text for DOI: 10.3389/ijph.2026.1609627 from URL: https://pubmed.ncbi.nlm.nih.gov/42158041/
+2026-05-29 14:42:10,057 - research_rover - INFO - Successfully extracted 476 words from https://pubmed.ncbi.nlm.nih.gov/42158041/
+2026-05-29 14:42:11,079 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.gerinurse.2026.104101 from URL: https://pubmed.ncbi.nlm.nih.gov/42155325/
+2026-05-29 14:42:11,998 - research_rover - INFO - Successfully extracted 308 words from https://pubmed.ncbi.nlm.nih.gov/42155325/
+2026-05-29 14:42:12,975 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41746-026-02671-w from URL: https://pubmed.ncbi.nlm.nih.gov/42151446/
+2026-05-29 14:42:13,893 - research_rover - INFO - Successfully extracted 232 words from https://pubmed.ncbi.nlm.nih.gov/42151446/
+2026-05-29 14:42:14,891 - research_rover - INFO - Extracting full text for DOI: 10.6224/JN.26309 from URL: https://pubmed.ncbi.nlm.nih.gov/42151047/
+2026-05-29 14:42:15,512 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42151047/, keeping abstract
+2026-05-29 14:42:16,524 - research_rover - INFO - Extracting full text for DOI: 10.1136/archdischild-2026-330462 from URL: https://pubmed.ncbi.nlm.nih.gov/42150872/
+2026-05-29 14:42:17,199 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42150872/, keeping abstract
+2026-05-29 14:42:18,211 - research_rover - INFO - Extracting full text for DOI: 10.1371/journal.pone.0344449 from URL: https://pubmed.ncbi.nlm.nih.gov/42149871/
+2026-05-29 14:42:19,794 - research_rover - INFO - Successfully extracted 471 words from https://pubmed.ncbi.nlm.nih.gov/42149871/
+2026-05-29 14:42:20,812 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261427061 from URL: https://pubmed.ncbi.nlm.nih.gov/42145332/
+2026-05-29 14:42:22,025 - research_rover - INFO - Successfully extracted 775 words from https://pubmed.ncbi.nlm.nih.gov/42145332/
+2026-05-29 14:42:23,038 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.neuropharm.2026.111027 from URL: https://pubmed.ncbi.nlm.nih.gov/42144072/
+2026-05-29 14:42:24,056 - research_rover - INFO - Successfully extracted 257 words from https://pubmed.ncbi.nlm.nih.gov/42144072/
+2026-05-29 14:42:25,079 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12903-026-08492-3 from URL: https://pubmed.ncbi.nlm.nih.gov/42143305/
+2026-05-29 14:42:26,051 - research_rover - INFO - Successfully extracted 372 words from https://pubmed.ncbi.nlm.nih.gov/42143305/
+2026-05-29 14:42:27,071 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.biotechadv.2026.108921 from URL: https://pubmed.ncbi.nlm.nih.gov/42142549/
+2026-05-29 14:42:28,190 - research_rover - INFO - Successfully extracted 220 words from https://pubmed.ncbi.nlm.nih.gov/42142549/
+2026-05-29 14:42:29,203 - research_rover - INFO - Extracting full text for DOI: 10.1002/jbm.b.70064 from URL: https://pubmed.ncbi.nlm.nih.gov/42141760/
+2026-05-29 14:42:30,274 - research_rover - INFO - Successfully extracted 462 words from https://pubmed.ncbi.nlm.nih.gov/42141760/
+2026-05-29 14:42:31,300 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-47521-7 from URL: https://pubmed.ncbi.nlm.nih.gov/42141004/
+2026-05-29 14:42:32,501 - research_rover - INFO - Successfully extracted 237 words from https://pubmed.ncbi.nlm.nih.gov/42141004/
+2026-05-29 14:42:33,493 - research_rover - INFO - Extracting full text for DOI: 10.1111/ijn.70151 from URL: https://pubmed.ncbi.nlm.nih.gov/42138722/
+2026-05-29 14:42:34,106 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42138722/, keeping abstract
+2026-05-29 14:42:35,118 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261443766 from URL: https://pubmed.ncbi.nlm.nih.gov/42136926/
+2026-05-29 14:42:35,731 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136926/, keeping abstract
+2026-05-29 14:42:36,739 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261450604 from URL: https://pubmed.ncbi.nlm.nih.gov/42136920/
+2026-05-29 14:42:37,377 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136920/, keeping abstract
+2026-05-29 14:42:38,365 - research_rover - INFO - Extracting full text for DOI: 10.1192/bjp.2026.10657 from URL: https://pubmed.ncbi.nlm.nih.gov/42136560/
+2026-05-29 14:42:39,445 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136560/, keeping abstract
+2026-05-29 14:42:40,469 - research_rover - INFO - Extracting full text for DOI: 10.2174/0115748871449923260330194138 from URL: https://pubmed.ncbi.nlm.nih.gov/42136480/
+2026-05-29 14:42:41,425 - research_rover - INFO - Successfully extracted 239 words from https://pubmed.ncbi.nlm.nih.gov/42136480/
+2026-05-29 14:42:42,431 - research_rover - INFO - Extracting full text for DOI: 10.2174/0113894501450885260409050432 from URL: https://pubmed.ncbi.nlm.nih.gov/42136241/
+2026-05-29 14:42:43,572 - research_rover - INFO - Successfully extracted 277 words from https://pubmed.ncbi.nlm.nih.gov/42136241/
+2026-05-29 14:42:44,553 - research_rover - INFO - Extracting full text for DOI: 10.2174/0115665232473551260504092329 from URL: https://pubmed.ncbi.nlm.nih.gov/42136237/
+2026-05-29 14:42:45,698 - research_rover - INFO - Successfully extracted 266 words from https://pubmed.ncbi.nlm.nih.gov/42136237/
+2026-05-29 14:42:46,708 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12877-026-07606-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42135640/
+2026-05-29 14:42:47,237 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42135640/, keeping abstract
+2026-05-29 14:42:48,238 - research_rover - INFO - Extracting full text for DOI: 10.1371/journal.pone.0348578 from URL: https://pubmed.ncbi.nlm.nih.gov/42133605/
+2026-05-29 14:42:49,252 - research_rover - INFO - Successfully extracted 627 words from https://pubmed.ncbi.nlm.nih.gov/42133605/
+2026-05-29 14:42:50,226 - research_rover - INFO - Extracting full text for DOI: 10.1002/agm2.70074 from URL: https://pubmed.ncbi.nlm.nih.gov/42130758/
+2026-05-29 14:42:51,269 - research_rover - INFO - Successfully extracted 519 words from https://pubmed.ncbi.nlm.nih.gov/42130758/
+2026-05-29 14:42:52,267 - research_rover - INFO - Extracting full text for DOI: 10.4235/agmr.26.0019 from URL: https://pubmed.ncbi.nlm.nih.gov/42130178/
+2026-05-29 14:42:53,271 - research_rover - INFO - Successfully extracted 225 words from https://pubmed.ncbi.nlm.nih.gov/42130178/
+2026-05-29 14:42:54,279 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jnma.2026.04.001 from URL: https://pubmed.ncbi.nlm.nih.gov/42128801/
+2026-05-29 14:42:55,575 - research_rover - INFO - Successfully extracted 610 words from https://pubmed.ncbi.nlm.nih.gov/42128801/
+2026-05-29 14:42:56,554 - research_rover - INFO - Extracting full text for DOI: 10.2196/84161 from URL: https://pubmed.ncbi.nlm.nih.gov/42127410/
+2026-05-29 14:42:57,668 - research_rover - INFO - Successfully extracted 728 words from https://pubmed.ncbi.nlm.nih.gov/42127410/
+2026-05-29 14:42:58,685 - research_rover - INFO - Extracting full text for DOI: 10.1002/biot.70238 from URL: https://pubmed.ncbi.nlm.nih.gov/42125966/
+2026-05-29 14:42:59,668 - research_rover - INFO - Successfully extracted 530 words from https://pubmed.ncbi.nlm.nih.gov/42125966/
+2026-05-29 14:43:00,677 - research_rover - INFO - Extracting full text for DOI: 10.2147/JMDH.S605216 from URL: https://pubmed.ncbi.nlm.nih.gov/42125049/
+2026-05-29 14:43:01,621 - research_rover - INFO - Successfully extracted 609 words from https://pubmed.ncbi.nlm.nih.gov/42125049/
+2026-05-29 14:43:02,633 - research_rover - INFO - Extracting full text for DOI: 10.3390/polym18091036 from URL: https://pubmed.ncbi.nlm.nih.gov/42122666/
+2026-05-29 14:43:03,685 - research_rover - INFO - Successfully extracted 1454 words from https://pubmed.ncbi.nlm.nih.gov/42122666/
+2026-05-29 14:43:04,705 - research_rover - INFO - Extracting full text for DOI: 10.3390/s26092703 from URL: https://pubmed.ncbi.nlm.nih.gov/42122424/
+2026-05-29 14:43:05,655 - research_rover - INFO - Successfully extracted 448 words from https://pubmed.ncbi.nlm.nih.gov/42122424/
+2026-05-29 14:43:06,663 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091348 from URL: https://pubmed.ncbi.nlm.nih.gov/42122050/
+2026-05-29 14:43:08,012 - research_rover - INFO - Successfully extracted 853 words from https://pubmed.ncbi.nlm.nih.gov/42122050/
+2026-05-29 14:43:09,007 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091346 from URL: https://pubmed.ncbi.nlm.nih.gov/42122048/
+2026-05-29 14:43:10,133 - research_rover - INFO - Successfully extracted 760 words from https://pubmed.ncbi.nlm.nih.gov/42122048/
+2026-05-29 14:43:11,136 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091278 from URL: https://pubmed.ncbi.nlm.nih.gov/42121982/
+2026-05-29 14:43:12,160 - research_rover - INFO - Successfully extracted 856 words from https://pubmed.ncbi.nlm.nih.gov/42121982/
+2026-05-29 14:43:13,171 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14091251 from URL: https://pubmed.ncbi.nlm.nih.gov/42121692/
+2026-05-29 14:43:14,192 - research_rover - INFO - Successfully extracted 494 words from https://pubmed.ncbi.nlm.nih.gov/42121692/
+2026-05-29 14:43:15,192 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14091120 from URL: https://pubmed.ncbi.nlm.nih.gov/42121563/
+2026-05-29 14:43:15,941 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42121563/, keeping abstract
+2026-05-29 14:43:16,949 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-52587-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42120489/
+2026-05-29 14:43:17,518 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42120489/, keeping abstract
+2026-05-29 14:43:18,525 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jtemb.2026.127879 from URL: https://pubmed.ncbi.nlm.nih.gov/42119479/
+2026-05-29 14:43:19,700 - research_rover - INFO - Successfully extracted 434 words from https://pubmed.ncbi.nlm.nih.gov/42119479/
+2026-05-29 14:43:20,705 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.bios.2026.118561 from URL: https://pubmed.ncbi.nlm.nih.gov/42119159/
+2026-05-29 14:43:21,688 - research_rover - INFO - Successfully extracted 335 words from https://pubmed.ncbi.nlm.nih.gov/42119159/
+2026-05-29 14:43:22,700 - research_rover - INFO - Extracting full text for DOI: 10.2196/55941 from URL: https://pubmed.ncbi.nlm.nih.gov/42119135/
+2026-05-29 14:43:23,743 - research_rover - INFO - Successfully extracted 653 words from https://pubmed.ncbi.nlm.nih.gov/42119135/
+2026-05-29 14:43:24,728 - research_rover - INFO - Extracting full text for DOI: 10.1080/14756366.2026.2659995 from URL: https://pubmed.ncbi.nlm.nih.gov/42113227/
+2026-05-29 14:43:25,843 - research_rover - INFO - Successfully extracted 1421 words from https://pubmed.ncbi.nlm.nih.gov/42113227/
+2026-05-29 14:43:26,834 - research_rover - INFO - Extracting full text for DOI: 10.1002/hed.70262 from URL: https://pubmed.ncbi.nlm.nih.gov/42108400/
+2026-05-29 14:43:28,152 - research_rover - INFO - Successfully extracted 367 words from https://pubmed.ncbi.nlm.nih.gov/42108400/
+2026-05-29 14:43:29,171 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.toxicon.2026.109147 from URL: https://pubmed.ncbi.nlm.nih.gov/42107546/
+2026-05-29 14:43:29,968 - research_rover - INFO - Successfully extracted 367 words from https://pubmed.ncbi.nlm.nih.gov/42107546/
+2026-05-29 14:43:30,978 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12951-026-04497-w from URL: https://pubmed.ncbi.nlm.nih.gov/42106854/
+2026-05-29 14:43:31,972 - research_rover - INFO - Successfully extracted 360 words from https://pubmed.ncbi.nlm.nih.gov/42106854/
+2026-05-29 14:43:32,959 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12913-026-14670-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42106755/
+2026-05-29 14:43:33,780 - research_rover - INFO - Successfully extracted 398 words from https://pubmed.ncbi.nlm.nih.gov/42106755/
+2026-05-29 14:43:34,797 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-48128-8 from URL: https://pubmed.ncbi.nlm.nih.gov/42106393/
+2026-05-29 14:43:35,682 - research_rover - INFO - Successfully extracted 237 words from https://pubmed.ncbi.nlm.nih.gov/42106393/
+2026-05-29 14:43:36,692 - research_rover - INFO - Extracting full text for DOI: 10.1177/10538127261449360 from URL: https://pubmed.ncbi.nlm.nih.gov/42105100/
+2026-05-29 14:43:37,813 - research_rover - INFO - Successfully extracted 244 words from https://pubmed.ncbi.nlm.nih.gov/42105100/
+2026-05-29 14:43:38,829 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12913-026-14649-1 from URL: https://pubmed.ncbi.nlm.nih.gov/42104356/
+2026-05-29 14:43:39,711 - research_rover - INFO - Successfully extracted 414 words from https://pubmed.ncbi.nlm.nih.gov/42104356/
+2026-05-29 14:43:40,729 - research_rover - INFO - Extracting full text for DOI: 10.1055/a-2872-4388 from URL: https://pubmed.ncbi.nlm.nih.gov/42103301/
+2026-05-29 14:43:41,957 - research_rover - INFO - Successfully extracted 429 words from https://pubmed.ncbi.nlm.nih.gov/42103301/
+2026-05-29 14:43:42,972 - research_rover - INFO - Extracting full text for DOI: 10.1177/15598276261438370 from URL: https://pubmed.ncbi.nlm.nih.gov/42100370/
+2026-05-29 14:43:43,900 - research_rover - INFO - Successfully extracted 416 words from https://pubmed.ncbi.nlm.nih.gov/42100370/
+2026-05-29 14:43:44,918 - research_rover - INFO - Extracting full text for DOI: 10.2196/89164 from URL: https://pubmed.ncbi.nlm.nih.gov/42097610/
+2026-05-29 14:43:46,226 - research_rover - INFO - Successfully extracted 808 words from https://pubmed.ncbi.nlm.nih.gov/42097610/
+2026-05-29 14:43:47,254 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.cis.2026.103918 from URL: https://pubmed.ncbi.nlm.nih.gov/42096943/
+2026-05-29 14:43:48,185 - research_rover - INFO - Successfully extracted 198 words from https://pubmed.ncbi.nlm.nih.gov/42096943/
+2026-05-29 14:43:49,205 - research_rover - INFO - Extracting full text for DOI: 10.1007/s10916-026-02398-x from URL: https://pubmed.ncbi.nlm.nih.gov/42095967/
+2026-05-29 14:43:50,319 - research_rover - INFO - Successfully extracted 709 words from https://pubmed.ncbi.nlm.nih.gov/42095967/
+2026-05-29 14:43:53,107 - research_rover - INFO - Loading CSV data from ../data\smart_healthcare.csv...
+2026-05-29 14:43:53,168 - research_rover - INFO - Processing data with JSON mapping and generating embeddings...
+2026-05-29 14:44:30,353 - research_rover - INFO -   Splitting oversized chunk (1047 tokens)
+2026-05-29 14:45:29,618 - research_rover - INFO -   Splitting oversized chunk (1356 tokens)
+2026-05-29 14:45:45,646 - research_rover - INFO -   Splitting oversized chunk (974 tokens)
+2026-05-29 14:45:59,977 - research_rover - WARNING - No text content available for 10.31478/202603b, skipping
+2026-05-29 14:46:19,428 - research_rover - INFO -   Splitting oversized chunk (1292 tokens)
+2026-05-29 14:46:36,853 - research_rover - WARNING - No text content available for 10.1002/acm2.70596, skipping
+2026-05-29 14:46:49,454 - research_rover - INFO -   Processed 50/100 papers...
+2026-05-29 14:47:56,308 - research_rover - WARNING - No text content available for 10.3390/healthcare14091120, skipping
+2026-05-29 14:48:24,870 - research_rover - INFO -   Splitting oversized chunk (1072 tokens)
+2026-05-29 14:48:46,516 - research_rover - INFO -   Processed 100/100 papers...
+2026-05-29 14:48:46,522 - research_rover - INFO - Built FAISS index with 1120 vectors (dim=768).
+2026-05-29 14:48:46,545 - research_rover - INFO - Saved 1120 chunk metadata entries to ../data\smart_healthcare_paper_chunk_metadata_hdbscan.json
+2026-05-29 14:48:46,565 - research_rover - INFO - Saved DOI-mapped metadata for 97 papers to ../data\smart_healthcare_paper_data_doi_mapped_hdbscan.json
+2026-05-29 14:48:46,566 - research_rover - INFO - Embeddings created successfully for ../data\smart_healthcare.csv in 497.64 seconds
+2026-05-29 15:11:03,328 - research_rover - INFO - Shutting down Research Rover API...

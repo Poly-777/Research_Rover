@@ -59,6 +59,7 @@ export interface EmbeddingProgress {
   stage: number
   message: string
   timestamp: number
+  percent?: number
 }
 
 export interface ApiError {

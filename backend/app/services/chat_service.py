@@ -16,11 +16,8 @@ from app.core.config import Settings
 # Import original functions
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'backend'))
 
-try:
-    from features.embedding_and_indexing import search_faiss
-    from utils.result_processor import get_context_from_result
-except ImportError as e:
-    logging.warning(f"Could not import original chat functions: {e}")
+from features.embedding_and_indexing import search_faiss
+from utils.result_processor import get_context_from_result
 
 logger = logging.getLogger("research_rover")
 

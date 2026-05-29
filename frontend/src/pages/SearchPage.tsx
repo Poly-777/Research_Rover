@@ -19,8 +19,10 @@ import {
   ChartBarIcon,
 } from '@heroicons/react/24/outline'
 import type { Paper } from '@/types'
-import { filesApi, embeddingsApi, type SearchProgress } from '@/services/api'
+import { filesApi, type SearchProgress } from '@/services/api'
 import { useSearch } from '@/context/SearchContext'
+import { useEmbedding } from '@/context/EmbeddingContext'
+import { EmbeddingProgressModal } from '@/components/EmbeddingProgressModal'
 
 // ─── Dual-handle publication-year range slider ──────────────────────────────
 const SLIDER_MIN_YEAR = 1950
@@ -358,6 +360,8 @@ export function SearchPage() {
     handlePageChange,
   } = useSearch()
 
+  const { startEmbeddings } = useEmbedding()
+
   // Filter panel open/closed is purely cosmetic — fine to keep page-local.
   const [showFilters, setShowFilters] = useState(false)
 
@@ -380,12 +384,8 @@ export function SearchPage() {
 
   const handleCreateEmbeddings = async () => {
     if (!csvFilename) return
-    try {
-      await embeddingsApi.create(csvFilename)
-      alert(`Embeddings started for ${csvFilename}. Use the chat feature once done!`)
-    } catch (err: any) {
-      setError(err.error || 'Failed to create embeddings')
-    }
+    setError('')
+    await startEmbeddings(csvFilename)
   }
 
   return (
@@ -723,6 +723,9 @@ export function SearchPage() {
           </div>
         </motion.div>
       )}
+
+      {/* Shared embedding progress modal (same app-wide job as the Chat page) */}
+      <EmbeddingProgressModal />
     </div>
   )
 }
