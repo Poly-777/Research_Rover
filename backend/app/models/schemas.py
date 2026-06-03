@@ -68,6 +68,12 @@ class EmbeddingProgress(BaseModel):
     timestamp: float = Field(..., description="Timestamp")
     percent: Optional[float] = Field(None, description="Overall completion percent (0-100)")
 
+class EmbeddingOptions(BaseModel):
+    """Optional per-request overrides for embedding creation."""
+    scrape_full_text: Optional[bool] = Field(None, description="Scrape paper URLs for full text (slower, richer). Falls back to abstracts when False.")
+    max_scrape: Optional[int] = Field(None, ge=0, description="Cap the number of URLs to scrape (0 = no cap).")
+    force: Optional[bool] = Field(None, description="Rebuild even if embeddings already exist (overwrites them).")
+
 class ChatRequest(BaseModel):
     """Chat request model"""
     message: str = Field(..., min_length=1, max_length=1000, description="Chat message")

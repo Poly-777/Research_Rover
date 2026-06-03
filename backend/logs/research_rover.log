@@ -2322,3 +2322,461 @@ NotImplementedError
 2026-05-29 14:48:46,565 - research_rover - INFO - Saved DOI-mapped metadata for 97 papers to ../data\smart_healthcare_paper_data_doi_mapped_hdbscan.json
 2026-05-29 14:48:46,566 - research_rover - INFO - Embeddings created successfully for ../data\smart_healthcare.csv in 497.64 seconds
 2026-05-29 15:11:03,328 - research_rover - INFO - Shutting down Research Rover API...
+2026-05-29 15:11:41,156 - research_rover - INFO - Starting Research Rover API...
+2026-05-29 15:11:41,159 - research_rover - INFO - Research Rover API started successfully
+2026-05-29 15:14:47,784 - research_rover - INFO - Uploaded file: Assamese___speaker__idemtification_keyword_frequency.csv (150 bytes)
+2026-05-29 15:14:49,589 - research_rover - INFO - Loading sentence model: all-mpnet-base-v2
+2026-05-29 15:14:49,592 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-05-29 15:14:49,592 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2026-05-29 15:14:55,669 - research_rover - INFO - Sentence model loaded successfully
+2026-05-29 15:14:55,842 - research_rover - INFO - Loading CSV and extracting full text from URLs using crawl4ai...
+2026-05-29 15:14:56,594 - research_rover - INFO - Loading CSV data from ../data\Assamese___speaker__idemtification_keyword_frequency.csv...
+2026-05-29 15:14:56,596 - research_rover - WARNING - Missing columns: {'Abstract', 'Title'}. Adding defaults...
+2026-05-29 15:14:56,597 - research_rover - INFO - Added Title column with default values
+2026-05-29 15:14:56,598 - research_rover - INFO - Added Abstract column with empty values
+2026-05-29 15:14:56,598 - research_rover - INFO - Added missing column: DOI
+2026-05-29 15:14:56,598 - research_rover - INFO - Added missing column: Reference
+2026-05-29 15:14:56,598 - research_rover - INFO - Added missing column: Source
+2026-05-29 15:14:56,599 - research_rover - INFO - Added missing column: Download_URL
+2026-05-29 15:14:56,601 - research_rover - INFO - Added missing column: Year_Published
+2026-05-29 15:14:56,617 - research_rover - INFO - Processing data with JSON mapping and generating embeddings...
+2026-05-29 15:14:56,617 - research_rover - WARNING - No text content available for paper_0, skipping
+2026-05-29 15:14:56,617 - research_rover - WARNING - No text content available for paper_1, skipping
+2026-05-29 15:14:56,619 - research_rover - WARNING - No text content available for paper_2, skipping
+2026-05-29 15:14:56,619 - research_rover - WARNING - No text content available for paper_3, skipping
+2026-05-29 15:14:56,619 - research_rover - WARNING - No text content available for paper_4, skipping
+2026-05-29 15:14:56,619 - research_rover - WARNING - No text content available for paper_5, skipping
+2026-05-29 15:14:56,619 - research_rover - ERROR - No vectors were generated.
+2026-05-29 15:15:23,449 - research_rover - INFO - Uploaded file: smart_healthcare (1).csv (179334 bytes)
+2026-05-29 15:15:24,692 - research_rover - INFO - Loading CSV and extracting full text from URLs using crawl4ai...
+2026-05-29 15:15:24,716 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jtumed.2026.04.010 from URL: https://pubmed.ncbi.nlm.nih.gov/42206288/
+2026-05-29 15:15:25,570 - research_rover - INFO - Successfully extracted 712 words from https://pubmed.ncbi.nlm.nih.gov/42206288/
+2026-05-29 15:15:26,583 - research_rover - INFO - Extracting full text for DOI: 10.30953/bhty.v9.471 from URL: https://pubmed.ncbi.nlm.nih.gov/42205848/
+2026-05-29 15:15:27,861 - research_rover - INFO - Successfully extracted 714 words from https://pubmed.ncbi.nlm.nih.gov/42205848/
+2026-05-29 15:15:28,870 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-53494-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42204202/
+2026-05-29 15:15:29,695 - research_rover - INFO - Successfully extracted 295 words from https://pubmed.ncbi.nlm.nih.gov/42204202/
+2026-05-29 15:15:30,686 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.pcl.2026.01.005 from URL: https://pubmed.ncbi.nlm.nih.gov/42203365/
+2026-05-29 15:15:31,634 - research_rover - INFO - Successfully extracted 189 words from https://pubmed.ncbi.nlm.nih.gov/42203365/
+2026-05-29 15:15:32,659 - research_rover - INFO - Extracting full text for DOI: 10.1136/bmjopen-2025-102059 from URL: https://pubmed.ncbi.nlm.nih.gov/42203300/
+2026-05-29 15:15:33,535 - research_rover - INFO - Successfully extracted 431 words from https://pubmed.ncbi.nlm.nih.gov/42203300/
+2026-05-29 15:15:34,550 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.bioadv.2026.214954 from URL: https://pubmed.ncbi.nlm.nih.gov/42202650/
+2026-05-29 15:15:35,367 - research_rover - INFO - Successfully extracted 245 words from https://pubmed.ncbi.nlm.nih.gov/42202650/
+2026-05-29 15:15:36,378 - research_rover - INFO - Extracting full text for DOI: 10.3390/medsci14020225 from URL: https://pubmed.ncbi.nlm.nih.gov/42201017/
+2026-05-29 15:15:36,983 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42201017/, keeping abstract
+2026-05-29 15:15:37,995 - research_rover - INFO - Extracting full text for DOI: 10.1021/acs.langmuir.6c00717 from URL: https://pubmed.ncbi.nlm.nih.gov/42200437/
+2026-05-29 15:15:38,914 - research_rover - INFO - Successfully extracted 260 words from https://pubmed.ncbi.nlm.nih.gov/42200437/
+2026-05-29 15:15:39,925 - research_rover - INFO - Extracting full text for DOI: 10.3390/s26103213 from URL: https://pubmed.ncbi.nlm.nih.gov/42198022/
+2026-05-29 15:15:40,980 - research_rover - INFO - Successfully extracted 788 words from https://pubmed.ncbi.nlm.nih.gov/42198022/
+2026-05-29 15:15:41,998 - research_rover - INFO - Extracting full text for DOI: 10.3390/mi17050586 from URL: https://pubmed.ncbi.nlm.nih.gov/42195503/
+2026-05-29 15:15:42,548 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42195503/, keeping abstract
+2026-05-29 15:15:43,524 - research_rover - INFO - Extracting full text for DOI: 10.3390/medicina62050827 from URL: https://pubmed.ncbi.nlm.nih.gov/42195080/
+2026-05-29 15:15:44,137 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42195080/, keeping abstract
+2026-05-29 15:15:45,132 - research_rover - INFO - Extracting full text for DOI: 10.3390/jcm15103757 from URL: https://pubmed.ncbi.nlm.nih.gov/42194719/
+2026-05-29 15:15:45,706 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42194719/, keeping abstract
+2026-05-29 15:15:46,719 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101372 from URL: https://pubmed.ncbi.nlm.nih.gov/42194464/
+2026-05-29 15:15:47,312 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42194464/, keeping abstract
+2026-05-29 15:15:48,323 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101355 from URL: https://pubmed.ncbi.nlm.nih.gov/42194447/
+2026-05-29 15:15:49,190 - research_rover - INFO - Successfully extracted 483 words from https://pubmed.ncbi.nlm.nih.gov/42194447/
+2026-05-29 15:15:50,206 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101336 from URL: https://pubmed.ncbi.nlm.nih.gov/42194428/
+2026-05-29 15:15:50,796 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42194428/, keeping abstract
+2026-05-29 15:15:51,814 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14101311 from URL: https://pubmed.ncbi.nlm.nih.gov/42194403/
+2026-05-29 15:15:52,496 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42194403/, keeping abstract
+2026-05-29 15:15:53,510 - research_rover - INFO - Extracting full text for DOI: 10.3390/bioengineering13050526 from URL: https://pubmed.ncbi.nlm.nih.gov/42194283/
+2026-05-29 15:15:54,300 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42194283/, keeping abstract
+2026-05-29 15:15:55,304 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-52679-1 from URL: https://pubmed.ncbi.nlm.nih.gov/42191770/
+2026-05-29 15:15:55,897 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42191770/, keeping abstract
+2026-05-29 15:15:56,925 - research_rover - INFO - Extracting full text for DOI: 10.2196/89574 from URL: https://pubmed.ncbi.nlm.nih.gov/42190234/
+2026-05-29 15:15:57,518 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42190234/, keeping abstract
+2026-05-29 15:15:58,528 - research_rover - INFO - Extracting full text for DOI: 10.3390/toxins18050236 from URL: https://pubmed.ncbi.nlm.nih.gov/42188638/
+2026-05-29 15:15:59,647 - research_rover - INFO - Successfully extracted 739 words from https://pubmed.ncbi.nlm.nih.gov/42188638/
+2026-05-29 15:16:00,664 - research_rover - INFO - Extracting full text for DOI: 10.3390/jfb17050214 from URL: https://pubmed.ncbi.nlm.nih.gov/42188382/
+2026-05-29 15:16:01,797 - research_rover - INFO - Successfully extracted 893 words from https://pubmed.ncbi.nlm.nih.gov/42188382/
+2026-05-29 15:16:02,796 - research_rover - INFO - Extracting full text for DOI: 10.3390/md24050174 from URL: https://pubmed.ncbi.nlm.nih.gov/42188309/
+2026-05-29 15:16:03,824 - research_rover - INFO - Successfully extracted 1429 words from https://pubmed.ncbi.nlm.nih.gov/42188309/
+2026-05-29 15:16:04,837 - research_rover - INFO - Extracting full text for DOI: 10.3390/bios16050250 from URL: https://pubmed.ncbi.nlm.nih.gov/42187446/
+2026-05-29 15:16:05,919 - research_rover - INFO - Successfully extracted 797 words from https://pubmed.ncbi.nlm.nih.gov/42187446/
+2026-05-29 15:16:06,923 - research_rover - INFO - Extracting full text for DOI: 10.7717/peerj.21180 from URL: https://pubmed.ncbi.nlm.nih.gov/42186476/
+2026-05-29 15:16:07,466 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42186476/, keeping abstract
+2026-05-29 15:16:08,480 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12889-026-27688-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42185997/
+2026-05-29 15:16:09,344 - research_rover - INFO - Successfully extracted 666 words from https://pubmed.ncbi.nlm.nih.gov/42185997/
+2026-05-29 15:16:10,351 - research_rover - INFO - Extracting full text for DOI: 10.2196/89279 from URL: https://pubmed.ncbi.nlm.nih.gov/42184424/
+2026-05-29 15:16:11,199 - research_rover - INFO - Successfully extracted 285 words from https://pubmed.ncbi.nlm.nih.gov/42184424/
+2026-05-29 15:16:12,221 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.idm.2026.03.001 from URL: https://pubmed.ncbi.nlm.nih.gov/42182949/
+2026-05-29 15:16:13,237 - research_rover - INFO - Successfully extracted 519 words from https://pubmed.ncbi.nlm.nih.gov/42182949/
+2026-05-29 15:16:14,225 - research_rover - INFO - Extracting full text for DOI: 10.21037/jtd-2026-1-0241 from URL: https://pubmed.ncbi.nlm.nih.gov/42182632/
+2026-05-29 15:16:15,225 - research_rover - INFO - Successfully extracted 628 words from https://pubmed.ncbi.nlm.nih.gov/42182632/
+2026-05-29 15:16:16,242 - research_rover - INFO - Extracting full text for DOI: 10.12336/bmt.25.00043 from URL: https://pubmed.ncbi.nlm.nih.gov/42179771/
+2026-05-29 15:16:17,229 - research_rover - INFO - Successfully extracted 892 words from https://pubmed.ncbi.nlm.nih.gov/42179771/
+2026-05-29 15:16:18,233 - research_rover - INFO - Extracting full text for DOI: 10.1111/jipb.70291 from URL: https://pubmed.ncbi.nlm.nih.gov/42178738/
+2026-05-29 15:16:19,124 - research_rover - INFO - Successfully extracted 451 words from https://pubmed.ncbi.nlm.nih.gov/42178738/
+2026-05-29 15:16:20,129 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-54205-9 from URL: https://pubmed.ncbi.nlm.nih.gov/42177223/
+2026-05-29 15:16:20,900 - research_rover - INFO - Successfully extracted 319 words from https://pubmed.ncbi.nlm.nih.gov/42177223/
+2026-05-29 15:16:21,920 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.clinbiomech.2026.106877 from URL: https://pubmed.ncbi.nlm.nih.gov/42176495/
+2026-05-29 15:16:23,058 - research_rover - INFO - Successfully extracted 477 words from https://pubmed.ncbi.nlm.nih.gov/42176495/
+2026-05-29 15:16:24,076 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260584 from URL: https://pubmed.ncbi.nlm.nih.gov/42175254/
+2026-05-29 15:16:25,152 - research_rover - INFO - Successfully extracted 243 words from https://pubmed.ncbi.nlm.nih.gov/42175254/
+2026-05-29 15:16:26,166 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260504 from URL: https://pubmed.ncbi.nlm.nih.gov/42175175/
+2026-05-29 15:16:27,163 - research_rover - INFO - Successfully extracted 161 words from https://pubmed.ncbi.nlm.nih.gov/42175175/
+2026-05-29 15:16:28,182 - research_rover - INFO - Extracting full text for DOI: 10.3233/SHTI260483 from URL: https://pubmed.ncbi.nlm.nih.gov/42175155/
+2026-05-29 15:16:29,120 - research_rover - INFO - Successfully extracted 151 words from https://pubmed.ncbi.nlm.nih.gov/42175155/
+2026-05-29 15:16:30,129 - research_rover - INFO - Extracting full text for DOI: 10.1126/sciadv.aee2233 from URL: https://pubmed.ncbi.nlm.nih.gov/42172340/
+2026-05-29 15:16:31,220 - research_rover - INFO - Successfully extracted 1584 words from https://pubmed.ncbi.nlm.nih.gov/42172340/
+2026-05-29 15:16:32,223 - research_rover - INFO - Extracting full text for DOI: 10.1007/s11033-026-11988-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42171928/
+2026-05-29 15:16:33,295 - research_rover - INFO - Successfully extracted 507 words from https://pubmed.ncbi.nlm.nih.gov/42171928/
+2026-05-29 15:16:34,271 - research_rover - INFO - Extracting full text for DOI: 10.1007/s10916-026-02410-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42171867/
+2026-05-29 15:16:35,206 - research_rover - INFO - Successfully extracted 589 words from https://pubmed.ncbi.nlm.nih.gov/42171867/
+2026-05-29 15:16:36,208 - research_rover - INFO - Extracting full text for DOI: 10.1039/d5em00868a from URL: https://pubmed.ncbi.nlm.nih.gov/42171124/
+2026-05-29 15:16:36,801 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42171124/, keeping abstract
+2026-05-29 15:16:37,829 - research_rover - INFO - Extracting full text for DOI: 10.31478/202603b from URL: https://pubmed.ncbi.nlm.nih.gov/42169969/
+2026-05-29 15:16:38,974 - research_rover - INFO - Successfully extracted 634 words from https://pubmed.ncbi.nlm.nih.gov/42169969/
+2026-05-29 15:16:39,973 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-53539-8 from URL: https://pubmed.ncbi.nlm.nih.gov/42168305/
+2026-05-29 15:16:40,791 - research_rover - INFO - Successfully extracted 280 words from https://pubmed.ncbi.nlm.nih.gov/42168305/
+2026-05-29 15:16:41,786 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.tjnut.2026.101604 from URL: https://pubmed.ncbi.nlm.nih.gov/42167530/
+2026-05-29 15:16:42,712 - research_rover - INFO - Successfully extracted 190 words from https://pubmed.ncbi.nlm.nih.gov/42167530/
+2026-05-29 15:16:43,721 - research_rover - INFO - Extracting full text for DOI: 10.1016/S0140-6736(26)00519-2 from URL: https://pubmed.ncbi.nlm.nih.gov/42167272/
+2026-05-29 15:16:44,967 - research_rover - INFO - Successfully extracted 3414 words from https://pubmed.ncbi.nlm.nih.gov/42167272/
+2026-05-29 15:16:45,981 - research_rover - INFO - Extracting full text for DOI: 10.1097/BRS.0000000000005735 from URL: https://pubmed.ncbi.nlm.nih.gov/42166623/
+2026-05-29 15:16:46,548 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42166623/, keeping abstract
+2026-05-29 15:16:47,519 - research_rover - INFO - Extracting full text for DOI: 10.1093/biomtc/ujag078 from URL: https://pubmed.ncbi.nlm.nih.gov/42166189/
+2026-05-29 15:16:48,470 - research_rover - INFO - Successfully extracted 543 words from https://pubmed.ncbi.nlm.nih.gov/42166189/
+2026-05-29 15:16:49,485 - research_rover - INFO - Extracting full text for DOI: 10.1136/bmjopen-2025-109404 from URL: https://pubmed.ncbi.nlm.nih.gov/42161540/
+2026-05-29 15:16:50,434 - research_rover - INFO - Successfully extracted 719 words from https://pubmed.ncbi.nlm.nih.gov/42161540/
+2026-05-29 15:16:51,441 - research_rover - INFO - Extracting full text for DOI: 10.1002/acm2.70596 from URL: https://pubmed.ncbi.nlm.nih.gov/42159089/
+2026-05-29 15:16:52,300 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42159089/, keeping abstract
+2026-05-29 15:16:53,301 - research_rover - INFO - Extracting full text for DOI: 10.3389/fpubh.2026.1763772 from URL: https://pubmed.ncbi.nlm.nih.gov/42158185/
+2026-05-29 15:16:54,207 - research_rover - INFO - Successfully extracted 709 words from https://pubmed.ncbi.nlm.nih.gov/42158185/
+2026-05-29 15:16:55,238 - research_rover - INFO - Extracting full text for DOI: 10.3389/fdgth.2026.1807507 from URL: https://pubmed.ncbi.nlm.nih.gov/42158173/
+2026-05-29 15:16:56,214 - research_rover - INFO - Successfully extracted 757 words from https://pubmed.ncbi.nlm.nih.gov/42158173/
+2026-05-29 15:16:57,223 - research_rover - INFO - Extracting full text for DOI: 10.3389/ijph.2026.1609627 from URL: https://pubmed.ncbi.nlm.nih.gov/42158041/
+2026-05-29 15:16:58,305 - research_rover - INFO - Successfully extracted 476 words from https://pubmed.ncbi.nlm.nih.gov/42158041/
+2026-05-29 15:16:59,320 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.gerinurse.2026.104101 from URL: https://pubmed.ncbi.nlm.nih.gov/42155325/
+2026-05-29 15:17:00,222 - research_rover - INFO - Successfully extracted 308 words from https://pubmed.ncbi.nlm.nih.gov/42155325/
+2026-05-29 15:17:01,238 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41746-026-02671-w from URL: https://pubmed.ncbi.nlm.nih.gov/42151446/
+2026-05-29 15:17:02,179 - research_rover - INFO - Successfully extracted 232 words from https://pubmed.ncbi.nlm.nih.gov/42151446/
+2026-05-29 15:17:03,197 - research_rover - INFO - Extracting full text for DOI: 10.6224/JN.26309 from URL: https://pubmed.ncbi.nlm.nih.gov/42151047/
+2026-05-29 15:17:04,148 - research_rover - INFO - Successfully extracted 438 words from https://pubmed.ncbi.nlm.nih.gov/42151047/
+2026-05-29 15:17:05,151 - research_rover - INFO - Extracting full text for DOI: 10.1136/archdischild-2026-330462 from URL: https://pubmed.ncbi.nlm.nih.gov/42150872/
+2026-05-29 15:17:05,818 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42150872/, keeping abstract
+2026-05-29 15:17:06,834 - research_rover - INFO - Extracting full text for DOI: 10.1371/journal.pone.0344449 from URL: https://pubmed.ncbi.nlm.nih.gov/42149871/
+2026-05-29 15:17:07,391 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42149871/, keeping abstract
+2026-05-29 15:17:08,401 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261427061 from URL: https://pubmed.ncbi.nlm.nih.gov/42145332/
+2026-05-29 15:17:09,406 - research_rover - INFO - Successfully extracted 775 words from https://pubmed.ncbi.nlm.nih.gov/42145332/
+2026-05-29 15:17:10,423 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.neuropharm.2026.111027 from URL: https://pubmed.ncbi.nlm.nih.gov/42144072/
+2026-05-29 15:17:11,299 - research_rover - INFO - Successfully extracted 257 words from https://pubmed.ncbi.nlm.nih.gov/42144072/
+2026-05-29 15:17:12,295 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12903-026-08492-3 from URL: https://pubmed.ncbi.nlm.nih.gov/42143305/
+2026-05-29 15:17:13,219 - research_rover - INFO - Successfully extracted 372 words from https://pubmed.ncbi.nlm.nih.gov/42143305/
+2026-05-29 15:17:14,235 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.biotechadv.2026.108921 from URL: https://pubmed.ncbi.nlm.nih.gov/42142549/
+2026-05-29 15:17:14,859 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42142549/, keeping abstract
+2026-05-29 15:17:15,867 - research_rover - INFO - Extracting full text for DOI: 10.1002/jbm.b.70064 from URL: https://pubmed.ncbi.nlm.nih.gov/42141760/
+2026-05-29 15:17:16,484 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42141760/, keeping abstract
+2026-05-29 15:17:17,482 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-47521-7 from URL: https://pubmed.ncbi.nlm.nih.gov/42141004/
+2026-05-29 15:17:18,442 - research_rover - INFO - Successfully extracted 237 words from https://pubmed.ncbi.nlm.nih.gov/42141004/
+2026-05-29 15:17:19,466 - research_rover - INFO - Extracting full text for DOI: 10.1111/ijn.70151 from URL: https://pubmed.ncbi.nlm.nih.gov/42138722/
+2026-05-29 15:17:20,359 - research_rover - INFO - Successfully extracted 452 words from https://pubmed.ncbi.nlm.nih.gov/42138722/
+2026-05-29 15:17:21,379 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261443766 from URL: https://pubmed.ncbi.nlm.nih.gov/42136926/
+2026-05-29 15:17:22,392 - research_rover - INFO - Successfully extracted 708 words from https://pubmed.ncbi.nlm.nih.gov/42136926/
+2026-05-29 15:17:23,383 - research_rover - INFO - Extracting full text for DOI: 10.1177/20552076261450604 from URL: https://pubmed.ncbi.nlm.nih.gov/42136920/
+2026-05-29 15:17:24,444 - research_rover - INFO - Successfully extracted 384 words from https://pubmed.ncbi.nlm.nih.gov/42136920/
+2026-05-29 15:17:25,467 - research_rover - INFO - Extracting full text for DOI: 10.1192/bjp.2026.10657 from URL: https://pubmed.ncbi.nlm.nih.gov/42136560/
+2026-05-29 15:17:26,006 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136560/, keeping abstract
+2026-05-29 15:17:27,012 - research_rover - INFO - Extracting full text for DOI: 10.2174/0115748871449923260330194138 from URL: https://pubmed.ncbi.nlm.nih.gov/42136480/
+2026-05-29 15:17:27,752 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42136480/, keeping abstract
+2026-05-29 15:17:28,766 - research_rover - INFO - Extracting full text for DOI: 10.2174/0113894501450885260409050432 from URL: https://pubmed.ncbi.nlm.nih.gov/42136241/
+2026-05-29 15:17:29,914 - research_rover - INFO - Successfully extracted 277 words from https://pubmed.ncbi.nlm.nih.gov/42136241/
+2026-05-29 15:17:30,895 - research_rover - INFO - Extracting full text for DOI: 10.2174/0115665232473551260504092329 from URL: https://pubmed.ncbi.nlm.nih.gov/42136237/
+2026-05-29 15:17:31,685 - research_rover - INFO - Successfully extracted 266 words from https://pubmed.ncbi.nlm.nih.gov/42136237/
+2026-05-29 15:17:32,692 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12877-026-07606-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42135640/
+2026-05-29 15:17:33,231 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42135640/, keeping abstract
+2026-05-29 15:17:34,253 - research_rover - INFO - Extracting full text for DOI: 10.1371/journal.pone.0348578 from URL: https://pubmed.ncbi.nlm.nih.gov/42133605/
+2026-05-29 15:17:34,826 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42133605/, keeping abstract
+2026-05-29 15:17:35,804 - research_rover - INFO - Extracting full text for DOI: 10.1002/agm2.70074 from URL: https://pubmed.ncbi.nlm.nih.gov/42130758/
+2026-05-29 15:17:36,399 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42130758/, keeping abstract
+2026-05-29 15:17:37,403 - research_rover - INFO - Extracting full text for DOI: 10.4235/agmr.26.0019 from URL: https://pubmed.ncbi.nlm.nih.gov/42130178/
+2026-05-29 15:17:38,306 - research_rover - INFO - Successfully extracted 225 words from https://pubmed.ncbi.nlm.nih.gov/42130178/
+2026-05-29 15:17:39,322 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jnma.2026.04.001 from URL: https://pubmed.ncbi.nlm.nih.gov/42128801/
+2026-05-29 15:17:40,346 - research_rover - INFO - Successfully extracted 610 words from https://pubmed.ncbi.nlm.nih.gov/42128801/
+2026-05-29 15:17:41,341 - research_rover - INFO - Extracting full text for DOI: 10.2196/84161 from URL: https://pubmed.ncbi.nlm.nih.gov/42127410/
+2026-05-29 15:17:42,253 - research_rover - INFO - Successfully extracted 728 words from https://pubmed.ncbi.nlm.nih.gov/42127410/
+2026-05-29 15:17:43,224 - research_rover - INFO - Extracting full text for DOI: 10.1002/biot.70238 from URL: https://pubmed.ncbi.nlm.nih.gov/42125966/
+2026-05-29 15:17:44,184 - research_rover - INFO - Successfully extracted 530 words from https://pubmed.ncbi.nlm.nih.gov/42125966/
+2026-05-29 15:17:45,207 - research_rover - INFO - Extracting full text for DOI: 10.2147/JMDH.S605216 from URL: https://pubmed.ncbi.nlm.nih.gov/42125049/
+2026-05-29 15:17:45,872 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42125049/, keeping abstract
+2026-05-29 15:17:46,868 - research_rover - INFO - Extracting full text for DOI: 10.3390/polym18091036 from URL: https://pubmed.ncbi.nlm.nih.gov/42122666/
+2026-05-29 15:17:47,511 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42122666/, keeping abstract
+2026-05-29 15:17:48,524 - research_rover - INFO - Extracting full text for DOI: 10.3390/s26092703 from URL: https://pubmed.ncbi.nlm.nih.gov/42122424/
+2026-05-29 15:17:49,372 - research_rover - INFO - Successfully extracted 448 words from https://pubmed.ncbi.nlm.nih.gov/42122424/
+2026-05-29 15:17:50,385 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091348 from URL: https://pubmed.ncbi.nlm.nih.gov/42122050/
+2026-05-29 15:17:51,274 - research_rover - INFO - Successfully extracted 853 words from https://pubmed.ncbi.nlm.nih.gov/42122050/
+2026-05-29 15:17:52,281 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091346 from URL: https://pubmed.ncbi.nlm.nih.gov/42122048/
+2026-05-29 15:17:53,312 - research_rover - INFO - Successfully extracted 760 words from https://pubmed.ncbi.nlm.nih.gov/42122048/
+2026-05-29 15:17:54,331 - research_rover - INFO - Extracting full text for DOI: 10.3390/diagnostics16091278 from URL: https://pubmed.ncbi.nlm.nih.gov/42121982/
+2026-05-29 15:17:55,469 - research_rover - INFO - Successfully extracted 856 words from https://pubmed.ncbi.nlm.nih.gov/42121982/
+2026-05-29 15:17:56,469 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14091251 from URL: https://pubmed.ncbi.nlm.nih.gov/42121692/
+2026-05-29 15:17:57,516 - research_rover - INFO - Successfully extracted 494 words from https://pubmed.ncbi.nlm.nih.gov/42121692/
+2026-05-29 15:17:58,509 - research_rover - INFO - Extracting full text for DOI: 10.3390/healthcare14091120 from URL: https://pubmed.ncbi.nlm.nih.gov/42121563/
+2026-05-29 15:17:59,400 - research_rover - INFO - Successfully extracted 403 words from https://pubmed.ncbi.nlm.nih.gov/42121563/
+2026-05-29 15:18:00,415 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-52587-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42120489/
+2026-05-29 15:18:01,470 - research_rover - INFO - Successfully extracted 366 words from https://pubmed.ncbi.nlm.nih.gov/42120489/
+2026-05-29 15:18:02,481 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.jtemb.2026.127879 from URL: https://pubmed.ncbi.nlm.nih.gov/42119479/
+2026-05-29 15:18:03,348 - research_rover - INFO - Successfully extracted 434 words from https://pubmed.ncbi.nlm.nih.gov/42119479/
+2026-05-29 15:18:04,360 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.bios.2026.118561 from URL: https://pubmed.ncbi.nlm.nih.gov/42119159/
+2026-05-29 15:18:05,272 - research_rover - INFO - Successfully extracted 335 words from https://pubmed.ncbi.nlm.nih.gov/42119159/
+2026-05-29 15:18:06,287 - research_rover - INFO - Extracting full text for DOI: 10.2196/55941 from URL: https://pubmed.ncbi.nlm.nih.gov/42119135/
+2026-05-29 15:18:07,454 - research_rover - INFO - Successfully extracted 653 words from https://pubmed.ncbi.nlm.nih.gov/42119135/
+2026-05-29 15:18:08,439 - research_rover - INFO - Extracting full text for DOI: 10.1080/14756366.2026.2659995 from URL: https://pubmed.ncbi.nlm.nih.gov/42113227/
+2026-05-29 15:18:09,789 - research_rover - INFO - Successfully extracted 1421 words from https://pubmed.ncbi.nlm.nih.gov/42113227/
+2026-05-29 15:18:10,815 - research_rover - INFO - Extracting full text for DOI: 10.1002/hed.70262 from URL: https://pubmed.ncbi.nlm.nih.gov/42108400/
+2026-05-29 15:18:12,101 - research_rover - INFO - Successfully extracted 367 words from https://pubmed.ncbi.nlm.nih.gov/42108400/
+2026-05-29 15:18:13,117 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.toxicon.2026.109147 from URL: https://pubmed.ncbi.nlm.nih.gov/42107546/
+2026-05-29 15:18:13,745 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42107546/, keeping abstract
+2026-05-29 15:18:14,762 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12951-026-04497-w from URL: https://pubmed.ncbi.nlm.nih.gov/42106854/
+2026-05-29 15:18:15,371 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42106854/, keeping abstract
+2026-05-29 15:18:16,390 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12913-026-14670-4 from URL: https://pubmed.ncbi.nlm.nih.gov/42106755/
+2026-05-29 15:18:16,997 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42106755/, keeping abstract
+2026-05-29 15:18:18,004 - research_rover - INFO - Extracting full text for DOI: 10.1038/s41598-026-48128-8 from URL: https://pubmed.ncbi.nlm.nih.gov/42106393/
+2026-05-29 15:18:18,891 - research_rover - INFO - Successfully extracted 237 words from https://pubmed.ncbi.nlm.nih.gov/42106393/
+2026-05-29 15:18:19,907 - research_rover - INFO - Extracting full text for DOI: 10.1177/10538127261449360 from URL: https://pubmed.ncbi.nlm.nih.gov/42105100/
+2026-05-29 15:18:20,816 - research_rover - INFO - Successfully extracted 244 words from https://pubmed.ncbi.nlm.nih.gov/42105100/
+2026-05-29 15:18:21,816 - research_rover - INFO - Extracting full text for DOI: 10.1186/s12913-026-14649-1 from URL: https://pubmed.ncbi.nlm.nih.gov/42104356/
+2026-05-29 15:18:22,885 - research_rover - INFO - Successfully extracted 414 words from https://pubmed.ncbi.nlm.nih.gov/42104356/
+2026-05-29 15:18:23,900 - research_rover - INFO - Extracting full text for DOI: 10.1055/a-2872-4388 from URL: https://pubmed.ncbi.nlm.nih.gov/42103301/
+2026-05-29 15:18:24,473 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42103301/, keeping abstract
+2026-05-29 15:18:25,503 - research_rover - INFO - Extracting full text for DOI: 10.1177/15598276261438370 from URL: https://pubmed.ncbi.nlm.nih.gov/42100370/
+2026-05-29 15:18:26,078 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42100370/, keeping abstract
+2026-05-29 15:18:27,083 - research_rover - INFO - Extracting full text for DOI: 10.2196/89164 from URL: https://pubmed.ncbi.nlm.nih.gov/42097610/
+2026-05-29 15:18:27,756 - research_rover - WARNING - Failed to extract content from https://pubmed.ncbi.nlm.nih.gov/42097610/, keeping abstract
+2026-05-29 15:18:28,762 - research_rover - INFO - Extracting full text for DOI: 10.1016/j.cis.2026.103918 from URL: https://pubmed.ncbi.nlm.nih.gov/42096943/
+2026-05-29 15:18:29,663 - research_rover - INFO - Successfully extracted 198 words from https://pubmed.ncbi.nlm.nih.gov/42096943/
+2026-05-29 15:18:30,689 - research_rover - INFO - Extracting full text for DOI: 10.1007/s10916-026-02398-x from URL: https://pubmed.ncbi.nlm.nih.gov/42095967/
+2026-05-29 15:18:31,670 - research_rover - INFO - Successfully extracted 709 words from https://pubmed.ncbi.nlm.nih.gov/42095967/
+2026-05-29 15:18:32,663 - research_rover - INFO - Loading CSV data from ../data\smart_healthcare (1).csv...
+2026-05-29 15:18:32,687 - research_rover - INFO - Processing data with JSON mapping and generating embeddings...
+2026-05-29 15:19:00,447 - research_rover - WARNING - No text content available for 10.3390/medicina62050827, skipping
+2026-05-29 15:19:00,448 - research_rover - WARNING - No text content available for 10.3390/jcm15103757, skipping
+2026-05-29 15:19:02,569 - research_rover - WARNING - No text content available for 10.3390/healthcare14101336, skipping
+2026-05-29 15:19:42,434 - research_rover - INFO -   Splitting oversized chunk (1356 tokens)
+2026-05-29 15:20:18,095 - research_rover - INFO -   Splitting oversized chunk (1588 tokens)
+2026-05-29 15:20:48,447 - research_rover - INFO -   Splitting oversized chunk (1292 tokens)
+2026-05-29 15:21:02,293 - research_rover - WARNING - No text content available for 10.1002/acm2.70596, skipping
+2026-05-29 15:21:16,854 - research_rover - INFO -   Processed 50/100 papers...
+2026-05-29 15:22:53,652 - research_rover - INFO -   Splitting oversized chunk (1072 tokens)
+2026-05-29 15:23:05,316 - research_rover - INFO -   Processed 100/100 papers...
+2026-05-29 15:23:05,326 - research_rover - INFO - Built FAISS index with 922 vectors (dim=768).
+2026-05-29 15:23:05,346 - research_rover - INFO - Saved 922 chunk metadata entries to ../data\smart_healthcare (1)_paper_chunk_metadata_hdbscan.json
+2026-05-29 15:23:05,362 - research_rover - INFO - Saved DOI-mapped metadata for 96 papers to ../data\smart_healthcare (1)_paper_data_doi_mapped_hdbscan.json
+2026-05-29 15:23:05,363 - research_rover - INFO - Embeddings created successfully for ../data\smart_healthcare (1).csv in 460.68 seconds
+2026-05-29 15:23:25,664 - research_rover - INFO - LLM instance created successfully
+2026-05-29 15:23:25,691 - research_rover - INFO - Decomposing query: what is this project about
+2026-05-29 15:23:28,347 - research_rover - INFO - Decomposed into sub-queries: ['what is this project about']
+2026-05-29 15:23:28,459 - research_rover - INFO - Retrieved 5 results for sub-query: 'what is this project about'
+2026-05-29 15:23:28,459 - research_rover - INFO - Total unique results after deduplication: 5
+2026-05-29 15:23:28,459 - research_rover - INFO - Search results found: 5
+2026-05-29 15:23:28,467 - research_rover - INFO - Sending prompt to LLM.
+2026-05-29 15:23:33,400 - research_rover - INFO - LLM response received.
+2026-05-29 15:24:02,491 - research_rover - INFO - Decomposing query: what is smart healthcare about
+2026-05-29 15:24:04,042 - research_rover - INFO - Decomposed into sub-queries: ['what is smart healthcare about']
+2026-05-29 15:24:04,087 - research_rover - INFO - Retrieved 5 results for sub-query: 'what is smart healthcare about'
+2026-05-29 15:24:04,088 - research_rover - INFO - Total unique results after deduplication: 5
+2026-05-29 15:24:04,088 - research_rover - INFO - Search results found: 5
+2026-05-29 15:24:04,096 - research_rover - INFO - Sending prompt to LLM.
+2026-05-29 15:24:12,957 - research_rover - INFO - LLM response received.
+2026-05-29 15:36:31,269 - research_rover - INFO - Starting Research Rover API...
+2026-05-29 15:36:31,273 - research_rover - INFO - Research Rover API started successfully
+2026-05-29 15:37:10,625 - research_rover - INFO - Loading sentence model: all-mpnet-base-v2
+2026-05-29 15:37:10,628 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-05-29 15:37:10,629 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2026-05-29 15:37:17,844 - research_rover - INFO - Sentence model loaded successfully
+2026-05-29 15:37:17,863 - research_rover - INFO - Skipping full-text scraping (disabled or no URLs); using abstracts only.
+2026-05-29 15:37:18,589 - research_rover - INFO - Loading CSV data from ../data\healthcare.csv...
+2026-05-29 15:37:18,610 - research_rover - INFO - Processing data with JSON mapping and generating embeddings...
+2026-05-29 15:37:18,841 - research_rover - WARNING - No text content available for 10.1007/s40292-026-00802-8, skipping
+2026-05-29 15:37:19,961 - research_rover - WARNING - No text content available for 10.1007/s00259-026-07912-4, skipping
+2026-05-29 15:37:20,386 - research_rover - WARNING - No text content available for 10.1007/s44470-026-00074-y, skipping
+2026-05-29 15:37:24,725 - research_rover - WARNING - No text content available for 10.3760/cma.j.cn112338-20250918-00659, skipping
+2026-05-29 15:37:24,725 - research_rover - WARNING - No text content available for 10.3760/cma.j.cn112338-20251105-00797, skipping
+2026-05-29 15:37:27,065 - research_rover - WARNING - No text content available for 10.1016/j.nut.2026.113245, skipping
+2026-05-29 15:37:27,357 - research_rover - INFO -   Processed 50/100 papers...
+2026-05-29 15:37:27,585 - research_rover - WARNING - No text content available for 10.1016/j.cbi.2026.112144, skipping
+2026-05-29 15:37:29,746 - research_rover - WARNING - No text content available for 10.1136/bmjoq-2025-003878, skipping
+2026-05-29 15:37:33,370 - research_rover - WARNING - No text content available for 10.1016/j.vaccine.2026.128695, skipping
+2026-05-29 15:37:33,526 - research_rover - INFO -   Processed 100/100 papers...
+2026-05-29 15:37:33,529 - research_rover - INFO - Built FAISS index with 292 vectors (dim=768).
+2026-05-29 15:37:33,536 - research_rover - INFO - Saved 292 chunk metadata entries to ../data\healthcare_paper_chunk_metadata_hdbscan.json
+2026-05-29 15:37:33,541 - research_rover - INFO - Saved DOI-mapped metadata for 91 papers to ../data\healthcare_paper_data_doi_mapped_hdbscan.json
+2026-05-29 15:37:33,542 - research_rover - INFO - Embeddings created successfully for ../data\healthcare.csv in 15.70 seconds
+2026-05-29 15:37:44,353 - research_rover - INFO - LLM instance created successfully
+2026-05-29 15:37:44,374 - research_rover - INFO - Decomposing query: what is healthcare
+2026-05-29 15:37:47,935 - research_rover - INFO - Decomposed into sub-queries: ['what is healthcare']
+2026-05-29 15:37:47,981 - research_rover - INFO - Retrieved 5 results for sub-query: 'what is healthcare'
+2026-05-29 15:37:47,981 - research_rover - INFO - Total unique results after deduplication: 5
+2026-05-29 15:37:47,981 - research_rover - INFO - Search results found: 5
+2026-05-29 15:37:47,990 - research_rover - INFO - Sending prompt to LLM.
+2026-05-29 15:37:51,434 - research_rover - INFO - LLM response received.
+2026-05-29 15:42:54,956 - research_rover - INFO - Skipping full-text scraping (disabled or no URLs); using abstracts only.
+2026-05-29 15:42:54,966 - research_rover - INFO - Loading CSV data from ../data\machine_learning.csv...
+2026-05-29 15:42:55,011 - research_rover - INFO - Processing data with JSON mapping and generating embeddings...
+2026-05-29 15:42:55,387 - research_rover - WARNING - No text content available for 10.1002/ajh.70362, skipping
+2026-05-29 15:42:58,780 - research_rover - WARNING - No text content available for 10.3389/fcimb.2026.1839007, skipping
+2026-05-29 15:43:03,825 - research_rover - INFO -   Processed 50/1000 papers...
+2026-05-29 15:43:06,431 - research_rover - WARNING - No text content available for 10.1038/d41586-026-01476-x, skipping
+2026-05-29 15:43:08,771 - research_rover - WARNING - No text content available for 10.1038/d41586-026-01139-x, skipping
+2026-05-29 15:43:08,771 - research_rover - WARNING - No text content available for 10.1038/d41586-026-01424-9, skipping
+2026-05-29 15:43:08,772 - research_rover - WARNING - No text content available for 10.1038/d41586-026-01486-9, skipping
+2026-05-29 15:43:14,122 - research_rover - INFO -   Processed 100/1000 papers...
+2026-05-29 15:43:26,641 - research_rover - INFO -   Processed 150/1000 papers...
+2026-05-29 15:43:28,863 - research_rover - WARNING - No text content available for 10.1002/jum.70295, skipping
+2026-05-29 15:43:32,056 - research_rover - WARNING - No text content available for 10.1080/17483107.2026.2671834, skipping
+2026-05-29 15:43:36,569 - research_rover - INFO -   Processed 200/1000 papers...
+2026-05-29 15:43:37,689 - research_rover - WARNING - No text content available for 10.1016/j.jbusres.2024.114982, skipping
+2026-05-29 15:43:38,100 - research_rover - WARNING - No text content available for 10.1002/aet2.10354, skipping
+2026-05-29 15:43:45,501 - research_rover - WARNING - No text content available for 10.3390/nu18091443, skipping
+2026-05-29 15:43:49,847 - research_rover - INFO -   Processed 250/1000 papers...
+2026-05-29 15:43:51,327 - research_rover - WARNING - No text content available for 10.3390/jcm15093441, skipping
+2026-05-29 15:43:51,328 - research_rover - WARNING - No text content available for 10.3390/jcm15093367, skipping
+2026-05-29 15:43:51,328 - research_rover - WARNING - No text content available for 10.3390/jcm15093333, skipping
+2026-05-29 15:43:51,328 - research_rover - WARNING - No text content available for 10.3390/jcm15093303, skipping
+2026-05-29 15:43:51,329 - research_rover - WARNING - No text content available for 10.3390/jcm15093300, skipping
+2026-05-29 15:43:51,819 - research_rover - WARNING - No text content available for 10.3390/jcm15093213, skipping
+2026-05-29 15:44:03,526 - research_rover - INFO -   Processed 300/1000 papers...
+2026-05-29 15:44:05,944 - research_rover - WARNING - No text content available for 10.3390/cancers18091457, skipping
+2026-05-29 15:44:06,155 - research_rover - WARNING - No text content available for 10.3390/cancers18091389, skipping
+2026-05-29 15:44:06,327 - research_rover - WARNING - No text content available for 10.3390/cancers18091345, skipping
+2026-05-29 15:44:06,380 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091407, skipping
+2026-05-29 15:44:06,380 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091379, skipping
+2026-05-29 15:44:06,591 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091348, skipping
+2026-05-29 15:44:06,592 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091345, skipping
+2026-05-29 15:44:06,592 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091341, skipping
+2026-05-29 15:44:06,592 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091313, skipping
+2026-05-29 15:44:06,592 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091311, skipping
+2026-05-29 15:44:06,592 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091290, skipping
+2026-05-29 15:44:06,593 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091282, skipping
+2026-05-29 15:44:06,593 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091256, skipping
+2026-05-29 15:44:06,593 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091255, skipping
+2026-05-29 15:44:06,593 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091254, skipping
+2026-05-29 15:44:06,594 - research_rover - WARNING - No text content available for 10.3390/diagnostics16091249, skipping
+2026-05-29 15:44:07,692 - research_rover - WARNING - No text content available for 10.3390/ani16091312, skipping
+2026-05-29 15:44:07,692 - research_rover - WARNING - No text content available for 10.3390/healthcare14091240, skipping
+2026-05-29 15:44:07,692 - research_rover - WARNING - No text content available for 10.3390/healthcare14091208, skipping
+2026-05-29 15:44:07,693 - research_rover - WARNING - No text content available for 10.3390/healthcare14091195, skipping
+2026-05-29 15:44:07,693 - research_rover - WARNING - No text content available for 10.3390/healthcare14091191, skipping
+2026-05-29 15:44:07,693 - research_rover - WARNING - No text content available for 10.3390/healthcare14091185, skipping
+2026-05-29 15:44:07,693 - research_rover - WARNING - No text content available for 10.3390/healthcare14091131, skipping
+2026-05-29 15:44:07,693 - research_rover - WARNING - No text content available for 10.3390/foods15091606, skipping
+2026-05-29 15:44:08,745 - research_rover - INFO -   Processed 350/1000 papers...
+2026-05-29 15:44:18,628 - research_rover - WARNING - No text content available for 10.1038/d41586-026-01477-w, skipping
+2026-05-29 15:44:22,656 - research_rover - INFO -   Processed 400/1000 papers...
+2026-05-29 15:44:22,656 - research_rover - WARNING - No text content available for 10.1016/j.jpurol.2026.105983, skipping
+2026-05-29 15:44:33,384 - research_rover - INFO -   Processed 450/1000 papers...
+2026-05-29 15:44:36,277 - research_rover - WARNING - No text content available for 10.1177/19433654261447874, skipping
+2026-05-29 15:44:38,012 - research_rover - WARNING - No text content available for 10.3389/fspor.2026.1849247, skipping
+2026-05-29 15:44:39,323 - research_rover - WARNING - No text content available for 10.1088/1361-6560/ae6222, skipping
+2026-05-29 15:44:43,956 - research_rover - INFO -   Processed 500/1000 papers...
+2026-05-29 15:44:58,571 - research_rover - INFO -   Processed 550/1000 papers...
+2026-05-29 15:45:03,106 - research_rover - WARNING - No text content available for 10.1016/j.jns.2026.125924, skipping
+2026-05-29 15:45:08,465 - research_rover - INFO -   Processed 600/1000 papers...
+2026-05-29 15:45:10,264 - research_rover - WARNING - No text content available for 10.1093/sleep/zsag118, skipping
+2026-05-29 15:45:10,537 - research_rover - WARNING - No text content available for 10.1080/13854046.2026.2659074, skipping
+2026-05-29 15:45:15,074 - research_rover - WARNING - No text content available for 10.1017/S1092852926100923, skipping
+2026-05-29 15:45:15,440 - research_rover - WARNING - No text content available for 10.3389/fcimb.2026.1785189, skipping
+2026-05-29 15:45:18,487 - research_rover - INFO -   Processed 650/1000 papers...
+2026-05-29 15:45:25,292 - research_rover - WARNING - No text content available for 10.34133/csbj.0079, skipping
+2026-05-29 15:45:25,936 - research_rover - INFO -   Processed 700/1000 papers...
+2026-05-29 15:45:37,452 - research_rover - INFO -   Processed 750/1000 papers...
+2026-05-29 15:45:40,157 - research_rover - WARNING - No text content available for 10.3760/cma.j.cn112147-20250812-00480, skipping
+2026-05-29 15:45:40,202 - research_rover - WARNING - No text content available for 10.1016/j.brainresbull.2026.111923, skipping
+2026-05-29 15:45:46,450 - research_rover - INFO -   Processed 800/1000 papers...
+2026-05-29 15:45:50,318 - research_rover - WARNING - No text content available for 10.1016/j.hlc.2026.04.003, skipping
+2026-05-29 15:45:55,840 - research_rover - WARNING - No text content available for 10.1111/jdi.70331, skipping
+2026-05-29 15:45:57,393 - research_rover - INFO -   Processed 850/1000 papers...
+2026-05-29 15:45:59,196 - research_rover - WARNING - No text content available for 10.1007/s10916-026-02408-y, skipping
+2026-05-29 15:46:00,705 - research_rover - WARNING - No text content available for 10.1038/s41598-026-50292-w, skipping
+2026-05-29 15:46:03,373 - research_rover - WARNING - No text content available for 10.3760/cma.j.cn112151-20251111-00742, skipping
+2026-05-29 15:46:03,445 - research_rover - WARNING - No text content available for 10.1016/j.bja.2026.03.065, skipping
+2026-05-29 15:46:07,814 - research_rover - INFO -   Processed 900/1000 papers...
+2026-05-29 15:46:15,975 - research_rover - WARNING - No text content available for 10.1007/s00484-026-03144-1, skipping
+2026-05-29 15:46:17,562 - research_rover - INFO -   Processed 950/1000 papers...
+2026-05-29 15:46:18,196 - research_rover - WARNING - No text content available for 10.1021/acs.jctc.6c00310, skipping
+2026-05-29 15:46:25,805 - research_rover - INFO -   Processed 1000/1000 papers...
+2026-05-29 15:46:25,822 - research_rover - INFO - Built FAISS index with 3832 vectors (dim=768).
+2026-05-29 15:46:25,878 - research_rover - INFO - Saved 3832 chunk metadata entries to ../data\machine_learning_paper_chunk_metadata_hdbscan.json
+2026-05-29 15:46:25,937 - research_rover - INFO - Saved DOI-mapped metadata for 937 papers to ../data\machine_learning_paper_data_doi_mapped_hdbscan.json
+2026-05-29 15:46:25,938 - research_rover - INFO - Embeddings created successfully for ../data\machine_learning.csv in 211.06 seconds
+2026-05-29 15:49:21,643 - research_rover - INFO - Decomposing query: what is healthcare
+2026-05-29 15:49:24,118 - research_rover - INFO - Decomposed into sub-queries: ['what is healthcare']
+2026-05-29 15:49:24,158 - research_rover - INFO - Retrieved 5 results for sub-query: 'what is healthcare'
+2026-05-29 15:49:24,158 - research_rover - INFO - Total unique results after deduplication: 5
+2026-05-29 15:49:24,158 - research_rover - INFO - Search results found: 5
+2026-05-29 15:49:24,166 - research_rover - INFO - Sending prompt to LLM.
+2026-05-29 15:49:27,547 - research_rover - INFO - LLM response received.
+2026-05-29 15:49:35,626 - research_rover - INFO - Decomposing query: total number of papers
+2026-05-29 15:49:37,431 - research_rover - INFO - Decomposed into sub-queries: ['total number of papers']
+2026-05-29 15:49:37,479 - research_rover - INFO - Retrieved 5 results for sub-query: 'total number of papers'
+2026-05-29 15:49:37,479 - research_rover - INFO - Total unique results after deduplication: 5
+2026-05-29 15:49:37,479 - research_rover - INFO - Search results found: 5
+2026-05-29 15:49:37,487 - research_rover - INFO - Sending prompt to LLM.
+2026-05-29 15:50:00,469 - research_rover - INFO - LLM response received.
+2026-05-29 15:50:31,551 - research_rover - INFO - Decomposing query: total number of keywords
+2026-05-29 15:50:40,199 - research_rover - ERROR - Error during query decomposition: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-2.5-flash
+Please retry in 21.872489737s. [links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 5
+}
+, retry_delay {
+  seconds: 21
+}
+]. Falling back to original query.
+2026-05-29 15:50:40,248 - research_rover - INFO - Retrieved 5 results for sub-query: 'total number of keywords'
+2026-05-29 15:50:40,248 - research_rover - INFO - Total unique results after deduplication: 5
+2026-05-29 15:50:40,248 - research_rover - INFO - Search results found: 5
+2026-05-29 15:50:40,257 - research_rover - INFO - Sending prompt to LLM.
+2026-05-29 15:50:40,761 - research_rover - ERROR - Error calling LLM: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-2.5-flash
+Please retry in 21.294078376s. [links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 5
+}
+, retry_delay {
+  seconds: 21
+}
+]
+2026-05-30 11:26:44,131 - research_rover - INFO - Starting Research Rover API...
+2026-05-30 11:26:44,139 - research_rover - INFO - Research Rover API started successfully
+2026-05-30 12:06:33,724 - research_rover - INFO - Loading sentence model: all-mpnet-base-v2
+2026-05-30 12:06:33,734 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-05-30 12:06:33,734 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2026-05-30 12:06:42,600 - research_rover - INFO - Sentence model loaded successfully
+2026-05-30 12:06:42,601 - research_rover - INFO - LLM instance created successfully
+2026-05-30 12:06:42,652 - research_rover - INFO - Decomposing query: healthcare papers
+2026-05-30 12:06:47,143 - research_rover - INFO - Decomposed into sub-queries: ['healthcare papers']
+2026-05-30 12:06:47,884 - research_rover - INFO - Retrieved 5 results for sub-query: 'healthcare papers'
+2026-05-30 12:06:47,884 - research_rover - INFO - Total unique results after deduplication: 5
+2026-05-30 12:06:47,884 - research_rover - INFO - Search results found: 5
+2026-05-30 12:06:47,944 - research_rover - INFO - Sending prompt to LLM.
+2026-05-30 12:06:50,536 - research_rover - INFO - LLM response received.

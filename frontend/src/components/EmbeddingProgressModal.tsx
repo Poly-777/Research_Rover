@@ -9,7 +9,8 @@ import { useEmbedding } from '@/context/EmbeddingContext'
  * page (Chat, Search, ...) and reflect the same shared job.
  */
 export function EmbeddingProgressModal() {
-  const { progress, dismissProgress } = useEmbedding()
+  const { progress, dismissProgress, cancelEmbeddings } = useEmbedding()
+  const isActive = progress != null && progress.stage !== 3 && progress.stage !== -1
 
   return (
     <AnimatePresence>
@@ -103,6 +104,14 @@ export function EmbeddingProgressModal() {
                   <p className="text-sm text-green-600 dark:text-green-400 font-medium">
                     Embeddings created successfully! You can now chat with enhanced AI responses.
                   </p>
+                </div>
+              )}
+
+              {isActive && (
+                <div className="text-center">
+                  <Button variant="outline" onClick={cancelEmbeddings} className="mt-2">
+                    Cancel
+                  </Button>
                 </div>
               )}
 

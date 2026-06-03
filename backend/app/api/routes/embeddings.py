@@ -2,12 +2,14 @@
 Embeddings API routes for vector search functionality
 """
 
-from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Body
+from typing import Optional
 import os
 import time
+import threading
 import logging
 
-from app.models.schemas import EmbeddingProgress, SuccessResponse, ErrorResponse
+from app.models.schemas import EmbeddingProgress, SuccessResponse, ErrorResponse, EmbeddingOptions
 from app.core.config import get_settings
 from app.core.dependencies import get_sentence_model
 from app.services.embedding_service import EmbeddingService
@@ -22,22 +24,49 @@ embedding_progress_state = {
     "timestamp": time.time()
 }
 
+# Cooperative cancel flag for the in-flight embedding job. The background task
+# checks it at loop boundaries (between papers, before building/saving) so a
+# POST /cancel can stop it mid-run.
+_embedding_cancel_event: Optional[threading.Event] = None
+
 @router.get("/progress", response_model=EmbeddingProgress)
 async def get_embedding_progress():
     """Get current embedding creation progress"""
     return EmbeddingProgress(**embedding_progress_state)
 
+@router.post("/cancel")
+async def cancel_embeddings():
+    """Cancel the in-flight embedding job, if any."""
+    global embedding_progress_state, _embedding_cancel_event
+
+    running = embedding_progress_state.get("stage", -1) in (0, 1, 2)
+    if _embedding_cancel_event is not None:
+        _embedding_cancel_event.set()
+    if running:
+        embedding_progress_state = {
+            "stage": -1,
+            "message": "Embedding creation cancelled",
+            "timestamp": time.time()
+        }
+        logger.info("Embedding creation cancelled by user request")
+
+    return {
+        "cancelled": running,
+        "message": "Embedding creation cancelled" if running else "No active embedding job"
+    }
+
 @router.post("/{filename}", response_model=SuccessResponse)
 async def create_embeddings(
     filename: str,
     background_tasks: BackgroundTasks,
+    options: Optional[EmbeddingOptions] = Body(None),
     settings = Depends(get_settings),
     sentence_model = Depends(get_sentence_model)
 ):
     """
     Create embeddings and FAISS index for the specified CSV file
     """
-    global embedding_progress_state
+    global embedding_progress_state, _embedding_cancel_event
     
     try:
         csv_path = os.path.join(settings.DATA_FOLDER, filename)
@@ -61,29 +90,52 @@ async def create_embeddings(
         json_doi_mapped_path = os.path.join(settings.DATA_FOLDER, json_doi_mapped_file)
         metadata_path = os.path.join(settings.DATA_FOLDER, metadata_file)
         faiss_index_path = os.path.join(settings.DATA_FOLDER, faiss_index_file)
-        
-        if (os.path.exists(faiss_index_path) and 
-            os.path.exists(metadata_path) and 
+
+        force = options.force if options is not None and options.force is not None else False
+
+        # Skip rebuild only when not forcing — force lets users upgrade an
+        # abstracts-only index to full-text (or vice versa) by overwriting.
+        if (not force and
+            os.path.exists(faiss_index_path) and
+            os.path.exists(metadata_path) and
             os.path.exists(json_doi_mapped_path)):
-            
+
             embedding_progress_state = {
                 "stage": 3,
                 "message": "Embeddings already exist",
                 "timestamp": time.time()
             }
-            
+
             return SuccessResponse(
                 message="Embeddings already exist for this file"
             )
         
+        # Resolve scraping options: per-request override, else settings defaults.
+        scrape_full_text = (
+            options.scrape_full_text
+            if options is not None and options.scrape_full_text is not None
+            else settings.SCRAPE_FULL_TEXT
+        )
+        max_scrape = (
+            options.max_scrape
+            if options is not None and options.max_scrape is not None
+            else settings.SCRAPE_MAX_PAPERS
+        )
+
         # Initialize embedding service
         embedding_service = EmbeddingService(settings, sentence_model)
-        
+
+        # Fresh cancel flag for this job.
+        _embedding_cancel_event = threading.Event()
+
         # Create embeddings in background
         background_tasks.add_task(
             embedding_service.create_embeddings_async,
             csv_path,
-            embedding_progress_state
+            embedding_progress_state,
+            scrape_full_text,
+            max_scrape,
+            _embedding_cancel_event,
         )
         
         return SuccessResponse(

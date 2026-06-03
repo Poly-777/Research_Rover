@@ -201,14 +201,28 @@ export const chatApi = {
 }
 
 // Embeddings API
+export interface EmbeddingOptions {
+  scrape_full_text?: boolean
+  max_scrape?: number
+  force?: boolean
+}
+
 export const embeddingsApi = {
-  create: async (filename: string): Promise<{ message: string }> => {
-    const response = await api.post(`/embeddings/${filename}`)
+  create: async (
+    filename: string,
+    options?: EmbeddingOptions
+  ): Promise<{ message: string }> => {
+    const response = await api.post(`/embeddings/${filename}`, options ?? {})
     return response.data
   },
 
   getProgress: async (): Promise<EmbeddingProgress> => {
     const response: AxiosResponse<EmbeddingProgress> = await api.get('/embeddings/progress')
+    return response.data
+  },
+
+  cancel: async (): Promise<{ cancelled: boolean; message: string }> => {
+    const response = await api.post('/embeddings/cancel')
     return response.data
   },
 

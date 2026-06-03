@@ -34,135 +34,146 @@ class EmbeddingService:
         self.settings = settings
         self.sentence_model = sentence_model
     
-    async def extract_full_text_to_json(self, csv_path: str, progress_state: Optional[Dict[str, Any]] = None) -> str:
+    async def extract_full_text_to_json(
+        self,
+        csv_path: str,
+        progress_state: Optional[Dict[str, Any]] = None,
+        scrape_full_text: bool = True,
+        max_scrape: int = 0,
+        cancel_event=None,
+    ) -> str:
         """
-        Extract full text from URLs in CSV and save to separate JSON file mapping unique_id -> full_text
+        Extract full text from URLs in CSV and save to a JSON file mapping
+        unique_id -> full_text.
+
+        URLs are fetched concurrently (bounded by SCRAPE_CONCURRENCY) with
+        per-domain serialization so we stay polite to any single host without
+        a global fixed delay. When scrape_full_text is False (or no URLs are
+        present) we skip the network entirely and fall back to abstracts, which
+        makes this stage near-instant.
         """
-        logger.info("Loading CSV and extracting full text from URLs using crawl4ai...")
         df = load_data(csv_path)
-        total_papers = len(df)
-        
-        # Create full text mapping dictionary
-        full_text_mapping = {}
-        extracted_count = 0
-        total_urls = 0
-        
-        # Run crawl4ai in executor to avoid async context issues
-        loop = asyncio.get_event_loop()
-        
-        def extract_single_url(url, doi, title, abstract):
-            """Extract full text from a single URL using requests + BeautifulSoup as fallback"""
-            try:
-                import requests
-                from bs4 import BeautifulSoup
-                import time
-                
-                # Simple HTTP request approach as fallback
-                headers = {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-                }
-                
-                response = requests.get(url, headers=headers, timeout=10)
-                response.raise_for_status()
-                
-                soup = BeautifulSoup(response.content, 'html.parser')
-                
-                # Remove unwanted elements
-                for element in soup(['script', 'style', 'nav', 'header', 'footer', 'aside']):
-                    element.decompose()
-                
-                # Try to find main content areas
-                content_selectors = [
-                    'article', '.article-content', '.paper-content', 
-                    '.full-text', 'main', '.content', '.abstract',
-                    '#abstract', '.abstract-content'
-                ]
-                
-                full_text = ""
-                for selector in content_selectors:
-                    elements = soup.select(selector)
-                    if elements:
-                        full_text = ' '.join([elem.get_text(strip=True) for elem in elements])
-                        break
-                
-                # If no specific content found, get all text
-                if not full_text:
-                    full_text = soup.get_text(strip=True)
-                
-                # Clean up the text
-                full_text = ' '.join(full_text.split())  # Normalize whitespace
-                
-                if full_text and len(full_text.split()) > 100:
-                    return full_text, len(full_text.split())
-                
-                return None, 0
-                    
-            except Exception as e:
-                logger.error(f"Error in simple extraction for {url}: {e}")
-                return None, 0
-        
+
+        # Seed every paper with its abstract as default text, and collect the
+        # URLs worth scraping.
+        full_text_mapping: Dict[str, str] = {}
+        to_fetch = []  # (unique_id, url)
         for index, row in df.iterrows():
-            if progress_state is not None:
-                progress_state.update({
-                    "stage": 1,
-                    "message": f"Extracting full text from paper {index + 1} of {total_papers}",
-                    "percent": round(5 + (index / max(total_papers, 1)) * 45, 1),
-                    "timestamp": time.time()
-                })
+            doi = str(row.get('Doi') or row.get('DOI') or '')
+            unique_id = doi if doi and doi != 'nan' and doi != 'Unknown DOI' else f"paper_{index}"
+            abstract = str(row.get('Abstract', ''))
+            full_text_mapping[unique_id] = abstract if abstract and abstract != 'nan' else ''
 
             url = str(row.get('Download_URL', ''))
-            doi = str(row.get('Doi') or row.get('DOI') or '')
-            title = str(row.get('Title', ''))
-            
-            # Create unique ID for the paper (use DOI if available, otherwise use index)
-            unique_id = doi if doi and doi != 'nan' and doi != 'Unknown DOI' else f"paper_{index}"
-            
-            # Initialize with abstract as default
-            abstract = str(row.get('Abstract', ''))
-            default_text = abstract if abstract and abstract != 'nan' else ''
-            full_text_mapping[unique_id] = default_text
-            
-            # Skip if no URL
-            if not url or url == 'nan' or not url.startswith('http'):
-                continue
-            
-            total_urls += 1
-            
-            try:
-                logger.info(f"Extracting full text for DOI: {doi} from URL: {url}")
-                
-                # Run extraction in thread pool to avoid async context issues
-                full_text, word_count = await loop.run_in_executor(
-                    None, extract_single_url, url, doi, title, abstract
-                )
-                
-                if full_text:
-                    full_text_mapping[unique_id] = full_text
-                    extracted_count += 1
-                    logger.info(f"Successfully extracted {word_count} words from {url}")
-                else:
-                    logger.warning(f"Failed to extract content from {url}, keeping abstract")
-                    
-            except Exception as e:
-                logger.error(f"Error extracting from {url} (DOI: {doi}): {e}")
-            
-            # Add delay to be respectful to servers
-            await asyncio.sleep(1.0)
-        
-        logger.info(f"✅ Full text extraction completed: {extracted_count}/{total_urls} successful extractions using crawl4ai")
-        
-        # Save full text mapping to JSON file
+            if scrape_full_text and url and url != 'nan' and url.startswith('http'):
+                to_fetch.append((unique_id, url))
+
+        if max_scrape and max_scrape > 0:
+            to_fetch = to_fetch[:max_scrape]
+
         base_filename = os.path.basename(csv_path).replace(".csv", "")
         full_text_json_path = os.path.join(
             self.settings.DATA_FOLDER,
             f"{base_filename}_full_text_mapping.json"
         )
-        
+
+        # Fast path: nothing to scrape — write abstracts and return.
+        if not to_fetch:
+            logger.info("Skipping full-text scraping (disabled or no URLs); using abstracts only.")
+            with open(full_text_json_path, 'w', encoding='utf-8') as f:
+                json.dump(full_text_mapping, f, indent=2, ensure_ascii=False)
+            return full_text_json_path
+
+        total_urls = len(to_fetch)
+        timeout = getattr(self.settings, 'SCRAPE_TIMEOUT', 10)
+        concurrency = max(1, getattr(self.settings, 'SCRAPE_CONCURRENCY', 10))
+        logger.info(f"Scraping full text for {total_urls} URLs (concurrency={concurrency}, timeout={timeout}s)...")
+
+        import requests
+        from bs4 import BeautifulSoup
+        from urllib.parse import urlparse
+
+        session = requests.Session()
+        session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                          '(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        })
+
+        def extract_single_url(url: str):
+            """Blocking fetch + parse for one URL; returns cleaned text or None."""
+            try:
+                response = session.get(url, timeout=timeout)
+                response.raise_for_status()
+                soup = BeautifulSoup(response.content, 'html.parser')
+                for element in soup(['script', 'style', 'nav', 'header', 'footer', 'aside']):
+                    element.decompose()
+                content_selectors = [
+                    'article', '.article-content', '.paper-content',
+                    '.full-text', 'main', '.content', '.abstract',
+                    '#abstract', '.abstract-content'
+                ]
+                full_text = ""
+                for selector in content_selectors:
+                    elements = soup.select(selector)
+                    if elements:
+                        full_text = ' '.join(elem.get_text(strip=True) for elem in elements)
+                        break
+                if not full_text:
+                    full_text = soup.get_text(strip=True)
+                full_text = ' '.join(full_text.split())  # normalize whitespace
+                if full_text and len(full_text.split()) > 100:
+                    return full_text
+                return None
+            except Exception as e:
+                logger.error(f"Error extracting from {url}: {e}")
+                return None
+
+        loop = asyncio.get_event_loop()
+        semaphore = asyncio.Semaphore(concurrency)
+        domain_locks: Dict[str, asyncio.Lock] = {}
+        completed = 0
+        extracted_count = 0
+
+        def domain_lock_for(url: str) -> asyncio.Lock:
+            host = urlparse(url).netloc
+            lock = domain_locks.get(host)
+            if lock is None:
+                lock = asyncio.Lock()
+                domain_locks[host] = lock
+            return lock
+
+        async def fetch_one(unique_id: str, url: str):
+            nonlocal completed, extracted_count
+            # Bail out fast on cancel — skip the network call for remaining URLs.
+            if cancel_event is not None and cancel_event.is_set():
+                completed += 1
+                return
+            # Per-domain lock first (so same-host requests queue without holding
+            # a concurrency slot), then the global semaphore caps total parallelism.
+            async with domain_lock_for(url):
+                async with semaphore:
+                    full_text = await loop.run_in_executor(None, extract_single_url, url)
+            if full_text:
+                full_text_mapping[unique_id] = full_text
+                extracted_count += 1
+            completed += 1
+            if progress_state is not None:
+                progress_state.update({
+                    "stage": 1,
+                    "message": f"Extracting full text {completed} of {total_urls}",
+                    "percent": round(5 + (completed / max(total_urls, 1)) * 45, 1),
+                    "timestamp": time.time()
+                })
+
+        await asyncio.gather(*(fetch_one(uid, url) for uid, url in to_fetch))
+        session.close()
+
+        logger.info(f"✅ Full text extraction completed: {extracted_count}/{total_urls} successful extractions")
+
         with open(full_text_json_path, 'w', encoding='utf-8') as f:
             json.dump(full_text_mapping, f, indent=2, ensure_ascii=False)
-        
+
         logger.info(f"📄 Full text mapping saved to {full_text_json_path}")
-        
         return full_text_json_path
     
     def load_csv_data_clean(self, csv_path: str):
@@ -227,7 +238,7 @@ class EmbeddingService:
             logger.error(f"Error loading CSV data: {e}")
             raise
 
-    def process_data_with_json_mapping(self, csv_path: str, full_text_json_path: str, sentence_model, progress_state: Optional[Dict[str, Any]] = None):
+    def process_data_with_json_mapping(self, csv_path: str, full_text_json_path: str, sentence_model, progress_state: Optional[Dict[str, Any]] = None, cancel_event=None):
         """
         Process data using JSON mapping for full text instead of modifying CSV
         """
@@ -262,6 +273,9 @@ class EmbeddingService:
         total_papers = len(df)
 
         for index, row in df.iterrows():
+            if cancel_event is not None and cancel_event.is_set():
+                logger.info("Embedding processing cancelled mid-run")
+                return None, None
             if progress_state is not None:
                 progress_state.update({
                     "stage": 2,
@@ -405,14 +419,28 @@ class EmbeddingService:
         return [c for c in final_chunks if c]
     
     async def create_embeddings_async(
-        self, 
-        csv_path: str, 
-        progress_state: Dict[str, Any]
+        self,
+        csv_path: str,
+        progress_state: Dict[str, Any],
+        scrape_full_text: bool = True,
+        max_scrape: int = 0,
+        cancel_event=None,
     ):
         """
         Create embeddings asynchronously with progress tracking
         """
         start_time = time.time()
+
+        def _cancelled() -> bool:
+            return cancel_event is not None and cancel_event.is_set()
+
+        def _mark_cancelled():
+            progress_state.update({
+                "stage": -1,
+                "message": "Embedding creation cancelled",
+                "timestamp": time.time()
+            })
+            logger.info("Embedding creation cancelled")
         
         try:
             # Update progress
@@ -438,10 +466,11 @@ class EmbeddingService:
                 f"{base_filename}_paper_chunks_hdbscan.index"
             )
             
-            # Extract full text from URLs (same as original backend)
+            # Extract full text from URLs (parallel; skipped when disabled)
             progress_state.update({
                 "stage": 1,
-                "message": "Extracting full text from paper URLs",
+                "message": "Extracting full text from paper URLs" if scrape_full_text
+                           else "Preparing abstracts (full-text scraping disabled)",
                 "percent": 5.0,
                 "timestamp": time.time()
             })
@@ -449,10 +478,19 @@ class EmbeddingService:
             # Extract full text to JSON mapping (cleaner approach)
             try:
                 logger.info("🔍 EXTRACTING FULL TEXT FROM URLs TO JSON MAPPING (cleaner approach)")
-                full_text_json_path = await self.extract_full_text_to_json(csv_path, progress_state)
+                full_text_json_path = await self.extract_full_text_to_json(
+                    csv_path, progress_state,
+                    scrape_full_text=scrape_full_text,
+                    max_scrape=max_scrape,
+                    cancel_event=cancel_event,
+                )
             except Exception as e:
                 logger.warning(f"Full text extraction failed: {e}, will use abstracts during processing")
                 full_text_json_path = None
+
+            if _cancelled():
+                _mark_cancelled()
+                return
 
             # Update progress
             progress_state.update({
@@ -470,9 +508,14 @@ class EmbeddingService:
                 csv_path,
                 full_text_json_path,
                 self.sentence_model,
-                progress_state
+                progress_state,
+                cancel_event
             )
-            
+
+            if _cancelled():
+                _mark_cancelled()
+                return
+
             if all_vectors is None or all_chunk_metadata is None:
                 progress_state.update({
                     "stage": -1,
@@ -481,6 +524,10 @@ class EmbeddingService:
                 })
                 return
             
+            if _cancelled():
+                _mark_cancelled()
+                return
+
             # Build FAISS index
             progress_state.update({
                 "stage": 2,

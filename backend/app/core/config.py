@@ -39,6 +39,12 @@ class Settings(BaseSettings):
     # Embedding Configuration
     CHUNK_SIZE: int = 512
     CHUNK_OVERLAP: int = 50
+
+    # Full-text scraping (embedding Stage 1) — concurrency + politeness controls
+    SCRAPE_FULL_TEXT: bool = True   # default: scrape paper URLs for richer text
+    SCRAPE_CONCURRENCY: int = 10    # max simultaneous fetches across all domains
+    SCRAPE_TIMEOUT: int = 10        # per-request timeout (seconds)
+    SCRAPE_MAX_PAPERS: int = 0      # 0 = no cap on how many URLs to scrape
     
     class Config:
         env_file = ".env"

@@ -13,7 +13,13 @@ interface EmbeddingContextValue {
   progress: EmbeddingProgress | null
   /** Filename of the most recently completed job (so pages can refresh status). */
   completedFile: string | null
-  startEmbeddings: (filename: string) => Promise<void>
+  /** Whether to scrape paper URLs for full text (slower, richer) vs. abstracts-only (fast). */
+  scrapeFullText: boolean
+  setScrapeFullText: (v: boolean) => void
+  /** Start a job. Pass force=true to rebuild an existing index (overwrites it). */
+  startEmbeddings: (filename: string, force?: boolean) => Promise<void>
+  /** Cancel the in-flight job and clear the progress modal. */
+  cancelEmbeddings: () => Promise<void>
   dismissProgress: () => void
 }
 
@@ -29,6 +35,7 @@ export function EmbeddingProvider({ children }: { children: ReactNode }) {
   const [isCreating, setIsCreating] = useState(false)
   const [progress, setProgress] = useState<EmbeddingProgress | null>(null)
   const [completedFile, setCompletedFile] = useState<string | null>(null)
+  const [scrapeFullText, setScrapeFullText] = useState(true)
   const activeFileRef = useRef<string | null>(null)
   const clearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -73,13 +80,13 @@ export function EmbeddingProvider({ children }: { children: ReactNode }) {
     if (clearTimerRef.current) clearTimeout(clearTimerRef.current)
   }, [])
 
-  const startEmbeddings = async (filename: string) => {
+  const startEmbeddings = async (filename: string, force = false) => {
     if (!filename) return
     activeFileRef.current = filename
     setProgress({ stage: 0, message: 'Starting embedding creation...', timestamp: Date.now() })
     setIsCreating(true)
     try {
-      await embeddingsApi.create(filename)
+      await embeddingsApi.create(filename, { scrape_full_text: scrapeFullText, force })
     } catch (err: any) {
       setIsCreating(false)
       setProgress({
@@ -90,13 +97,29 @@ export function EmbeddingProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const cancelEmbeddings = async () => {
+    try {
+      await embeddingsApi.cancel()
+    } catch (err) {
+      console.error('Error cancelling embeddings:', err)
+    }
+    // Stop polling and clear the modal immediately, regardless of the backend.
+    if (clearTimerRef.current) clearTimeout(clearTimerRef.current)
+    activeFileRef.current = null
+    setIsCreating(false)
+    setProgress(null)
+  }
+
   const dismissProgress = () => setProgress(null)
 
   const value: EmbeddingContextValue = {
     isCreating,
     progress,
     completedFile,
+    scrapeFullText,
+    setScrapeFullText,
     startEmbeddings,
+    cancelEmbeddings,
     dismissProgress,
   }
 
