@@ -18,6 +18,7 @@ from app.models.schemas import Paper, SearchSource
 from app.core.config import Settings
 
 from app.services.pubmed_service import PubMedService
+from app.core.dependencies import get_reranker
 
 logger = logging.getLogger("research_rover")
 
@@ -72,12 +73,14 @@ class SearchService:
         search_source: SearchSource = SearchSource.CORE,
         use_raw_query: bool = False,
         cancel_event: Optional[Any] = None,
+        sort_mode: str = "relevance",
     ) -> List[Dict[str, Any]]:
         """Search for papers using the specified source"""
         try:
             if search_source == SearchSource.PUBMED:
                 return await self._search_pubmed(
-                    query, max_results, start_date, end_date, use_raw_query, cancel_event
+                    query, max_results, start_date, end_date, use_raw_query,
+                    cancel_event, sort_mode,
                 )
             else:
                 return await self._search_core(query, max_results, start_date, end_date)
@@ -103,6 +106,7 @@ class SearchService:
         end_date: Optional[date],
         use_raw_query: bool = False,
         cancel_event: Optional[Any] = None,
+        sort_mode: str = "relevance",
     ) -> List[Dict[str, Any]]:
         """Search using PubMed API"""
         try:
@@ -144,11 +148,54 @@ class SearchService:
                 _pubmed_executor, run_pubmed_search
             )
             self.last_corrected_query = corrected
-            return results or []
+            results = results or []
+
+            # ── Second-stage ordering ───────────────────────────────────
+            # PubMed returns candidates in chronological order. Re-order here:
+            #   relevance → MedCPT semantic re-rank against the user's query
+            #   recency   → explicit newest-first (already PubMed's order)
+            # Re-ranking is CPU-bound, so run it off the event loop.
+            if results and not self._is_cancelled(cancel_event):
+                # Use the original user query for semantic intent, falling back
+                # to the spelling-corrected query if that's what produced hits.
+                rank_query = corrected or query
+                results = await loop.run_in_executor(
+                    _pubmed_executor, self._order_results, results, rank_query, sort_mode
+                )
+
+            return results
 
         except Exception as e:
             logger.error(f"Unexpected error during PubMed search: {e}")
             return []
+
+    @staticmethod
+    def _is_cancelled(cancel_event: Optional[Any]) -> bool:
+        """True if the caller has signalled cancellation."""
+        return cancel_event is not None and cancel_event.is_set()
+
+    def _order_results(
+        self, results: List[Dict[str, Any]], query: str, sort_mode: str
+    ) -> List[Dict[str, Any]]:
+        """
+        Apply second-stage ordering to PubMed's candidate set.
+
+        relevance → MedCPT semantic re-rank (attaches Relevance_Score/Rank).
+        recency   → newest-first by publication year.
+        Runs in a worker thread (CPU-bound). Fails open to PubMed order.
+        """
+        try:
+            if sort_mode == "recency":
+                from app.services.reranker_service import MedCPTReRanker
+                return MedCPTReRanker.sort_by_recency(results)
+
+            reranker = get_reranker()
+            if reranker is None:
+                return results
+            return reranker.rerank(query, results)
+        except Exception as e:
+            logger.warning(f"Result ordering failed ({e}); using PubMed order.")
+            return results
 
     async def save_results_to_csv(
         self,
@@ -164,7 +211,7 @@ class SearchService:
             df = pd.DataFrame(results)
 
             required_columns = ['Title', 'DOI', 'Abstract', 'Source', 'Download_URL',
-                                 'Year_Published', 'Reference']
+                                 'Publication Year', 'Reference']
             for col in required_columns:
                 if col not in df.columns:
                     if col in ('Title',):
@@ -174,7 +221,7 @@ class SearchService:
                             lambda row: (
                                 f"{row.get('Title','Unknown')}. "
                                 f"{row.get('Source','Unknown Journal')}. "
-                                f"{row.get('Year_Published','Unknown Year')}."
+                                f"{row.get('Publication Year','Unknown Year')}."
                             ), axis=1
                         )
                     else:
@@ -225,11 +272,13 @@ class SearchService:
                         source=source,
                         title=title,
                         download_url=result.get('Download_URL', ''),
-                        year=str(result.get('Year_Published', 'Unknown')),
+                        year=str(result.get('Publication Year', result.get('Year_Published', 'Unknown'))),
                         keywords=keywords,
                         doi=doi,
                         authors=authors,
-                        abstract=result.get('Abstract', '')
+                        abstract=result.get('Abstract', ''),
+                        relevance_score=result.get('Relevance_Score'),
+                        relevance_rank=result.get('Relevance_Rank'),
                     )
                     papers.append(paper)
 
@@ -240,7 +289,7 @@ class SearchService:
                             source=str(result.get('Source', 'Unknown')).strip() or 'Unknown',
                             title=str(result.get('Title',  'Unknown')).strip() or 'Unknown',
                             download_url=str(result.get('Download_URL', '')).strip(),
-                            year=str(result.get('Year_Published', 'Unknown')).strip() or 'Unknown',
+                            year=str(result.get('Publication Year', result.get('Year_Published', 'Unknown'))).strip() or 'Unknown',
                             keywords=[],
                             doi=str(result.get('DOI', '') or result.get('Doi', '')).strip(),
                             authors=[],
@@ -270,7 +319,7 @@ class SearchService:
                             source=str(row.get('Source', '')).strip() or 'Unknown',
                             title=str(row.get('Title', '')).strip() or 'Unknown',
                             download_url=str(row.get('Download_URL', '')).strip() or '',
-                            year=str(row.get('Year_Published', '')).strip() or 'Unknown',
+                            year=str(row.get('Publication Year', row.get('Year_Published', ''))).strip() or 'Unknown',
                             keywords=self._process_keywords(row.get('Keywords', '')),
                             doi=str(row.get('DOI', '') or row.get('Doi', '')).strip() or '',
                             authors=self._process_authors(row.get('Authors', '')),

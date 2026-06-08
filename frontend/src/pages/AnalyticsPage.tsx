@@ -29,194 +29,30 @@ import {
 } from '@heroicons/react/24/outline'
 import { toast } from 'sonner'
 import { useTheme } from '@/components/theme-provider'
-import { filesApi, type FileInfo } from '@/services/api'
-import type { Paper } from '@/types'
+import { filesApi, analysisApi, type FileInfo } from '@/services/api'
 import { useAnalytics } from '@/context/AnalyticsContext'
+import type {
+  KeywordFrequencyItem,
+  CoOccurrenceEdge,
+  CentralityScore,
+  AnalysisSourceInfo,
+  AnalysisSummary,
+  MatrixRow,
+  KeywordMatrixResponse,
+} from '@/types'
 
-// ─── Local types derived from the real API ────────────────────────────────────
-// The analytics page derives its views from the Paper[] data returned by filesApi.
-
-export interface KeywordFrequencyItem {
-  keyword: string
-  frequency: number
-  percentage: number
+// Analytics view types live in '@/types' (shared with the API layer). They are
+// re-exported here so AnalyticsContext's existing import path keeps working.
+export type {
+  KeywordFrequencyItem,
+  CoOccurrenceEdge,
+  CentralityScore,
+  AnalysisSourceInfo,
+  AnalysisSummary,
+  MatrixRow,
+  KeywordMatrixResponse,
 }
 
-export interface CoOccurrenceEdge {
-  source: string
-  target: string
-  weight: number
-}
-
-export interface CentralityScore {
-  keyword: string
-  degree_centrality: number
-  closeness_centrality: number
-  betweenness_centrality: number
-  eigenvector_centrality: number
-  clustering_coefficient: number
-}
-
-export interface AnalysisSourceInfo {
-  filename: string
-  paper_count: number
-  has_keywords: boolean
-}
-
-export interface AnalysisSummary {
-  filename: string
-  source_file: string
-  normalized_metadata_file: string
-  keyword_frequency_file: string
-  keyword_presence_matrix_file: string
-  generated_at: number
-  minimum_frequency: number
-  matrix_rows: number
-  matrix_columns: number
-  total_papers: number
-  papers_with_keywords: number
-  unique_keywords: number
-  top_keywords_limit: number
-  keyword_frequency: KeywordFrequencyItem[]
-  cooccurrence_edges: CoOccurrenceEdge[]
-  centrality_scores: CentralityScore[]
-}
-
-export interface MatrixRow {
-  paper_id: string
-  title: string
-  source: string
-  year: string | null
-  values: Record<string, number>
-}
-
-export interface KeywordMatrixResponse {
-  matrix_keywords: string[]
-  rows: MatrixRow[]
-  total_rows: number
-  total_columns: number
-  truncated: boolean
-}
-
-// ─── Derive keyword columns from a Paper ─────────────────────────────────────
-// Papers have a `keywords` field (string, comma-separated) or similar.
-// We extract keywords from Paper.keywords (adjust field name if yours differs).
-function extractKeywords(paper: Paper): string[] {
-  const raw = (paper as any).keywords || (paper as any).keyword || ''
-  if (!raw) return []
-  return String(raw)
-    .split(/[,;|]+/)
-    .map((k: string) => k.trim().toLowerCase())
-    .filter(Boolean)
-}
-
-// ─── Build AnalysisSummary from Paper[] ──────────────────────────────────────
-function buildSummary(papers: Paper[], filename: string, topLimit: number): AnalysisSummary {
-  const freqMap = new Map<string, number>()
-  for (const paper of papers) {
-    const seen = new Set<string>()
-    for (const kw of extractKeywords(paper)) {
-      if (!seen.has(kw)) { freqMap.set(kw, (freqMap.get(kw) || 0) + 1); seen.add(kw) }
-    }
-  }
-
-  const total = papers.length
-  const sorted = [...freqMap.entries()].sort((a, b) => b[1] - a[1])
-  const topKws = sorted.slice(0, topLimit)
-
-  const keyword_frequency: KeywordFrequencyItem[] = topKws.map(([keyword, frequency]) => ({
-    keyword,
-    frequency,
-    percentage: total > 0 ? (frequency / total) * 100 : 0,
-  }))
-
-  // Co-occurrence: scan pairs within each paper
-  const coMap = new Map<string, number>()
-  const topSet = new Set(topKws.map(([k]) => k))
-  for (const paper of papers) {
-    const kws = [...new Set(extractKeywords(paper))].filter((k) => topSet.has(k))
-    for (let i = 0; i < kws.length; i++) {
-      for (let j = i + 1; j < kws.length; j++) {
-        const key = [kws[i], kws[j]].sort().join('\x00')
-        coMap.set(key, (coMap.get(key) || 0) + 1)
-      }
-    }
-  }
-  const cooccurrence_edges: CoOccurrenceEdge[] = [...coMap.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 300)
-    .map(([key, weight]) => { const [source, target] = key.split('\x00'); return { source, target, weight } })
-
-  // Simple centrality: degree = number of distinct co-occurring partners
-  const degreeMap = new Map<string, Set<string>>()
-  for (const { source, target } of cooccurrence_edges) {
-    if (!degreeMap.has(source)) degreeMap.set(source, new Set())
-    if (!degreeMap.has(target)) degreeMap.set(target, new Set())
-    degreeMap.get(source)!.add(target)
-    degreeMap.get(target)!.add(source)
-  }
-  const maxDeg = Math.max(...[...degreeMap.values()].map((s) => s.size), 1)
-  const centrality_scores: CentralityScore[] = topKws.map(([keyword]) => {
-    const deg = degreeMap.get(keyword)?.size || 0
-    const norm = deg / maxDeg
-    return {
-      keyword,
-      degree_centrality: norm,
-      closeness_centrality: norm * 0.9,
-      betweenness_centrality: norm * 0.75,
-      eigenvector_centrality: norm * 0.85,
-      clustering_coefficient: deg > 1 ? Math.min(1, (deg * 0.6) / maxDeg) : 0,
-    }
-  }).sort((a, b) => b.degree_centrality - a.degree_centrality)
-
-  const papersWithKeywords = papers.filter((p) => extractKeywords(p).length > 0).length
-
-  return {
-    filename,
-    source_file: filename,
-    normalized_metadata_file: filename.replace('.csv', '_normalized.csv'),
-    keyword_frequency_file: filename.replace('.csv', '_keyword_freq.csv'),
-    keyword_presence_matrix_file: filename.replace('.csv', '_matrix.csv'),
-    generated_at: Date.now() / 1000,
-    minimum_frequency: 1,
-    matrix_rows: total,
-    matrix_columns: topKws.length,
-    total_papers: total,
-    papers_with_keywords: papersWithKeywords,
-    unique_keywords: freqMap.size,
-    top_keywords_limit: topLimit,
-    keyword_frequency,
-    cooccurrence_edges,
-    centrality_scores,
-  }
-}
-
-// ─── Build KeywordMatrixResponse from Paper[] ─────────────────────────────────
-function buildMatrix(papers: Paper[], topKeywords: string[], previewRows: number): KeywordMatrixResponse {
-  const slicedPapers = papers.slice(0, previewRows)
-  const kwCols = topKeywords.slice(0, 50) // cap matrix columns
-
-  const rows: MatrixRow[] = slicedPapers.map((paper, i) => {
-    const kwSet = new Set(extractKeywords(paper))
-    const values: Record<string, number> = {}
-    for (const kw of kwCols) values[kw] = kwSet.has(kw) ? 1 : 0
-    return {
-      paper_id: (paper as any).id || (paper as any).doi || String(i),
-      title: (paper as any).title || 'Untitled',
-      source: (paper as any).source || (paper as any).journal || '—',
-      year: (paper as any).year || (paper as any).published_date?.slice(0, 4) || null,
-      values,
-    }
-  })
-
-  return {
-    matrix_keywords: kwCols,
-    rows,
-    total_rows: papers.length,
-    total_columns: kwCols.length,
-    truncated: papers.length > previewRows || topKeywords.length > 50,
-  }
-}
 
 // ─── Download helpers for analysis outputs ────────────────────────────────────
 // All analysis is computed in the browser, so the downloadable files are also
@@ -543,7 +379,6 @@ export function AnalyticsPage() {
     previewRows, setPreviewRows,
     generateOnSelect, setGenerateOnSelect,
     topKeywordLimit, setTopKeywordLimit,
-    paperCache, setPaperCache,
   } = useAnalytics()
   // Transient UI state stays local — fine to reset on navigation.
   const [loadingSources, setLoadingSources] = useState(false)
@@ -572,12 +407,14 @@ export function AnalyticsPage() {
     if (summary?.filename === selectedFile && matrix) return
     void loadAnalysis(selectedFile)
   }, [selectedFile, generateOnSelect])
+  // Re-fetch just the matrix preview from the backend when the row count changes.
   useEffect(() => {
-    if (selectedFile && summary) {
-      const papers = paperCache.get(selectedFile) || []
-      const topKws = summary.keyword_frequency.slice(0, topKeywordLimit).map((k) => k.keyword)
-      setMatrix(buildMatrix(papers, topKws, previewRows))
-    }
+    if (!selectedFile || !summary) return
+    let cancelled = false
+    analysisApi.getMatrix(selectedFile, previewRows)
+      .then((m) => { if (!cancelled) setMatrix(m) })
+      .catch(() => {})
+    return () => { cancelled = true }
   }, [previewRows])
 
   // ── Load list of CSV files from the files API ──
@@ -634,26 +471,27 @@ export function AnalyticsPage() {
     }
   }
 
-  // ── Fetch papers for a file, build summary + matrix ──
+  // ── Run the real backend analysis (AnalysisService): keyword frequency,
+  //    co-occurrence graph, and networkx centralities (degree, closeness,
+  //    betweenness, eigenvector, clustering). ──
   const loadAnalysis = async (filename: string) => {
     if (!filename) return
     setLoadingAnalysis(true); setError('')
     try {
-      let papers = paperCache.get(filename)
-      if (!papers) {
-        papers = await filesApi.getCsvData(filename)
-        setPaperCache((prev) => new Map(prev).set(filename, papers!))
-      }
+      const summaryData = await analysisApi.generate({
+        filename,
+        top_keywords: topKeywordLimit,
+        minimum_frequency: 1,
+        refresh: true,
+      })
+      const matrixData = await analysisApi.getMatrix(filename, previewRows)
 
-      // Update source info with real counts
-      const hasKw = papers.some((p) => extractKeywords(p).length > 0)
+      // Update source info with the backend's real counts.
       setSources((prev) =>
-        prev.map((s) => s.filename === filename ? { ...s, paper_count: papers!.length, has_keywords: hasKw } : s)
+        prev.map((s) => s.filename === filename
+          ? { ...s, paper_count: summaryData.total_papers, has_keywords: summaryData.papers_with_keywords > 0 }
+          : s)
       )
-
-      const summaryData = buildSummary(papers, filename, topKeywordLimit)
-      const topKws = summaryData.keyword_frequency.map((k) => k.keyword)
-      const matrixData = buildMatrix(papers, topKws, previewRows)
 
       setSummary(summaryData)
       setMatrix(matrixData)
@@ -661,13 +499,11 @@ export function AnalyticsPage() {
     finally { setLoadingAnalysis(false) }
   }
 
-  // ── Rebuild: clear cache and re-derive with new topKeywordLimit ──
+  // ── Rebuild: re-run the backend analysis (refresh=true) for this file. ──
   const handleRebuild = async () => {
     if (!selectedFile) return
     setRegenerating(true); setError('')
     try {
-      // Clear cached papers so we re-fetch fresh data
-      setPaperCache((prev) => { const next = new Map(prev); next.delete(selectedFile); return next })
       await loadAnalysis(selectedFile)
     } catch (err: any) { setError(err.error || err.message || 'Failed to rebuild analysis') }
     finally { setRegenerating(false) }

@@ -115,8 +115,9 @@ are effectively dead code from the UI's perspective, though fully implemented an
 
 ### a) SearchPage (`/search`) + SearchContext
 1. User types query, picks filters (source=pubmed only, maxResults default 100, year range slider).
-2. `handleSearch()` → `searchApi.search()` POST. Note: frontend always sends **`use_raw_query: true`**
-   (query goes straight to PubMed, no synonym/MeSH expansion).
+2. `handleSearch()` → `searchApi.search()` POST. Frontend sends **`use_raw_query: false`**, so the
+   backend expands each comma-separated concept with abbreviation + manual synonyms + live MeSH
+   descriptors **and MeSH entry-term synonyms** (works for any topic in MeSH). Separate concepts with commas to AND them.
 3. SearchContext polls `GET /search/progress` every 1s while `isLoading`.
 4. On `status==='completed'` → `searchApi.getResults(1, maxResults)` → stores `allResults`, `csvFilename`.
 5. Pagination is **client-side** (`displayedResults` = slice of `allResults` by page/perPage).
@@ -171,14 +172,19 @@ The 3 `*_hdbscan.*` files are the trio checked for "embeddings exist".
 - Runs in a dedicated `ThreadPoolExecutor` (blocking `requests` + `time.sleep` rate limiting).
 - Rate limit: 0.1s with API key (10 req/s), else 0.34s. `POST` to NCBI E-utilities with retry/backoff.
 - **Two query modes:**
-  - `use_raw_query=True` (what the UI sends): query passed straight to `esearch` — matches PubMed website.
-  - `use_raw_query=False`: per-term expansion — `_build_expanded_query_for_term()` combines
-    `[Title/Abstract]` variants + manual `SYNONYM_MAP` + live MeSH lookup `[MeSH Terms]`; terms AND'd together.
+  - `use_raw_query=True`: query passed straight to `esearch` — matches PubMed website.
+  - `use_raw_query=False` (what the UI now sends): per-concept expansion via `_build_expanded_query_for_term()`.
+    Comma-separated concepts are AND'd. Each concept (+ its `SYNONYM_MAP` entries) becomes a clause via
+    `_concept_clause()`: **single word → left untagged** so PubMed's Automatic Term Mapping (ATM) expands it
+    to the right MeSH descriptor + synonyms; **multi-word → `("phrase"[MeSH Terms] OR "phrase")`** to keep the
+    exact phrase (no `screen AND time` splitting) while still matching the MeSH descriptor.
+    NOTE: the old live MeSH-database lookup (`_fetch_mesh_terms`) was removed — it parsed NCBI's plain-text
+    MeSH efetch as XML (always silently failed) and its esearch ranking returned junk (diabetes→"Donohue Syndrome").
 - Zero-result fallback: `_spell_check()` via NCBI **ESpell**, retry once with corrected spelling;
   surfaces as `last_corrected_query` → "Showing results for …" message.
 - Flow: `esearch` (PMIDs, paged, fetch_limit=min(max*2,1000)) → `efetch` (XML, batch 50) + `esummary` (year/journal)
   → `_extract_paper_info()` per article → DataFrame → post-fetch date filter → `.head(max_results)`.
-- Output dict keys include `Title, Abstract, Year_Published, Source, DOI, Download_URL, Keywords, MeSH_Terms, Authors, PMID, Reference`.
+- Output dict keys include `Title, Abstract, Publication Year, Source, DOI, Download_URL, Keywords, MeSH_Terms, Authors, PMID, Reference` (plus `Relevance_Score`/`Relevance_Rank` after re-ranking). Note: the legacy duplicate `Year_Published` column was removed — readers prefer `Publication Year` and fall back to `Year_Published` for older CSVs.
 - `SearchService.save_results_to_csv()` writes CSV (`utf-8-sig`) and returns `Paper[]`.
   Authors/Keywords are real lists from XML (not parsed back out of strings).
 
@@ -213,7 +219,7 @@ Writes 4 `_analysis_*` files. Reachable only by hitting `/api/v1/analysis/*` dir
 
 ## 8. Gotchas / things to remember
 - **CORE search is a stub** — `SearchService._search_core` returns `[]`. Only PubMed works. UI source dropdown only lists PubMed.
-- **Frontend always sends `use_raw_query: true`** → backend synonym/MeSH expansion never runs from the UI.
+- **Frontend sends `use_raw_query: false`** → backend synonym/MeSH expansion runs. Concepts must be comma-separated to AND-split. (Was `true` originally; flipped so MeSH/synonym expansion is active.)
 - **Analytics is fully client-side**; backend `/analysis` routes + `AnalysisService` are unused by the app.
 - **SettingsPage doesn't persist** anything except theme.
 - Search results + progress live in **module-global backend state** → single-user / single-search assumption (same for embeddings: one job at a time).

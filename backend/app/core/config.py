@@ -21,6 +21,19 @@ class Settings(BaseSettings):
     # Model Configuration
     EMBEDDING_MODEL: str = 'all-mpnet-base-v2'
     GEMINI_MODEL: str = 'gemini-2.5-flash'
+
+    # ── Semantic re-ranking (retrieve-then-rerank) ──────────────────────
+    # PubMed retrieves the candidate set; MedCPT (NCBI's PubMed-trained
+    # bi-encoder) re-scores those candidates against the user's query so the
+    # ordering reflects semantic relevance instead of the API's default
+    # chronological order. Fails open: if the model can't load, search still
+    # works and falls back to PubMed's order.
+    RERANK_ENABLED: bool = True
+    RERANK_QUERY_MODEL: str = 'ncbi/MedCPT-Query-Encoder'
+    RERANK_ARTICLE_MODEL: str = 'ncbi/MedCPT-Article-Encoder'
+    # Cap how many candidates we re-rank to keep CPU latency bounded; beyond
+    # this, papers keep their original (most-recent) order after the ranked block.
+    RERANK_MAX_CANDIDATES: int = 300
     
     # API Keys (from environment variables)
     GOOGLE_GENAI_API_KEY: str = ""

@@ -17,6 +17,8 @@ import {
   CheckCircleIcon,
   FunnelIcon,
   ChartBarIcon,
+  SparklesIcon,
+  ClockIcon,
 } from '@heroicons/react/24/outline'
 import type { Paper } from '@/types'
 import { filesApi, type SearchProgress } from '@/services/api'
@@ -256,10 +258,23 @@ function PaperCard({ paper, index }: { paper: Paper; index: number }) {
                 <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 leading-snug">
                   {paper.title}
                 </h3>
-                <span className="flex-shrink-0 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
-                                 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
-                  {paper.source}
-                </span>
+                <div className="flex-shrink-0 flex items-center gap-1.5">
+                  {paper.relevance_score != null && (
+                    <span
+                      title="Semantic relevance to your query (MedCPT), relative within this result set"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold
+                                 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300
+                                 border border-emerald-100 dark:border-emerald-800"
+                    >
+                      <SparklesIcon className="w-3 h-3" />
+                      {Math.round(paper.relevance_score)}% match
+                    </span>
+                  )}
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                                   bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
+                    {paper.source}
+                  </span>
+                </div>
               </div>
 
               {/* Meta row */}
@@ -409,7 +424,7 @@ export function SearchPage() {
               <div className="flex-1 relative">
                 <MagnifyingGlassIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                 <input
-                  placeholder="e.g. smart healthcare machine learning 2023"
+                  placeholder="e.g. smart healthcare, machine learning"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && !isLoading && handleSearch()}
@@ -452,6 +467,48 @@ export function SearchPage() {
                   <span>Cancel</span>
                 </button>
               )}
+            </div>
+
+            {/* Query hint — concepts are expanded with synonyms + MeSH terms;
+                separate distinct concepts with commas to AND them together. */}
+            <p className="text-xs text-gray-400 dark:text-gray-500 -mt-1">
+              Tip: separate distinct concepts with commas (e.g.{' '}
+              <span className="font-medium text-gray-500 dark:text-gray-400">smart healthcare, machine learning</span>).
+              Each concept is auto-expanded with synonyms and MeSH terms.
+            </p>
+
+            {/* Sort mode toggle — Relevance (MedCPT semantic re-rank) vs newest-first */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Sort by:</span>
+              <div className="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 p-0.5 bg-gray-50 dark:bg-gray-800">
+                {([
+                  { mode: 'relevance' as const, label: 'Relevance', Icon: SparklesIcon },
+                  { mode: 'recency' as const, label: 'Most recent', Icon: ClockIcon },
+                ]).map(({ mode, label, Icon }) => {
+                  const active = (filters.sortMode || 'relevance') === mode
+                  return (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setFilters({ ...filters, sortMode: mode })}
+                      disabled={isLoading}
+                      className={`inline-flex items-center gap-1 h-7 px-3 rounded-md text-xs font-semibold transition-colors
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        ${active
+                          ? 'bg-white dark:bg-gray-900 text-blue-600 dark:text-blue-400 shadow-sm'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}`}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                      {label}
+                    </button>
+                  )
+                })}
+              </div>
+              <span className="text-[11px] text-gray-400 dark:text-gray-500 hidden sm:inline">
+                {(filters.sortMode || 'relevance') === 'relevance'
+                  ? 'Re-ranked by MedCPT semantic match to your query'
+                  : 'Newest papers first (PubMed order)'}
+              </span>
             </div>
 
             {/* Filter toggle row */}
@@ -710,7 +767,7 @@ export function SearchPage() {
         >
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto text-left">
             {[
-              { icon: MagnifyingGlassIcon, title: 'Precise results', desc: 'Queries go directly to PubMed — same results as the website.' },
+              { icon: SparklesIcon, title: 'Semantic ranking', desc: 'PubMed retrieves; MedCPT re-ranks results by relevance to your query.' },
               { icon: DocumentArrowDownIcon, title: 'Export instantly', desc: 'Download all metadata as a structured CSV in one click.' },
               { icon: CpuChipIcon, title: 'AI-powered chat', desc: 'Create embeddings and ask questions about your results.' },
             ].map(({ icon: Icon, title, desc }) => (

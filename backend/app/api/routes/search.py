@@ -170,6 +170,7 @@ async def _perform_search_with_progress(
             search_source=request.search_source,
             use_raw_query=request.use_raw_query,
             cancel_event=cancel_event,
+            sort_mode=request.sort_mode,
         )
 
         # The fetch loop honours the cancel flag between PubMed pages, so it
@@ -338,6 +339,7 @@ async def search_papers_get(
     end_date: Optional[date] = Query(None, description="End date"),
     search_source: SearchSource = Query(SearchSource.CORE, description="Search source"),
     use_raw_query: bool = Query(False, description="Pass query directly to PubMed"),
+    sort_mode: str = Query("relevance", description="Ordering: 'relevance' or 'recency'"),
     background_tasks: BackgroundTasks = BackgroundTasks(),
     settings=Depends(get_settings)
 ):
@@ -351,5 +353,6 @@ async def search_papers_get(
         end_date=end_date,
         search_source=search_source,
         use_raw_query=use_raw_query,
+        sort_mode=sort_mode,
     )
     return await search_papers(request, background_tasks, settings)

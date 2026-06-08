@@ -199,6 +199,13 @@ class EmbeddingService:
                     df['Abstract'] = ''
                     logger.info("Added Abstract column with empty values")
             
+            # The CSV schema now uses a single 'Publication Year' column. The
+            # embedding pipeline still works with the legacy 'Year_Published'
+            # name internally, so alias it here — this transparently supports
+            # both new CSVs (Publication Year only) and older ones.
+            if 'Year_Published' not in df.columns and 'Publication Year' in df.columns:
+                df['Year_Published'] = df['Publication Year']
+
             # Ensure other expected columns exist
             expected_columns = ['Abstract', 'DOI', 'Title', 'Reference', 'Source', 'Download_URL', 'Year_Published']
             for col in expected_columns:

@@ -55,6 +55,7 @@ export function SearchProvider({ children }: { children: ReactNode }) {
     source: 'pubmed',
     maxResults: 100,
     startDate: `${new Date().getFullYear()}-01-01`,
+    sortMode: 'relevance',
   })
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -149,7 +150,12 @@ export function SearchProvider({ children }: { children: ReactNode }) {
         per_page: filters.maxResults || 100,
         max_results: filters.maxResults || 100,
         search_source: filters.source,
-        use_raw_query: true,
+        // false → backend expands the query with abbreviation, synonym, and
+        // MeSH-ontology terms (see PubMedService._build_expanded_query_for_term).
+        // Separate distinct concepts with commas to AND them as separate blocks.
+        use_raw_query: false,
+        // relevance → MedCPT semantic re-rank; recency → newest-first.
+        sort_mode: filters.sortMode || 'relevance',
         ...(filters.startDate && { start_date: filters.startDate }),
         ...(filters.endDate && { end_date: filters.endDate }),
       }

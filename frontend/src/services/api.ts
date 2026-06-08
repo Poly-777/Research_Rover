@@ -1,5 +1,11 @@
 import axios, { AxiosResponse } from 'axios'
-import type { Paper } from '@/types'
+import type {
+  Paper,
+  AnalysisRequest,
+  AnalysisSummary,
+  AnalysisSourceInfo,
+  KeywordMatrixResponse,
+} from '@/types'
 
 // API Request/Response types
 export interface SearchRequest {
@@ -11,6 +17,7 @@ export interface SearchRequest {
   end_date?: string
   search_source?: 'core' | 'pubmed'
   use_raw_query?: boolean
+  sort_mode?: 'relevance' | 'recency'
 }
 
 export interface SearchResponse {
@@ -242,6 +249,32 @@ export const embeddingsApi = {
     total_files: number
   }> => {
     const response = await api.get(`/embeddings/${filename}/status`)
+    return response.data
+  },
+}
+
+// Metadata-driven analytics — backed by the server's AnalysisService
+// (keyword frequency, co-occurrence graph, and networkx centralities).
+export const analysisApi = {
+  listFiles: async (): Promise<AnalysisSourceInfo[]> => {
+    const response: AxiosResponse<AnalysisSourceInfo[]> = await api.get('/analysis/files')
+    return response.data
+  },
+  generate: async (request: AnalysisRequest): Promise<AnalysisSummary> => {
+    const response: AxiosResponse<AnalysisSummary> = await api.post('/analysis/generate', request)
+    return response.data
+  },
+  getSummary: async (filename: string, refresh = false): Promise<AnalysisSummary> => {
+    const response: AxiosResponse<AnalysisSummary> = await api.get(
+      `/analysis/${encodeURIComponent(filename)}/summary`, { params: { refresh } },
+    )
+    return response.data
+  },
+  getMatrix: async (filename: string, previewRows = 25): Promise<KeywordMatrixResponse> => {
+    const response: AxiosResponse<KeywordMatrixResponse> = await api.get(
+      `/analysis/${encodeURIComponent(filename)}/matrix`,
+      { params: { preview_rows: Math.min(Math.max(previewRows, 1), 100) } },
+    )
     return response.data
   },
 }

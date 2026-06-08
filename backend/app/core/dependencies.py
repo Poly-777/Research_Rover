@@ -25,6 +25,30 @@ def get_sentence_model() -> SentenceTransformer:
         raise RuntimeError(f"Failed to load sentence model: {e}")
 
 @lru_cache()
+def get_reranker():
+    """
+    Get the cached MedCPT semantic re-ranker (one per process).
+
+    Construction is cheap — the heavy model weights load lazily on the first
+    rerank() call, and the re-ranker fails open if they can't be loaded, so
+    this never blocks startup or breaks search.
+    """
+    from app.services.reranker_service import MedCPTReRanker
+
+    settings = get_settings()
+    if not settings.RERANK_ENABLED:
+        logger.info("Semantic re-ranking disabled (RERANK_ENABLED=False)")
+        return None
+
+    logger.info("Initializing MedCPT re-ranker (weights load on first use)")
+    return MedCPTReRanker(
+        query_model=settings.RERANK_QUERY_MODEL,
+        article_model=settings.RERANK_ARTICLE_MODEL,
+        max_candidates=settings.RERANK_MAX_CANDIDATES,
+    )
+
+
+@lru_cache()
 def get_llm_instance():
     """Get cached LLM instance"""
     settings = get_settings()

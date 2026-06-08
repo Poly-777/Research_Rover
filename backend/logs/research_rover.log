@@ -2780,3 +2780,305 @@ Please retry in 21.294078376s. [links {
 2026-05-30 12:06:47,884 - research_rover - INFO - Search results found: 5
 2026-05-30 12:06:47,944 - research_rover - INFO - Sending prompt to LLM.
 2026-05-30 12:06:50,536 - research_rover - INFO - LLM response received.
+2026-06-03 22:11:22,328 - research_rover - INFO - Starting Research Rover API...
+2026-06-03 22:11:22,335 - research_rover - INFO - Research Rover API started successfully
+2026-06-03 22:12:21,638 - research_rover - INFO - Starting search: screen time , healthcare
+2026-06-03 22:12:21,641 - research_rover - INFO - Starting background search: screen time , healthcare
+2026-06-03 22:12:22,460 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-06-03 22:12:22,460 - research_rover - INFO - PubMed search - API key present: True
+2026-06-03 22:12:22,460 - research_rover - INFO - PubMed search - Original query: screen time , healthcare
+2026-06-03 22:12:22,461 - research_rover - INFO - PubMed search - Improved query: screen time , healthcare
+2026-06-03 22:12:22,461 - research_rover - INFO - PubMed search - Max results: 100
+2026-06-03 22:12:22,461 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-06-03 22:12:22,461 - research_rover - INFO - PubMed search - Raw query mode: False
+2026-06-03 22:12:22,463 - research_rover - INFO - Starting PubMed search for: screen time , healthcare
+2026-06-03 22:12:22,463 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=False
+2026-06-03 22:12:25,482 - research_rover - WARNING - MeSH lookup failed for 'screen time': syntax error: line 2, column 0
+2026-06-03 22:12:25,483 - research_rover - INFO - Expanded query for 'screen time': 1 clauses
+2026-06-03 22:12:29,604 - research_rover - WARNING - MeSH lookup failed for 'healthcare': syntax error: line 2, column 0
+2026-06-03 22:12:29,606 - research_rover - INFO - Expanded query for 'healthcare': 1 clauses
+2026-06-03 22:12:29,606 - research_rover - INFO - Final PubMed query: (("screen time"[Title/Abstract]) AND ("healthcare"[Title/Abstract])) AND 2026/01/01:3000/12/31[pdat]
+2026-06-03 22:12:29,614 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-06-03 22:12:29,614 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-06-03 22:12:30,967 - research_rover - INFO - esearch found 12 PMIDs
+2026-06-03 22:12:30,967 - research_rover - INFO - Found 12 PMIDs, retrieving details...
+2026-06-03 22:12:34,602 - research_rover - INFO - Batch 1: 12 papers (total 12)
+2026-06-03 22:12:34,610 - research_rover - INFO - Total raw papers so far: 12
+2026-06-03 22:12:34,612 - research_rover - INFO - Reached end of available PubMed results
+2026-06-03 22:12:34,620 - research_rover - INFO - Date filter: 12 -> 12 papers within 2026-?
+2026-06-03 22:12:34,620 - research_rover - INFO - Final result count: 12 (target: 100)
+2026-06-03 22:12:35,658 - research_rover - INFO - Converting 12 results to DataFrame
+2026-06-03 22:12:35,660 - research_rover - INFO - DataFrame shape: (12, 18)
+2026-06-03 22:12:35,675 - research_rover - INFO - CSV saved to ../data\screen_time___healthcare.csv
+2026-06-03 22:12:35,676 - research_rover - INFO - Paper processing: 12 -> 12 papers
+2026-06-03 22:14:22,399 - research_rover - INFO - Starting search: screen time , healthcare
+2026-06-03 22:14:22,405 - research_rover - INFO - Starting background search: screen time , healthcare
+2026-06-03 22:14:23,219 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-06-03 22:14:23,219 - research_rover - INFO - PubMed search - API key present: True
+2026-06-03 22:14:23,221 - research_rover - INFO - PubMed search - Original query: screen time , healthcare
+2026-06-03 22:14:23,221 - research_rover - INFO - PubMed search - Improved query: screen time , healthcare
+2026-06-03 22:14:23,221 - research_rover - INFO - PubMed search - Max results: 1000
+2026-06-03 22:14:23,221 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-06-03 22:14:23,222 - research_rover - INFO - PubMed search - Raw query mode: False
+2026-06-03 22:14:23,222 - research_rover - INFO - Starting PubMed search for: screen time , healthcare
+2026-06-03 22:14:23,222 - research_rover - INFO - Parameters: max_results=1000, start_date=2026-01-01, end_date=None, use_raw_query=False
+2026-06-03 22:14:25,986 - research_rover - WARNING - MeSH lookup failed for 'screen time': syntax error: line 2, column 0
+2026-06-03 22:14:25,988 - research_rover - INFO - Expanded query for 'screen time': 1 clauses
+2026-06-03 22:14:28,989 - research_rover - WARNING - MeSH lookup failed for 'healthcare': syntax error: line 2, column 0
+2026-06-03 22:14:28,991 - research_rover - INFO - Expanded query for 'healthcare': 1 clauses
+2026-06-03 22:14:28,991 - research_rover - INFO - Final PubMed query: (("screen time"[Title/Abstract]) AND ("healthcare"[Title/Abstract])) AND 2026/01/01:3000/12/31[pdat]
+2026-06-03 22:14:28,992 - research_rover - INFO - Attempt 1: fetching up to 1000 PMIDs at offset 0
+2026-06-03 22:14:28,992 - research_rover - INFO - esearch POST — retmax=1000, retstart=0
+2026-06-03 22:14:30,356 - research_rover - INFO - esearch found 12 PMIDs
+2026-06-03 22:14:30,357 - research_rover - INFO - Found 12 PMIDs, retrieving details...
+2026-06-03 22:14:33,316 - research_rover - INFO - Batch 1: 12 papers (total 12)
+2026-06-03 22:14:33,319 - research_rover - INFO - Total raw papers so far: 12
+2026-06-03 22:14:33,319 - research_rover - INFO - Reached end of available PubMed results
+2026-06-03 22:14:33,320 - research_rover - INFO - Date filter: 12 -> 12 papers within 2026-?
+2026-06-03 22:14:33,321 - research_rover - INFO - Final result count: 12 (target: 1000)
+2026-06-03 22:14:34,335 - research_rover - INFO - Converting 12 results to DataFrame
+2026-06-03 22:14:34,336 - research_rover - INFO - DataFrame shape: (12, 18)
+2026-06-03 22:14:34,340 - research_rover - INFO - CSV saved to ../data\screen_time___healthcare.csv
+2026-06-03 22:14:34,341 - research_rover - INFO - Paper processing: 12 -> 12 papers
+2026-06-03 22:18:17,184 - research_rover - INFO - Loading sentence model: all-mpnet-base-v2
+2026-06-03 22:18:17,192 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-06-03 22:18:17,192 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2026-06-03 22:18:32,343 - research_rover - INFO - Sentence model loaded successfully
+2026-06-03 22:18:32,345 - research_rover - INFO - LLM instance created successfully
+2026-06-03 22:18:32,430 - research_rover - INFO - Decomposing query: machine learning
+2026-06-03 22:18:34,852 - research_rover - INFO - Decomposed into sub-queries: ['machine learning']
+2026-06-03 22:18:35,727 - research_rover - INFO - Retrieved 5 results for sub-query: 'machine learning'
+2026-06-03 22:18:35,728 - research_rover - INFO - Total unique results after deduplication: 5
+2026-06-03 22:18:35,728 - research_rover - INFO - Search results found: 5
+2026-06-03 22:18:35,884 - research_rover - INFO - Sending prompt to LLM.
+2026-06-03 22:18:42,197 - research_rover - INFO - LLM response received.
+2026-06-03 22:40:11,059 - research_rover - INFO - Shutting down Research Rover API...
+2026-06-03 22:42:23,106 - research_rover - INFO - Starting Research Rover API...
+2026-06-03 22:42:23,109 - research_rover - INFO - Research Rover API started successfully
+2026-06-03 22:42:26,067 - research_rover - INFO - Starting search: screen time, healthcare
+2026-06-03 22:42:26,068 - research_rover - INFO - Starting background search: screen time, healthcare
+2026-06-03 22:42:26,902 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-06-03 22:42:26,902 - research_rover - INFO - PubMed search - API key present: True
+2026-06-03 22:42:26,902 - research_rover - INFO - PubMed search - Original query: screen time, healthcare
+2026-06-03 22:42:26,903 - research_rover - INFO - PubMed search - Improved query: screen time, healthcare
+2026-06-03 22:42:26,903 - research_rover - INFO - PubMed search - Max results: 100
+2026-06-03 22:42:26,903 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-06-03 22:42:26,903 - research_rover - INFO - PubMed search - Raw query mode: False
+2026-06-03 22:42:26,904 - research_rover - INFO - Starting PubMed search for: screen time, healthcare
+2026-06-03 22:42:26,905 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=False
+2026-06-03 22:42:26,905 - research_rover - INFO - Expanded query for 'screen time': 1 clause(s) -> ("screen time"[MeSH Terms] OR "screen time")
+2026-06-03 22:42:26,905 - research_rover - INFO - Expanded query for 'healthcare': 1 clause(s) -> healthcare
+2026-06-03 22:42:26,905 - research_rover - INFO - Final PubMed query: (("screen time"[MeSH Terms] OR "screen time") AND healthcare) AND 2026/01/01:3000/12/31[pdat]
+2026-06-03 22:42:26,906 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-06-03 22:42:26,906 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-06-03 22:42:28,154 - research_rover - INFO - esearch found 37 PMIDs
+2026-06-03 22:42:28,155 - research_rover - INFO - Found 37 PMIDs, retrieving details...
+2026-06-03 22:42:32,047 - research_rover - INFO - Batch 1: 37 papers (total 37)
+2026-06-03 22:42:32,048 - research_rover - INFO - Total raw papers so far: 37
+2026-06-03 22:42:32,048 - research_rover - INFO - Reached end of available PubMed results
+2026-06-03 22:42:32,052 - research_rover - INFO - Date filter: 37 -> 36 papers within 2026-?
+2026-06-03 22:42:32,052 - research_rover - INFO - Final result count: 36 (target: 100)
+2026-06-03 22:42:33,060 - research_rover - INFO - Converting 36 results to DataFrame
+2026-06-03 22:42:33,061 - research_rover - INFO - DataFrame shape: (36, 18)
+2026-06-03 22:42:33,067 - research_rover - INFO - CSV saved to ../data\screen_time__healthcare.csv
+2026-06-03 22:42:33,067 - research_rover - INFO - Paper processing: 36 -> 36 papers
+2026-06-03 22:42:51,744 - research_rover - INFO - Starting search: screen time
+2026-06-03 22:42:51,745 - research_rover - INFO - Starting background search: screen time
+2026-06-03 22:42:52,576 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-06-03 22:42:52,576 - research_rover - INFO - PubMed search - API key present: True
+2026-06-03 22:42:52,576 - research_rover - INFO - PubMed search - Original query: screen time
+2026-06-03 22:42:52,577 - research_rover - INFO - PubMed search - Improved query: screen time
+2026-06-03 22:42:52,577 - research_rover - INFO - PubMed search - Max results: 100
+2026-06-03 22:42:52,577 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-06-03 22:42:52,577 - research_rover - INFO - PubMed search - Raw query mode: False
+2026-06-03 22:42:52,577 - research_rover - INFO - Starting PubMed search for: screen time
+2026-06-03 22:42:52,577 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=False
+2026-06-03 22:42:52,577 - research_rover - INFO - Expanded query for 'screen time': 1 clause(s) -> ("screen time"[MeSH Terms] OR "screen time")
+2026-06-03 22:42:52,578 - research_rover - INFO - Final PubMed query: (("screen time"[MeSH Terms] OR "screen time")) AND 2026/01/01:3000/12/31[pdat]
+2026-06-03 22:42:52,578 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-06-03 22:42:52,578 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-06-03 22:42:53,290 - research_rover - INFO - esearch found 200 PMIDs
+2026-06-03 22:42:53,291 - research_rover - INFO - Found 200 PMIDs, retrieving details...
+2026-06-03 22:42:58,499 - research_rover - INFO - Batch 1: 50 papers (total 50)
+2026-06-03 22:43:01,749 - research_rover - INFO - Batch 2: 50 papers (total 100)
+2026-06-03 22:43:05,564 - research_rover - INFO - Batch 3: 50 papers (total 150)
+2026-06-03 22:43:09,807 - research_rover - INFO - Batch 4: 50 papers (total 200)
+2026-06-03 22:43:09,809 - research_rover - INFO - Total raw papers so far: 200
+2026-06-03 22:43:09,810 - research_rover - INFO - Date filter: 200 -> 200 papers within 2026-?
+2026-06-03 22:43:09,810 - research_rover - INFO - Final result count: 100 (target: 100)
+2026-06-03 22:43:10,798 - research_rover - INFO - Converting 100 results to DataFrame
+2026-06-03 22:43:10,800 - research_rover - INFO - DataFrame shape: (100, 18)
+2026-06-03 22:43:10,805 - research_rover - INFO - CSV saved to ../data\screen_time.csv
+2026-06-03 22:43:10,806 - research_rover - INFO - Paper processing: 100 -> 100 papers
+2026-06-03 22:45:49,593 - research_rover - INFO - Starting search: screen time
+2026-06-03 22:45:49,594 - research_rover - INFO - Starting background search: screen time
+2026-06-03 22:45:50,402 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-06-03 22:45:50,402 - research_rover - INFO - PubMed search - API key present: True
+2026-06-03 22:45:50,402 - research_rover - INFO - PubMed search - Original query: screen time
+2026-06-03 22:45:50,402 - research_rover - INFO - PubMed search - Improved query: screen time
+2026-06-03 22:45:50,402 - research_rover - INFO - PubMed search - Max results: 100
+2026-06-03 22:45:50,403 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-06-03 22:45:50,403 - research_rover - INFO - PubMed search - Raw query mode: False
+2026-06-03 22:45:50,403 - research_rover - INFO - Starting PubMed search for: screen time
+2026-06-03 22:45:50,403 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=False
+2026-06-03 22:45:50,403 - research_rover - INFO - Expanded query for 'screen time': 1 clause(s) -> ("screen time"[MeSH Terms] OR "screen time")
+2026-06-03 22:45:50,404 - research_rover - INFO - Final PubMed query: (("screen time"[MeSH Terms] OR "screen time")) AND 2026/01/01:3000/12/31[pdat]
+2026-06-03 22:45:50,404 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-06-03 22:45:50,405 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-06-03 22:45:51,907 - research_rover - INFO - esearch found 200 PMIDs
+2026-06-03 22:45:51,907 - research_rover - INFO - Found 200 PMIDs, retrieving details...
+2026-06-03 22:45:55,639 - research_rover - INFO - Batch 1: 50 papers (total 50)
+2026-06-03 22:46:01,387 - research_rover - INFO - Batch 2: 50 papers (total 100)
+2026-06-03 22:46:05,161 - research_rover - INFO - Batch 3: 50 papers (total 150)
+2026-06-03 22:46:09,938 - research_rover - INFO - Batch 4: 50 papers (total 200)
+2026-06-03 22:46:09,940 - research_rover - INFO - Total raw papers so far: 200
+2026-06-03 22:46:09,941 - research_rover - INFO - Date filter: 200 -> 200 papers within 2026-?
+2026-06-03 22:46:09,941 - research_rover - INFO - Final result count: 100 (target: 100)
+2026-06-03 22:46:10,975 - research_rover - INFO - Converting 100 results to DataFrame
+2026-06-03 22:46:10,977 - research_rover - INFO - DataFrame shape: (100, 18)
+2026-06-03 22:46:10,982 - research_rover - INFO - CSV saved to ../data\screen_time.csv
+2026-06-03 22:46:10,983 - research_rover - INFO - Paper processing: 100 -> 100 papers
+2026-06-03 22:46:26,636 - research_rover - INFO - Uploaded file: screen_time_research_rover.csv (157344 bytes)
+2026-06-03 22:46:29,199 - research_rover - INFO - Loading sentence model: all-mpnet-base-v2
+2026-06-03 22:46:29,202 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-06-03 22:46:29,202 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2026-06-03 22:46:39,492 - research_rover - INFO - Sentence model loaded successfully
+2026-06-03 22:46:39,698 - research_rover - INFO - Scraping full text for 100 URLs (concurrency=10, timeout=10s)...
+2026-06-03 22:47:35,275 - research_rover - INFO - Loading CSV data from ../data\screen_time_research_rover.csv...
+2026-06-03 22:47:35,322 - research_rover - INFO - Processing data with JSON mapping and generating embeddings...
+2026-06-03 22:47:43,209 - research_rover - WARNING - No text content available for 10.1177/08977151261452924, skipping
+2026-06-03 22:47:44,266 - research_rover - WARNING - No text content available for 10.3390/nu18101576, skipping
+2026-06-03 22:47:44,266 - research_rover - WARNING - No text content available for 10.3390/ijerph23050542, skipping
+2026-06-03 22:47:44,266 - research_rover - WARNING - No text content available for 10.3390/bs16050789, skipping
+2026-06-03 22:48:05,273 - research_rover - INFO -   Processed 50/100 papers...
+2026-06-03 22:48:42,112 - research_rover - INFO -   Processed 100/100 papers...
+2026-06-03 22:48:42,117 - research_rover - INFO - Built FAISS index with 432 vectors (dim=768).
+2026-06-03 22:48:42,127 - research_rover - INFO - Saved 432 chunk metadata entries to ../data\screen_time_research_rover_paper_chunk_metadata_hdbscan.json
+2026-06-03 22:48:42,136 - research_rover - INFO - Saved DOI-mapped metadata for 96 papers to ../data\screen_time_research_rover_paper_data_doi_mapped_hdbscan.json
+2026-06-03 22:48:42,136 - research_rover - INFO - Embeddings created successfully for ../data\screen_time_research_rover.csv in 122.64 seconds
+2026-06-03 22:48:51,971 - research_rover - INFO - LLM instance created successfully
+2026-06-03 22:48:51,994 - research_rover - INFO - Decomposing query: screen time
+2026-06-03 22:48:57,506 - research_rover - INFO - Decomposed into sub-queries: ['What is screen time?', 'What are the effects of screen time?', 'What are the recommendations for screen time?']
+2026-06-03 22:48:57,643 - research_rover - INFO - Retrieved 5 results for sub-query: 'What is screen time?'
+2026-06-03 22:48:57,703 - research_rover - INFO - Retrieved 5 results for sub-query: 'What are the effects of screen time?'
+2026-06-03 22:48:57,757 - research_rover - INFO - Retrieved 5 results for sub-query: 'What are the recommendations for screen time?'
+2026-06-03 22:48:57,758 - research_rover - INFO - Total unique results after deduplication: 8
+2026-06-03 22:48:57,758 - research_rover - INFO - Search results found: 8
+2026-06-03 22:48:57,769 - research_rover - INFO - Sending prompt to LLM.
+2026-06-03 22:49:08,713 - research_rover - INFO - LLM response received.
+2026-06-03 23:44:48,147 - research_rover - INFO - Decomposing query: most relevent topic right now in screen time
+2026-06-03 23:44:50,672 - research_rover - INFO - Decomposed into sub-queries: ['most relevent topic right now in screen time']
+2026-06-03 23:44:50,738 - research_rover - INFO - Retrieved 5 results for sub-query: 'most relevent topic right now in screen time'
+2026-06-03 23:44:50,738 - research_rover - INFO - Total unique results after deduplication: 5
+2026-06-03 23:44:50,738 - research_rover - INFO - Search results found: 5
+2026-06-03 23:44:50,755 - research_rover - INFO - Sending prompt to LLM.
+2026-06-03 23:44:58,575 - research_rover - INFO - LLM response received.
+2026-06-04 00:03:10,629 - research_rover - INFO - Starting Research Rover API...
+2026-06-04 00:03:10,632 - research_rover - INFO - Research Rover API started successfully
+2026-06-04 00:04:40,310 - research_rover - INFO - Starting search: screen time
+2026-06-04 00:04:40,310 - research_rover - INFO - Starting background search: screen time
+2026-06-04 00:04:41,123 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-06-04 00:04:41,123 - research_rover - INFO - PubMed search - API key present: True
+2026-06-04 00:04:41,123 - research_rover - INFO - PubMed search - Original query: screen time
+2026-06-04 00:04:41,123 - research_rover - INFO - PubMed search - Improved query: screen time
+2026-06-04 00:04:41,123 - research_rover - INFO - PubMed search - Max results: 100
+2026-06-04 00:04:41,125 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-06-04 00:04:41,125 - research_rover - INFO - PubMed search - Raw query mode: False
+2026-06-04 00:04:41,126 - research_rover - INFO - Starting PubMed search for: screen time
+2026-06-04 00:04:41,126 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=False
+2026-06-04 00:04:41,126 - research_rover - INFO - Expanded query for 'screen time': 1 clause(s) -> ("screen time"[MeSH Terms] OR "screen time")
+2026-06-04 00:04:41,127 - research_rover - INFO - Final PubMed query: (("screen time"[MeSH Terms] OR "screen time")) AND 2026/01/01:3000/12/31[pdat]
+2026-06-04 00:04:41,127 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-06-04 00:04:41,128 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-06-04 00:04:42,808 - research_rover - INFO - esearch found 200 PMIDs
+2026-06-04 00:04:42,808 - research_rover - INFO - Found 200 PMIDs, retrieving details...
+2026-06-04 00:04:46,357 - research_rover - INFO - Batch 1: 50 papers (total 50)
+2026-06-04 00:04:51,088 - research_rover - INFO - Batch 2: 50 papers (total 100)
+2026-06-04 00:04:55,858 - research_rover - INFO - Batch 3: 50 papers (total 150)
+2026-06-04 00:05:01,917 - research_rover - INFO - Batch 4: 50 papers (total 200)
+2026-06-04 00:05:01,919 - research_rover - INFO - Total raw papers so far: 200
+2026-06-04 00:05:01,922 - research_rover - INFO - Date filter: 200 -> 200 papers within 2026-?
+2026-06-04 00:05:01,922 - research_rover - INFO - Final result count: 100 (target: 100)
+2026-06-04 00:05:01,927 - research_rover - INFO - Initializing MedCPT re-ranker (weights load on first use)
+2026-06-04 00:05:01,927 - research_rover - INFO - Loading MedCPT query encoder: ncbi/MedCPT-Query-Encoder
+2026-06-04 00:05:06,860 - research_rover - INFO - Loading MedCPT article encoder: ncbi/MedCPT-Article-Encoder
+2026-06-04 00:05:08,870 - research_rover - INFO - MedCPT re-ranker ready (CPU).
+2026-06-04 00:05:33,144 - research_rover - INFO - MedCPT re-ranked 100 candidates for query 'screen time' (top score raw=69.37)
+2026-06-04 00:05:34,179 - research_rover - INFO - Converting 100 results to DataFrame
+2026-06-04 00:05:34,180 - research_rover - INFO - DataFrame shape: (100, 20)
+2026-06-04 00:05:34,189 - research_rover - INFO - CSV saved to ../data\screen_time.csv
+2026-06-04 00:05:34,190 - research_rover - INFO - Paper processing: 100 -> 100 papers
+2026-06-04 00:42:59,388 - research_rover - INFO - Shutting down Research Rover API...
+2026-06-04 00:54:06,606 - research_rover - INFO - Starting Research Rover API...
+2026-06-04 00:54:06,609 - research_rover - INFO - Research Rover API started successfully
+2026-06-04 00:54:51,552 - research_rover - INFO - Starting search: screen time
+2026-06-04 00:54:51,553 - research_rover - INFO - Starting background search: screen time
+2026-06-04 00:54:52,384 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-06-04 00:54:52,384 - research_rover - INFO - PubMed search - API key present: True
+2026-06-04 00:54:52,385 - research_rover - INFO - PubMed search - Original query: screen time
+2026-06-04 00:54:52,385 - research_rover - INFO - PubMed search - Improved query: screen time
+2026-06-04 00:54:52,385 - research_rover - INFO - PubMed search - Max results: 100
+2026-06-04 00:54:52,385 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-06-04 00:54:52,385 - research_rover - INFO - PubMed search - Raw query mode: False
+2026-06-04 00:54:52,386 - research_rover - INFO - Starting PubMed search for: screen time
+2026-06-04 00:54:52,386 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=False
+2026-06-04 00:54:52,386 - research_rover - INFO - Expanded query for 'screen time': 1 clause(s) -> ("screen time"[MeSH Terms] OR "screen time")
+2026-06-04 00:54:52,387 - research_rover - INFO - Final PubMed query: (("screen time"[MeSH Terms] OR "screen time")) AND 2026/01/01:3000/12/31[pdat]
+2026-06-04 00:54:52,387 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-06-04 00:54:52,388 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-06-04 00:54:53,407 - research_rover - INFO - esearch found 200 PMIDs
+2026-06-04 00:54:53,408 - research_rover - INFO - Found 200 PMIDs, retrieving details...
+2026-06-04 00:54:56,684 - research_rover - INFO - Batch 1: 50 papers (total 50)
+2026-06-04 00:55:00,680 - research_rover - INFO - Batch 2: 50 papers (total 100)
+2026-06-04 00:55:05,244 - research_rover - INFO - Batch 3: 50 papers (total 150)
+2026-06-04 00:55:08,832 - research_rover - INFO - Batch 4: 50 papers (total 200)
+2026-06-04 00:55:08,835 - research_rover - INFO - Total raw papers so far: 200
+2026-06-04 00:55:08,836 - research_rover - INFO - Date filter: 200 -> 200 papers within 2026-?
+2026-06-04 00:55:08,836 - research_rover - INFO - Final result count: 100 (target: 100)
+2026-06-04 00:55:08,842 - research_rover - INFO - Initializing MedCPT re-ranker (weights load on first use)
+2026-06-04 00:55:08,842 - research_rover - INFO - Loading MedCPT query encoder: ncbi/MedCPT-Query-Encoder
+2026-06-04 00:55:13,801 - research_rover - INFO - Loading MedCPT article encoder: ncbi/MedCPT-Article-Encoder
+2026-06-04 00:55:15,115 - research_rover - INFO - MedCPT re-ranker ready (CPU).
+2026-06-04 00:55:38,897 - research_rover - INFO - MedCPT re-ranked 100 candidates for query 'screen time' (top score raw=69.37)
+2026-06-04 00:55:39,909 - research_rover - INFO - Converting 100 results to DataFrame
+2026-06-04 00:55:39,910 - research_rover - INFO - DataFrame shape: (100, 19)
+2026-06-04 00:55:39,920 - research_rover - INFO - CSV saved to ../data\screen_time.csv
+2026-06-04 00:55:39,921 - research_rover - INFO - Paper processing: 100 -> 100 papers
+2026-06-04 01:23:35,852 - research_rover - INFO - Shutting down Research Rover API...
+2026-06-04 01:24:02,593 - research_rover - INFO - Starting Research Rover API...
+2026-06-04 01:24:02,596 - research_rover - INFO - Research Rover API started successfully
+2026-06-04 01:24:30,019 - research_rover - INFO - Analysis artifacts generated for Assamese___speaker__idemtification.csv: 2 papers, 6 unique keywords, 6 matrix columns
+2026-06-04 01:24:46,639 - research_rover - INFO - Analysis artifacts generated for screen_time.csv: 100 papers, 361 unique keywords, 100 matrix columns
+2026-06-04 02:02:41,249 - research_rover - INFO - Starting search: screen time
+2026-06-04 02:02:41,252 - research_rover - INFO - Starting background search: screen time
+2026-06-04 02:02:42,087 - research_rover - INFO - PubMed search - Email: polycarp2411@gmail.com
+2026-06-04 02:02:42,089 - research_rover - INFO - PubMed search - API key present: True
+2026-06-04 02:02:42,089 - research_rover - INFO - PubMed search - Original query: screen time
+2026-06-04 02:02:42,089 - research_rover - INFO - PubMed search - Improved query: screen time
+2026-06-04 02:02:42,089 - research_rover - INFO - PubMed search - Max results: 100
+2026-06-04 02:02:42,090 - research_rover - INFO - PubMed search - Date range: 2026-01-01-None
+2026-06-04 02:02:42,090 - research_rover - INFO - PubMed search - Raw query mode: False
+2026-06-04 02:02:42,092 - research_rover - INFO - Starting PubMed search for: screen time
+2026-06-04 02:02:42,092 - research_rover - INFO - Parameters: max_results=100, start_date=2026-01-01, end_date=None, use_raw_query=False
+2026-06-04 02:02:42,092 - research_rover - INFO - Expanded query for 'screen time': 1 clause(s) -> ("screen time"[MeSH Terms] OR "screen time")
+2026-06-04 02:02:42,093 - research_rover - INFO - Final PubMed query: (("screen time"[MeSH Terms] OR "screen time")) AND 2026/01/01:3000/12/31[pdat]
+2026-06-04 02:02:42,098 - research_rover - INFO - Attempt 1: fetching up to 200 PMIDs at offset 0
+2026-06-04 02:02:42,099 - research_rover - INFO - esearch POST — retmax=200, retstart=0
+2026-06-04 02:02:43,491 - research_rover - INFO - esearch found 200 PMIDs
+2026-06-04 02:02:43,492 - research_rover - INFO - Found 200 PMIDs, retrieving details...
+2026-06-04 02:02:47,832 - research_rover - INFO - Batch 1: 50 papers (total 50)
+2026-06-04 02:02:51,983 - research_rover - INFO - Batch 2: 50 papers (total 100)
+2026-06-04 02:02:57,226 - research_rover - INFO - Batch 3: 50 papers (total 150)
+2026-06-04 02:03:01,729 - research_rover - INFO - Batch 4: 50 papers (total 200)
+2026-06-04 02:03:01,732 - research_rover - INFO - Total raw papers so far: 200
+2026-06-04 02:03:01,735 - research_rover - INFO - Date filter: 200 -> 200 papers within 2026-?
+2026-06-04 02:03:01,736 - research_rover - INFO - Final result count: 100 (target: 100)
+2026-06-04 02:03:01,747 - research_rover - INFO - Initializing MedCPT re-ranker (weights load on first use)
+2026-06-04 02:03:01,748 - research_rover - INFO - Loading MedCPT query encoder: ncbi/MedCPT-Query-Encoder
+2026-06-04 02:03:06,623 - research_rover - INFO - Loading MedCPT article encoder: ncbi/MedCPT-Article-Encoder
+2026-06-04 02:03:08,093 - research_rover - INFO - MedCPT re-ranker ready (CPU).
+2026-06-04 02:03:38,924 - research_rover - INFO - MedCPT re-ranked 100 candidates for query 'screen time' (top score raw=69.37)
+2026-06-04 02:03:39,920 - research_rover - INFO - Converting 100 results to DataFrame
+2026-06-04 02:03:39,923 - research_rover - INFO - DataFrame shape: (100, 19)
+2026-06-04 02:03:39,933 - research_rover - INFO - CSV saved to ../data\screen_time.csv
+2026-06-04 02:03:39,935 - research_rover - INFO - Paper processing: 100 -> 100 papers

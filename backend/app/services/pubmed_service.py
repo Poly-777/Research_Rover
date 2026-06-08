@@ -86,10 +86,6 @@ class PubMedService:
         if not api_key:
             self.rate_limit = 0.34  # 3 requests/sec without API key
 
-        # In-memory cache so repeated searches for the same term don't
-        # make extra API calls during the same session
-        self._mesh_cache: Dict[str, List[str]] = {}
-
         # Set when a zero-result search succeeds after ESpell correction,
         # so callers can tell the user "showing results for <corrected>".
         self.last_corrected_query: Optional[str] = None
@@ -133,82 +129,6 @@ class PubMedService:
         raise RuntimeError(
             f"PubMed {endpoint} failed after {MAX_RETRIES} attempts. Last error: {last_exc}"
         )
-
-    # ------------------------------------------------------------------
-    # MeSH lookup — queries PubMed's own ontology database
-    # ------------------------------------------------------------------
-
-    def _fetch_mesh_terms(self, term: str) -> List[str]:
-        """
-        Query PubMed's MeSH database to find official ontology terms.
-        Returns MeSH descriptor names to be used with [MeSH Terms] field tag.
-        Results are cached in-memory.
-        """
-        cache_key = term.lower().strip()
-        if cache_key in self._mesh_cache:
-            return self._mesh_cache[cache_key]
-
-        try:
-            # Step 1 — find matching MeSH IDs for the term
-            search_data = {
-                'db': 'mesh',
-                'term': term,
-                'retmax': 5,
-                'retmode': 'xml',
-            }
-            search_response = self._post_with_retry('esearch.fcgi', search_data)
-            search_root = ET.fromstring(search_response.content)
-            mesh_ids = [
-                id_elem.text
-                for id_elem in search_root.findall('.//Id')
-                if id_elem.text
-            ]
-
-            if not mesh_ids:
-                logger.info(f"No MeSH IDs found for '{term}'")
-                self._mesh_cache[cache_key] = []
-                return []
-
-            # Step 2 — fetch the actual MeSH descriptor names for those IDs
-            fetch_data = {
-                'db': 'mesh',
-                'id': ','.join(mesh_ids[:3]),  # top 3 matches only
-                'retmode': 'xml',
-            }
-            fetch_response = self._post_with_retry('efetch.fcgi', fetch_data)
-            fetch_root = ET.fromstring(fetch_response.content)
-
-            mesh_terms = []
-
-            # Primary descriptor names (e.g. "Telemedicine", "Medical Informatics")
-            for descriptor in fetch_root.findall('.//DescriptorName'):
-                if descriptor.text and descriptor.text.strip():
-                    mesh_terms.append(descriptor.text.strip())
-
-            # Entry terms — alternative names PubMed maps to the descriptor
-            for entry_term in fetch_root.findall('.//Term/String'):
-                if entry_term.text and entry_term.text.strip():
-                    candidate = entry_term.text.strip()
-                    if candidate.lower() not in [m.lower() for m in mesh_terms]:
-                        mesh_terms.append(candidate)
-
-            # Deduplicate and cap at 8 to keep the query manageable
-            seen = set()
-            deduped = []
-            for t in mesh_terms:
-                if t.lower() not in seen:
-                    seen.add(t.lower())
-                    deduped.append(t)
-            mesh_terms = deduped[:8]
-
-            logger.info(f"MeSH terms for '{term}': {mesh_terms}")
-            self._mesh_cache[cache_key] = mesh_terms
-            return mesh_terms
-
-        except Exception as e:
-            logger.warning(f"MeSH lookup failed for '{term}': {e}")
-            self._mesh_cache[cache_key] = []
-            return []
 
     # ------------------------------------------------------------------
     # Spelling correction — PubMed's ESpell service
@@ -255,42 +175,56 @@ class PubMedService:
 
     def _build_expanded_query_for_term(self, term: str) -> str:
         """
-        Build a PubMed sub-query for a single term using proper field tags.
+        Build a PubMed sub-query for a single concept, leaning on PubMed's
+        **Automatic Term Mapping (ATM)** rather than hand-fetching MeSH (the old
+        MeSH-database lookup was both broken — it parsed plain text as XML — and
+        unreliable, returning subtypes like "Donohue Syndrome" for "diabetes").
 
-        Strategy:
-          - MeSH descriptor names get the [MeSH Terms] field tag, which is
-            exactly how PubMed's own website expands queries internally.
-          - The original term and manual synonyms search [Title/Abstract].
-          - Combining both with OR gives maximum recall matching PubMed's
-            native search behaviour.
+        Per concept, plus every manual ``SYNONYM_MAP`` entry, we emit a clause
+        via :meth:`_concept_clause`:
+
+          - **Single word** (e.g. ``hypertension``) → left *untagged* so ATM maps
+            it to the right MeSH descriptor + entry-term synonyms + spelling
+            variants. A lone word can't be mis-split, so this is pure upside.
+          - **Multi-word** (e.g. ``screen time``) → ``("screen time"[MeSH Terms]
+            OR "screen time")``: keeps the exact phrase (so ATM doesn't dissolve
+            it into ``screen AND time`` and drag in unrelated papers) while still
+            matching everything PubMed tagged with that MeSH descriptor. If the
+            phrase isn't a MeSH descriptor the ``[MeSH Terms]`` clause simply
+            matches nothing (PubMed warns; harmless inside an OR).
 
         Result looks like:
-          (("smart healthcare"[Title/Abstract] OR "digital health"[Title/Abstract]
-            OR "Medical Informatics"[MeSH Terms] OR "Telemedicine"[MeSH Terms]))
+          ``(("screen time"[MeSH Terms] OR "screen time") OR "screen use" ...)``
         """
-        synonyms = self._get_synonyms(term)
-        mesh_terms = self._fetch_mesh_terms(term)
+        term = term.strip()
 
-        parts = []
+        seen, clauses = set(), []
+        for v in [term] + self._get_synonyms(term):
+            key = v.lower().strip()
+            if key and key not in seen:
+                seen.add(key)
+                clause = self._concept_clause(v)
+                if clause:
+                    clauses.append(clause)
 
-        # Original term + manual synonyms → search title/abstract
-        tiab_variants = [term] + synonyms
-        seen = set()
-        for v in tiab_variants:
-            if v.lower() not in seen:
-                seen.add(v.lower())
-                parts.append(f'"{v}"[Title/Abstract]')
+        if not clauses:
+            return term
 
-        # MeSH descriptor names → use [MeSH Terms] field tag
-        # This is the key fix: [MeSH Terms] matches PubMed's own ontology tagging
-        mesh_seen = set(v.lower() for v in tiab_variants)
-        for m in mesh_terms:
-            if m.lower() not in mesh_seen:
-                mesh_seen.add(m.lower())
-                parts.append(f'"{m}"[MeSH Terms]')
+        built = clauses[0] if len(clauses) == 1 else "(" + " OR ".join(clauses) + ")"
+        logger.info(f"Expanded query for '{term}': {len(clauses)} clause(s) -> {built}")
+        return built
 
-        logger.info(f"Expanded query for '{term}': {len(parts)} clauses")
-        return "(" + " OR ".join(parts) + ")"
+    @staticmethod
+    def _concept_clause(phrase: str) -> str:
+        """Build one OR-clause for a concept/synonym (see _build_expanded_query_for_term)."""
+        phrase = phrase.strip().strip('"').strip()
+        if not phrase:
+            return ""
+        if " " in phrase:
+            # Multi-word: exact phrase + MeSH descriptor, no ATM word-splitting.
+            return f'("{phrase}"[MeSH Terms] OR "{phrase}")'
+        # Single token: bare, so ATM expands it fully (MeSH + synonyms + variants).
+        return phrase
 
     # ------------------------------------------------------------------
     # Main search entry point
@@ -688,7 +622,6 @@ class PubMedService:
             return {
                 'Title':            title,
                 'Abstract':         abstract,
-                'Year_Published':   publication_year,
                 'Publication Year': publication_year,
                 'Source':           journal,
                 'Journal/Book':     journal,

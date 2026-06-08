@@ -23,7 +23,11 @@ class SearchRequest(BaseModel):
     end_date: Optional[date] = Field(None, description="End date filter")
     search_source: SearchSource = Field(SearchSource.CORE, description="Search source")
     use_raw_query: bool = Field(True, description="Pass query directly to PubMed without synonym/MeSH expansion")
-    
+    sort_mode: str = Field(
+        "relevance",
+        description="Result ordering: 'relevance' = MedCPT semantic re-rank, 'recency' = newest first (PubMed order)",
+    )
+
     @validator('end_date')
     def validate_date_range(cls, v, values):
         if v and 'start_date' in values and values['start_date']:
@@ -41,6 +45,12 @@ class Paper(BaseModel):
     doi: Optional[str] = Field(None, description="DOI")
     authors: Optional[List[str]] = Field(default_factory=list, description="Authors")
     abstract: Optional[str] = Field(None, description="Abstract")
+    relevance_score: Optional[float] = Field(
+        None, description="MedCPT semantic relevance to the query (0-100, relative within this result set)"
+    )
+    relevance_rank: Optional[int] = Field(
+        None, description="1-based rank assigned by the semantic re-ranker"
+    )
 
 class SearchResponse(BaseModel):
     """Search response model"""
